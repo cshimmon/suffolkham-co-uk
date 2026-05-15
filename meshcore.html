@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MeshCore – Off-Grid Radio Networking in Suffolk | SuffolkHam</title>
+<meta name="description" content="Introduction to MeshCore off-grid mesh radio networking in Suffolk. Learn about LoRa mesh, the local Ipswich IPNet community at ipnt.uk, and how to get started.">
+<meta name="keywords" content="MeshCore Suffolk, MeshCore Ipswich, IPNet, ipnt.uk, LoRa mesh Suffolk, off-grid radio networking, amateur radio mesh, LoRa32">
+<meta property="og:title" content="MeshCore – Off-Grid Radio Networking in Suffolk | SuffolkHam">
+<meta property="og:description" content="Learn about MeshCore off-grid mesh networking using LoRa radio — and the local Ipswich community at ipnt.uk.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Site navigation">
+  <a href="index.html" class="nav-brand">SuffolkHam<span>.co.uk</span></a>
+  <ul class="nav-links" role="list">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="repeaters.html">Repeaters</a></li>
+    <li><a href="nets.html">Nets</a></li>
+    <li><a href="dmr.html">DMR</a></li>
+    <li><a href="meshcore.html" class="active">MeshCore</a></li>
+    <li><a href="equipment.html">Equipment</a></li>
+    <li><a href="events.html">Events</a></li>
+    <li><a href="glossary.html">Glossary</a></li>
+  </ul>
+</nav>
+
+<div class="page-header" id="main">
+  <div class="page-tag">Off-grid networking</div>
+  <h1>MeshCore</h1>
+  <p>MeshCore is an open-source encrypted messaging system that runs on affordable LoRa radio hardware. No internet connection, no phone signal, no infrastructure required — messages hop between nodes to reach their destination.</p>
+</div>
+
+<main>
+
+  <div style="margin-bottom:3rem;">
+    <div class="section-label">What is MeshCore?</div>
+    <h2 class="section-title">Off-grid communication using LoRa radio</h2>
+    <p class="section-lead">MeshCore uses LoRa (Long Range) radio technology to create a decentralised mesh network. It's popular with radio experimenters, emergency preparedness enthusiasts, and outdoor users who want reliable communication without depending on any central infrastructure.</p>
+
+    <div class="grid-2" style="margin-bottom:2rem;">
+      <div class="card">
+        <h3>How it works</h3>
+        <p>Each MeshCore device is both a radio and a node in the network. When you send a message, it's broadcast over LoRa radio. Nearby nodes that receive it re-broadcast it onwards, extending the range well beyond what a single device could achieve. This "hopping" means messages can travel surprising distances across a network of nodes — all without internet or phone signal.</p>
+      </div>
+      <div class="card">
+        <h3>Encrypted and private</h3>
+        <p>All MeshCore communications are encrypted end-to-end. Unlike some other mesh radio systems, messages aren't readable by people simply listening in. This makes it practical for sensitive communications and genuinely useful in scenarios where you'd rather not broadcast your conversations in plain text over the air.</p>
+      </div>
+      <div class="card">
+        <h3>No licence required</h3>
+        <p>MeshCore operates in the licence-free ISM bands (868 MHz in Europe). You don't need an amateur radio licence to use it, though many people who run MeshCore nodes are licensed amateurs who enjoy the experimentation and community aspects. The hardware is affordable and widely available.</p>
+      </div>
+      <div class="card">
+        <h3>What can you do with it?</h3>
+        <p>Send text messages, share GPS positions, and coordinate with others — all off-grid. It's been used for outdoor events, emergency preparedness exercises, hiking, and just experimenting with radio networking. The local community around Ipswich has a growing node network already operational.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div style="margin-bottom:3rem;">
+    <div class="section-label">Hardware</div>
+    <h2 class="section-title">What hardware do you need?</h2>
+    <p class="section-lead">Getting started with MeshCore is relatively affordable. The most common hardware combines an ESP32 microcontroller with a LoRa radio module — often on a single board.</p>
+
+    <div class="grid-3" style="margin-bottom:1.5rem;">
+      <div class="card">
+        <h3>Heltec LoRa32</h3>
+        <p>One of the most popular choices for MeshCore. Combines an ESP32 with a LoRa radio and a small OLED display on a single compact board. Available from around £15–£25. The V3 version is currently recommended.</p>
+      </div>
+      <div class="card">
+        <h3>T-Beam</h3>
+        <p>A Lilygo T-Beam board combines ESP32, LoRa radio and GPS on one board. Useful if you want location tracking built in. Slightly larger than the LoRa32 but very capable for portable nodes.</p>
+      </div>
+      <div class="card">
+        <h3>T-Echo and others</h3>
+        <p>The Lilygo T-Echo is a compact option with e-ink display — handy for portable use. Several other boards are also supported. Check the MeshCore documentation for a full list of compatible hardware.</p>
+      </div>
+    </div>
+
+    <div style="background:var(--bg2); border:1px solid var(--border); border-radius:8px; padding:1rem 1.25rem; font-size:13px; color:var(--muted); line-height:1.65;">
+      <strong style="color:var(--text);">Note:</strong> Make sure you buy hardware with the 868 MHz LoRa module for UK/European use (not 915 MHz which is for North America). Most UK suppliers stock the correct version, but it's worth double-checking.
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div style="margin-bottom:3rem;">
+    <div class="section-label">Getting started</div>
+    <h2 class="section-title">First steps with MeshCore</h2>
+
+    <div class="steps-list">
+      <div class="step-item">
+        <div class="step-n">01</div>
+        <div class="step-body">
+          <h3>Get compatible hardware</h3>
+          <p>Start with a Heltec LoRa32 V3 or similar ESP32-based LoRa board with 868 MHz radio. These are widely available from online retailers. You'll also need a USB cable to connect it to your computer for flashing.</p>
+          <span class="step-tag">Heltec LoRa32 V3 is a popular first choice</span>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-n">02</div>
+        <div class="step-body">
+          <h3>Flash the MeshCore firmware</h3>
+          <p>Download the MeshCore firmware for your specific hardware and flash it using the MeshCore web flasher (no software installation required — works directly in Chrome). Connect your board via USB, select your hardware, and flash. The device will restart with MeshCore running.</p>
+          <span class="step-tag">Use the web flasher — no tools needed</span>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-n">03</div>
+        <div class="step-body">
+          <h3>Connect your phone or computer</h3>
+          <p>MeshCore nodes can be controlled via Bluetooth from the MeshCore Companion app on Android, or via a serial connection. The companion app is the easiest way to configure your node, set your name, and send messages.</p>
+          <span class="step-tag">Android app available on the Play Store</span>
+        </div>
+      </div>
+      <div class="step-item">
+        <div class="step-n">04</div>
+        <div class="step-body">
+          <h3>Connect to the local network</h3>
+          <p>Once your node is running, it will automatically start discovering and communicating with other MeshCore nodes in range. To connect to the Ipswich area network, visit <a href="https://ipnt.uk" target="_blank" rel="noopener">ipnt.uk</a> for local node information, channel settings and community guidance.</p>
+          <span class="step-tag">Check ipnt.uk for local network details</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div style="margin-bottom:3rem;">
+    <div class="section-label">Local community</div>
+    <h2 class="section-title">IPNet – Ipswich MeshCore community</h2>
+    <p style="font-size:1rem; color:var(--muted); max-width:580px; margin-bottom:1.5rem; line-height:1.7;">The IPNet group runs an active MeshCore community centred around Ipswich and the surrounding Suffolk area. There's already a growing network of nodes operational across the area, and the community is welcoming to newcomers.</p>
+
+    <div style="background:var(--bg2); border:1px solid var(--purple-bd); border-radius:12px; padding:1.75rem; display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:1.5rem; margin-bottom:2rem;">
+      <div>
+        <h3 style="font-size:1.1rem; font-weight:600; margin-bottom:0.4rem;">ipnt.uk</h3>
+        <p style="font-size:14px; color:var(--muted); max-width:480px; line-height:1.65;">Local MeshCore community for Ipswich and Suffolk. Node maps, getting started guides, channel configuration and community discussion. The best starting point for anyone wanting to join the local mesh network.</p>
+      </div>
+      <a href="https://ipnt.uk" target="_blank" rel="noopener" class="btn btn-purple">Visit ipnt.uk ↗</a>
+    </div>
+
+    <div class="grid-2">
+      <div class="card">
+        <h3>Fixed nodes</h3>
+        <p>Several fixed nodes are running across the Ipswich area, providing infrastructure coverage. If you set up a fixed node at home in a good location you can contribute to the network and improve coverage for everyone.</p>
+      </div>
+      <div class="card">
+        <h3>Portable operation</h3>
+        <p>Battery-powered portable nodes are great for outdoor use, events, and testing coverage. A fully charged 18650 battery in a Heltec LoRa32 will run for many hours, making it ideal for day walks, camping, or emergency preparedness exercises.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div style="margin-bottom:3rem;">
+    <div class="section-label">MeshCore vs Meshtastic</div>
+    <h2 class="section-title">What's the difference?</h2>
+    <p style="font-size:1rem; color:var(--muted); max-width:600px; margin-bottom:1.5rem; line-height:1.7;">You may have heard of Meshtastic, which is another popular LoRa mesh system. Both use similar hardware, but they are different projects with different protocols — nodes from one cannot communicate with nodes from the other.</p>
+    <div class="grid-2">
+      <div class="card">
+        <h3>MeshCore</h3>
+        <p>Encrypted by default. Focused on private, secure messaging. Growing UK community. The local Ipswich network at <a href="https://ipnt.uk" target="_blank" rel="noopener">ipnt.uk</a> runs MeshCore.</p>
+      </div>
+      <div class="card">
+        <h3>Meshtastic</h3>
+        <p>Larger global user base. More app integrations. Good for location sharing and community mapping. Uses the same LoRa hardware but different firmware — you choose one or the other.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="brand">SuffolkHam.co.uk</div>
+  <p>Site by <a href="http://qrz.com/db/M9XCN" target="_blank" rel="noopener">M9XCN</a> &nbsp;&middot;&nbsp; <a href="https://ipnt.uk" target="_blank" rel="noopener">IPNet</a></p>
+</footer>
+
+</body>
+</html>

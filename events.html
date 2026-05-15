@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amateur Radio Events – Suffolk &amp; East Anglia | SuffolkHam</title>
+<meta name="description" content="Amateur radio rallies and events in Suffolk and East Anglia. Includes the East Suffolk Wireless Rally and other local radio events.">
+<meta name="keywords" content="amateur radio events Suffolk, radio rally Suffolk, East Suffolk Wireless Rally, ESWR, ham radio events East Anglia">
+<meta property="og:title" content="Amateur Radio Events – Suffolk | SuffolkHam">
+<meta property="og:description" content="Upcoming amateur radio rallies and events in Suffolk and East Anglia.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Site navigation">
+  <a href="index.html" class="nav-brand">SuffolkHam<span>.co.uk</span></a>
+  <ul class="nav-links" role="list">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="repeaters.html">Repeaters</a></li>
+    <li><a href="nets.html">Nets</a></li>
+    <li><a href="dmr.html">DMR</a></li>
+    <li><a href="meshcore.html">MeshCore</a></li>
+    <li><a href="equipment.html">Equipment</a></li>
+    <li><a href="events.html" class="active">Events</a></li>
+    <li><a href="glossary.html">Glossary</a></li>
+  </ul>
+</nav>
+
+<div class="page-header" id="main">
+  <div class="page-tag">Get out and about</div>
+  <h1>Events</h1>
+  <p>Local amateur radio rallies and events in Suffolk and East Anglia. A great way to meet other operators, buy and sell equipment, and discover new areas of the hobby.</p>
+</div>
+
+<main>
+
+  <div class="section-label" style="margin-bottom:1rem;">Upcoming events</div>
+  <div class="event-grid" id="event-grid" style="margin-bottom:3rem;"></div>
+
+  <hr class="divider">
+
+  <div style="margin-bottom:3rem;">
+    <div class="section-label">About radio rallies</div>
+    <h2 class="section-title">What to expect at a rally</h2>
+    <p class="section-lead">Radio rallies are a staple of the amateur radio hobby. They're part flea market, part trade show, and part social event — and a brilliant day out whether you're a complete beginner or an experienced operator.</p>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Traders and bring-and-buy</h3>
+        <p>Most rallies have a mix of commercial traders selling new equipment and accessories, and a bring-and-buy table where operators sell second-hand gear. You can often find great deals on second-hand radios, cables, antennas and books.</p>
+      </div>
+      <div class="card">
+        <h3>Meeting the community</h3>
+        <p>Rallies are a great chance to meet other local amateurs, put faces to callsigns you've heard on the air, and chat to people with far more experience. Don't be shy — the amateur radio community is famously welcoming to newcomers.</p>
+      </div>
+      <div class="card">
+        <h3>Talks and demonstrations</h3>
+        <p>Many rallies feature talks, demonstrations and special interest displays covering everything from antenna building to digital modes, satellites and emergency communications. Worth checking the programme in advance.</p>
+      </div>
+      <div class="card">
+        <h3>First time attending?</h3>
+        <p>Take some cash, wear comfortable shoes, and don't feel obliged to buy anything. Just having a browse and talking to people is entirely fine. If you're studying for your Foundation licence, many people will be happy to answer questions and point you in the right direction.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div style="margin-bottom:1rem;">
+    <div class="section-label">Know about an event?</div>
+    <h2 class="section-title">Suggest an event</h2>
+    <p style="font-size:15px; color:var(--muted); max-width:560px; line-height:1.7;">If you know of a local rally or event that should be listed here, get in touch via <a href="https://www.qrz.com/db/M9XCN" target="_blank" rel="noopener" style="color:var(--cyan);">M9XCN on QRZ</a>.</p>
+  </div>
+
+</main>
+
+<footer>
+  <div class="brand">SuffolkHam.co.uk</div>
+  <p>Site by <a href="http://qrz.com/db/M9XCN" target="_blank" rel="noopener">M9XCN</a></p>
+</footer>
+
+<script>
+const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
+const PIN = `<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 21c-4-4-7-8.5-7-12a7 7 0 1 1 14 0c0 3.5-3 8-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>`;
+
+fetch('events.json')
+  .then(r => r.json())
+  .then(data => {
+    const grid = document.getElementById('event-grid');
+    const now = new Date();
+    const upcoming = data.events
+      .filter(e => new Date(e.date) >= new Date(now.toDateString()))
+      .sort((a,b) => new Date(a.date) - new Date(b.date));
+
+    if (upcoming.length === 0) {
+      grid.innerHTML = '<p style="color:var(--muted);font-size:14px;padding:2rem 0;">No upcoming events listed at the moment. Check back soon.</p>';
+      return;
+    }
+
+    upcoming.forEach(e => {
+      const d = new Date(e.date);
+      const day   = d.getDate();
+      const month = MONTHS[d.getMonth()];
+      const year  = d.getFullYear();
+      grid.insertAdjacentHTML('beforeend', `
+        <div class="event-card">
+          <div class="event-card-date">
+            <div class="event-day">${String(day).padStart(2,'0')}</div>
+            <div class="event-month-year">
+              <span class="event-month">${month}</span>
+              <span class="event-year">${year}</span>
+            </div>
+          </div>
+          <div class="event-card-body">
+            <div class="event-title">${e.title}</div>
+            ${e.time ? `<div class="event-time">${e.time}</div>` : ''}
+            ${e.location ? `<div class="event-location">${PIN} ${e.location}</div>` : ''}
+            ${e.description ? `<div class="event-desc">${e.description}</div>` : ''}
+          </div>
+          ${e.url ? `<div class="event-card-footer"><a href="${e.url}" target="_blank" rel="noopener">More information ↗</a></div>` : ''}
+        </div>
+      `);
+    });
+  })
+  .catch(() => {
+    document.getElementById('event-grid').innerHTML =
+      '<p style="color:var(--muted);font-size:14px;">Unable to load events. Please try again.</p>';
+  });
+</script>
+
+</body>
+</html>

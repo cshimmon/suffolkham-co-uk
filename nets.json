@@ -1,0 +1,56 @@
+{
+  "nets": [
+    {
+      "id": "fdars-wednesday",
+      "name": "FDARS Wednesday Evening Net",
+      "group": "FDARS",
+      "groupUrl": "https://www.fdars.co.uk",
+      "schedule": "Every Wednesday",
+      "time": "19:30",
+      "mode": "FM Analogue",
+      "via": "repeater",
+      "repeater": "GB3PO",
+      "frequency": null,
+      "notes": "General chat and local radio discussion. All licensed operators welcome."
+    },
+    {
+      "id": "fdars-sunday",
+      "name": "FDARS Sunday Morning Net",
+      "group": "FDARS",
+      "groupUrl": "https://www.fdars.co.uk",
+      "schedule": "Every Sunday",
+      "time": "10:00",
+      "mode": "FM Simplex",
+      "via": "simplex",
+      "repeater": null,
+      "frequency": "145.400 MHz",
+      "notes": "Informal local net on simplex. Good for a casual Sunday morning chat."
+    },
+    {
+      "id": "fdars-4m",
+      "name": "East Suffolk 4m Net",
+      "group": "FDARS",
+      "groupUrl": "https://www.fdars.co.uk",
+      "schedule": "2nd and 4th Fridays",
+      "time": "19:30",
+      "mode": "FM",
+      "via": "simplex",
+      "repeater": null,
+      "frequency": "70.450 MHz",
+      "notes": "Open to all licensed operators. A great way to use the 4m band."
+    },
+    {
+      "id": "ref079c-dstar",
+      "name": "REF079C D-STAR Net",
+      "group": "Local D-STAR operators",
+      "groupUrl": null,
+      "schedule": "Every Friday",
+      "time": "20:00",
+      "mode": "D-STAR",
+      "via": "reflector",
+      "repeater": null,
+      "frequency": "REF079C",
+      "notes": "Regular D-STAR net used by operators across Suffolk and surrounding areas. Newcomers welcome — listening in first is perfectly fine before joining the conversation."
+    }
+  ]
+}

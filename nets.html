@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Local Amateur Radio Nets – Suffolk | SuffolkHam</title>
+<meta name="description" content="Regular amateur radio nets in Suffolk and East Anglia. FDARS Wednesday net on GB3PO, Sunday simplex net, East Suffolk 4m net, and the REF079C D-STAR net.">
+<meta name="keywords" content="amateur radio nets Suffolk, FDARS net, GB3PO net, D-STAR net Suffolk, REF079C, East Suffolk radio net, amateur radio Ipswich">
+<meta property="og:title" content="Local Amateur Radio Nets – Suffolk | SuffolkHam">
+<meta property="og:description" content="Regular amateur radio nets in Suffolk including FDARS nets on GB3PO and the local D-STAR net on REF079C.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Site navigation">
+  <a href="index.html" class="nav-brand">SuffolkHam<span>.co.uk</span></a>
+  <ul class="nav-links" role="list">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="repeaters.html">Repeaters</a></li>
+    <li><a href="nets.html" class="active">Nets</a></li>
+    <li><a href="dmr.html">DMR</a></li>
+    <li><a href="meshcore.html">MeshCore</a></li>
+    <li><a href="equipment.html">Equipment</a></li>
+    <li><a href="events.html">Events</a></li>
+    <li><a href="glossary.html">Glossary</a></li>
+  </ul>
+</nav>
+
+<div class="page-header" id="main">
+  <div class="page-tag">Regular on-air activity</div>
+  <h1>Local Nets</h1>
+  <p>Regular nets are a great way to get on air, practise operating, and meet other local amateurs. Suffolk has several active nets throughout the week. All licensed amateurs are welcome to join unless stated otherwise.</p>
+</div>
+
+<main>
+
+  <div class="net-grid" id="net-grid" style="margin-bottom:3rem;"></div>
+
+  <hr class="divider">
+
+  <div style="margin-bottom:3rem;">
+    <div class="section-label">New to nets?</div>
+    <h2 class="section-title">How to join a net</h2>
+    <p class="section-lead">A net is a scheduled on-air meeting between amateur radio operators. They're usually informal, friendly, and a great way to put your licence to use.</p>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Listen first</h3>
+        <p>Before joining any net, listen for a few minutes to get a feel for how it runs. Most nets have a net control station who manages who speaks. Wait for a gap, then key up briefly with your callsign to indicate you'd like to join.</p>
+      </div>
+      <div class="card">
+        <h3>Repeater nets</h3>
+        <p>For nets via a repeater like <a href="repeaters.html#GB3PO">GB3PO</a>, programme the repeater into your radio with the correct input/output frequencies and CTCSS tone. Check the <a href="repeaters.html">repeaters page</a> for all the details you need.</p>
+      </div>
+      <div class="card">
+        <h3>Simplex nets</h3>
+        <p>Simplex nets run on a single frequency with no repeater involved — both stations transmit and receive on the same frequency. Range is more limited but it's a great way to check your signal coverage.</p>
+      </div>
+      <div class="card">
+        <h3>D-STAR nets</h3>
+        <p>D-STAR nets like the REF079C net use digital voice and can connect operators across a much wider area via linked reflectors. You'll need a D-STAR capable radio. Listening in before joining is encouraged for newcomers.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div style="margin-bottom:1rem;">
+    <div class="section-label">Get involved</div>
+    <h2 class="section-title">Local clubs running these nets</h2>
+    <p class="section-lead">Most of the regular Suffolk nets are organised by <a href="https://www.fdars.co.uk" target="_blank" rel="noopener">FDARS</a> (Felixstowe and District Amateur Radio Society). Getting involved with the club is a great way to stay up to date with net schedules and local activity.</p>
+    <div class="grid-2">
+      <a href="https://www.fdars.co.uk" target="_blank" rel="noopener" class="link-card">
+        <div class="link-title">FDARS – Felixstowe &amp; District ARS <span class="arrow">↗</span></div>
+        <div class="link-desc">Runs the Wednesday net on <a href="repeaters.html#GB3PO" onclick="event.stopPropagation();" style="color:var(--cyan);">GB3PO</a>, the Sunday simplex net and the 4m net. Based at former RAF Martlesham Heath.</div>
+      </a>
+      <a href="http://www.larc.org.uk/" target="_blank" rel="noopener" class="link-card">
+        <div class="link-title">Leiston Amateur Radio Club <span class="arrow">↗</span></div>
+        <div class="link-desc">East Suffolk club. Callsign GX6FS. Active in the local area with regular club meetings and on-air activity.</div>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="brand">SuffolkHam.co.uk</div>
+  <p>Site by <a href="http://qrz.com/db/M9XCN" target="_blank" rel="noopener">M9XCN</a> &nbsp;&middot;&nbsp; <a href="https://www.fdars.co.uk" target="_blank" rel="noopener">FDARS</a></p>
+</footer>
+
+<script>
+fetch('nets.json')
+  .then(r => r.json())
+  .then(data => {
+    const grid = document.getElementById('net-grid');
+    data.nets.forEach(n => {
+      const viaHtml = n.repeater
+        ? `<a href="repeaters.html#${n.repeater}" style="color:var(--cyan);text-decoration:none;">${n.repeater}</a>`
+        : n.frequency;
+      const viaLabel = n.via === 'repeater' ? 'Repeater' : n.via === 'reflector' ? 'Reflector' : 'Frequency';
+      const groupHtml = n.groupUrl
+        ? `<a href="${n.groupUrl}" target="_blank" rel="noopener">${n.group}</a>`
+        : n.group;
+      grid.insertAdjacentHTML('beforeend', `
+        <div class="net-card">
+          <div class="net-card-header">
+            <span class="net-name">${n.name}</span>
+            <span class="net-mode-badge">${n.mode}</span>
+          </div>
+          <div class="net-card-body">
+            <div class="net-row"><span class="net-label">Schedule</span><span class="net-val">${n.schedule}</span></div>
+            <div class="net-row"><span class="net-label">Time</span><span class="net-val">${n.time}</span></div>
+            <div class="net-row"><span class="net-label">${viaLabel}</span><span class="net-val">${viaHtml}</span></div>
+            <div class="net-row"><span class="net-label">Group</span><span class="net-val">${groupHtml}</span></div>
+            ${n.notes ? `<div class="net-note">${n.notes}</div>` : ''}
+          </div>
+        </div>
+      `);
+    });
+  })
+  .catch(() => {
+    document.getElementById('net-grid').innerHTML =
+      '<p style="color:var(--muted);font-size:14px;">Unable to load net data. Please try again.</p>';
+  });
+</script>
+
+</body>
+</html>

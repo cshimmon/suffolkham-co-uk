@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Suffolk Repeaters – GB3PO, GB3IH, GB7MK, GB7AL and more | SuffolkHam</title>
+<meta name="description" content="Full list of amateur radio repeaters serving Suffolk and East Anglia. Includes GB3PO, GB3IH, GB7MK, GB7AL, GB7DI, GB3DE, GB3EA, GB3CE, GB3CL and GB3EF with frequencies, CTCSS tones and status.">
+<meta name="keywords" content="GB3PO, GB3IH, GB7MK, GB7AL, GB7DI, GB3DE, GB3EA, GB3CE, GB3CL, GB3EF, Suffolk repeaters, Ipswich repeater, amateur radio Suffolk, SARG repeater, Martello Tower Group">
+<meta property="og:title" content="Suffolk Repeaters | SuffolkHam">
+<meta property="og:description" content="All repeaters serving Suffolk and East Anglia with frequencies, CTCSS, colour codes and status.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Site navigation">
+  <a href="index.html" class="nav-brand">SuffolkHam<span>.co.uk</span></a>
+  <ul class="nav-links" role="list">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="repeaters.html" class="active">Repeaters</a></li>
+    <li><a href="nets.html">Nets</a></li>
+    <li><a href="dmr.html">DMR</a></li>
+    <li><a href="meshcore.html">MeshCore</a></li>
+    <li><a href="equipment.html">Equipment</a></li>
+    <li><a href="events.html">Events</a></li>
+    <li><a href="glossary.html">Glossary</a></li>
+  </ul>
+</nav>
+
+<div class="page-header" id="main">
+  <div class="page-tag">Local infrastructure</div>
+  <h1>Suffolk Repeaters</h1>
+  <p>All repeaters serving Suffolk and the surrounding area — FM, DMR and D-Star. Data is maintained to the best of our knowledge; always verify with the relevant repeater group for the latest status. Full SARG repeater information at <a href="https://sargroup.co.uk" target="_blank" rel="noopener">sargroup.co.uk</a>.</p>
+</div>
+
+<main id="repeater-grid-root">
+
+  <!-- Alert ribbon if set in JSON -->
+  <div id="alert-ribbon" style="display:none; margin-bottom:1.5rem; padding:12px 16px; border-radius:8px; font-size:14px; border-left:3px solid;"></div>
+
+  <div class="legend" aria-label="Status key">
+    <span style="color:var(--faint);">Status:</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--green);" aria-hidden="true"></span>On air</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--amber);" aria-hidden="true"></span>Issue noted</span>
+    <span class="legend-item"><span class="legend-dot" style="background:var(--red);"   aria-hidden="true"></span>Off air</span>
+  </div>
+
+  <div class="repeater-grid" id="repeater-grid" style="margin-bottom:2rem;"></div>
+
+  <p style="font-size:13px;color:var(--muted);margin-bottom:3rem;">Use of repeaters is for licensed amateurs only. Always give priority to mobile users and emergency traffic. Repeaters operated by <a href="https://sargroup.co.uk" style="color:var(--cyan);">SARG</a> and the <a href="https://martellotowergroup.com" style="color:var(--cyan);">Martello Tower Group</a>.</p>
+
+  <hr class="divider">
+
+  <div style="margin-bottom:3rem;">
+    <div class="section-label">New to repeaters?</div>
+    <h2 class="section-title">How repeaters work</h2>
+    <p class="section-lead">A repeater receives your transmitted signal and re-transmits it simultaneously from a high site — a mast, hilltop or tall building. This dramatically extends the range of a low-power handheld radio.</p>
+    <div class="grid-2">
+      <div class="card">
+        <h3>Input and output frequencies</h3>
+        <p>You transmit on the input frequency and listen on the output. Your radio handles this automatically when you programme a repeater channel — just set both frequencies and your CTCSS tone. The offset (difference between input and output) follows standard band plans.</p>
+      </div>
+      <div class="card">
+        <h3>CTCSS tones</h3>
+        <p>Most FM repeaters require a CTCSS sub-tone to open the squelch and activate the repeater. If you transmit on the correct frequency but forget the tone, the repeater won't respond. All CTCSS values are shown on each card above.</p>
+      </div>
+      <div class="card">
+        <h3>DMR colour codes</h3>
+        <p>DMR repeaters use colour codes instead of CTCSS tones. A colour code is a number (0–15) that acts as a filter — your radio must be set to the matching colour code to access the repeater. Both <a href="repeaters.html#GB7AL">GB7AL</a> and <a href="repeaters.html#GB7MK">GB7MK</a> details are shown above.</p>
+      </div>
+      <div class="card">
+        <h3>Repeater etiquette</h3>
+        <p>Always listen before transmitting. Give your callsign when you key up. Keep transmissions brief to allow others to join. Priority always goes to mobile stations and emergency traffic. Don't play music or make test transmissions unnecessarily.</p>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer>
+  <div class="brand">SuffolkHam.co.uk</div>
+  <p>Site by <a href="http://qrz.com/db/M9XCN" target="_blank" rel="noopener">M9XCN</a> &nbsp;&middot;&nbsp; <a href="https://sargroup.co.uk" target="_blank" rel="noopener">SARG</a> &nbsp;&middot;&nbsp; <a href="https://martellotowergroup.com" target="_blank" rel="noopener">Martello Tower Group</a></p>
+</footer>
+
+<script>
+const PIN = `<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21c-4-4-7-8.5-7-12a7 7 0 1 1 14 0c0 3.5-3 8-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>`;
+
+function antennaIcon(status) {
+  const col = status === 'live' ? 'var(--green)' : status === 'warn' ? 'var(--amber)' : 'var(--red)';
+  return `<svg width="22" height="22" viewBox="0 0 64 64" fill="none" aria-hidden="true">
+    <line x1="32" y1="28" x2="32" y2="58" stroke="${col}" stroke-width="4" stroke-linecap="round"/>
+    <line x1="20" y1="58" x2="44" y2="58" stroke="${col}" stroke-width="4" stroke-linecap="round"/>
+    <line x1="32" y1="28" x2="20" y2="58" stroke="${col}" stroke-width="3" stroke-linecap="round"/>
+    <line x1="32" y1="28" x2="44" y2="58" stroke="${col}" stroke-width="3" stroke-linecap="round"/>
+    <path d="M14 28 Q32 4 50 28" fill="none" stroke="${col}" stroke-width="4" stroke-linecap="round"/>
+    <path d="M20 28 Q32 12 44 28" fill="none" stroke="${col}" stroke-width="3.5" stroke-linecap="round" opacity="0.6"/>
+    <circle cx="32" cy="28" r="3.5" fill="${col}"/>
+  </svg>`;
+}
+
+fetch('repeaters.json')
+  .then(r => r.json())
+  .then(data => {
+    // Alert
+    if (data.alert) {
+      const el = document.getElementById('alert-ribbon');
+      el.style.display = 'block';
+      el.style.background = 'var(--amber-dim)';
+      el.style.borderLeftColor = 'var(--amber)';
+      el.style.color = 'var(--amber)';
+      el.textContent = data.alert.message;
+    }
+    // Cards
+    const grid = document.getElementById('repeater-grid');
+    data.repeaters.forEach(r => {
+      const rows = r.frequencies.map(f => `<tr><td>${f.label}</td><td>${f.value}</td></tr>`).join('');
+      const note = r.note ? `<div class="card-note note-${r.noteType}">${r.note}</div>` : '';
+      const locMt = r.note ? 'style="margin-top:0.75rem;"' : '';
+      const groupHtml = r.groupUrl
+        ? `<div class="card-group"><a href="${r.groupUrl}" target="_blank" rel="noopener" style="color:var(--faint);text-decoration:none;">${r.group}</a></div>`
+        : `<div class="card-group">${r.group}</div>`;
+      const keeperHtml = r.keeper
+        ? `<div class="keeper">Keeper: <a href="https://www.qrz.com/db/${r.keeper}" target="_blank" rel="noopener">${r.keeper}</a></div>`
+        : '';
+      grid.insertAdjacentHTML('beforeend', `
+        <article class="repeater-card ${r.status}" id="${r.callsign}" aria-label="${r.callsign} repeater">
+          <div class="card-header">
+            <div class="card-call-wrap">${antennaIcon(r.status)}<div class="callsign">${r.callsign}</div></div>
+            <span class="status-badge badge-${r.status}">${r.statusLabel}</span>
+          </div>
+          <div class="card-mode">${r.mode}</div>
+          <table class="freq-table" aria-label="${r.callsign} frequency details"><tbody>${rows}</tbody></table>
+          ${note}
+          <div class="card-location" ${locMt}>${PIN} ${r.location}</div>
+          ${groupHtml}
+          ${keeperHtml}
+        </article>
+      `);
+    });
+    // Anchor scroll after render
+    if (location.hash) {
+      const el = document.querySelector(location.hash);
+      if (el) setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'center' }), 100);
+    }
+  })
+  .catch(() => {
+    document.getElementById('repeater-grid').innerHTML =
+      '<p style="color:var(--muted);padding:2rem;font-size:14px;">Unable to load repeater data. Please try again.</p>';
+  });
+</script>
+
+</body>
+</html>
