@@ -57,7 +57,7 @@
         { "label": "Output", "value": "439.362500 MHz" },
         { "label": "CTCSS",  "value": "110.9 Hz" }
       ],
-      "note": "New hardware installed April 2026. Interference investigation ongoing near hospital site.",
+      "note": "New hardware install attempted April 2026. Interference investigation ongoing near hospital site.",
       "noteType": "info"
     },
     {
