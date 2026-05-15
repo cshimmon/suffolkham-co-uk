@@ -1,0 +1,17 @@
+# macOS junk
+.DS_Store
+
+# Environment variables
+.env
+
+# Node dependencies
+node_modules/
+
+# Logs
+*.log
+
+# VS Code settings
+.vscode/
+
+# Python cache
+__pycache__/
