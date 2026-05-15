@@ -88,7 +88,7 @@ main { max-width:1060px; margin:0 auto; padding:0 2rem 5rem; }
 /* ── BUTTONS ── */
 .btn { font-family:var(--sans); font-size:14px; font-weight:500; padding:10px 20px; border-radius:6px; text-decoration:none; border:1px solid transparent; display:inline-flex; align-items:center; gap:7px; transition:all 0.15s; cursor:pointer; }
 .btn-primary { background:var(--cyan); color:var(--bg); border-color:var(--cyan); font-weight:600; }
-.btn-primary:hover { background:#7dd3fc; }
+.btn-primary:hover { background:#7dd3fc; }.btn-primary:visited { color:var(--bg); }
 .btn-ghost { background:transparent; color:var(--text); border-color:var(--border2); }
 .btn-ghost:hover { background:var(--bg3); }
 .btn-purple { background:var(--purple-dim); color:var(--purple); border:1px solid var(--purple-bd); }
