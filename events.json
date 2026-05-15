@@ -1,12 +1,12 @@
 {
   "events": [
     {
-      "id": "eswr-rally-2025",
-      "title": "East Suffolk Wireless Rally",
-      "date": "2025-06-21",
-      "time": "09:00",
-      "location": "Suffolk Showground, Ipswich",
-      "description": "The East Suffolk Wireless Radio rally. A great day out for amateur radio operators and enthusiasts — traders, bring-and-buy, talks, and a chance to meet local operators.",
+      "id": "eswr-revival-2026",
+      "title": "East Suffolk Wireless Revival",
+      "date": "2026-06-21",
+      "time": "09:30",
+      "location": "Kirton Recreation Ground, Kirton, Suffolk",
+      "description": "The East Suffolk Wireless Revival — a local radio rally for amateur radio operators and enthusiasts. Traders, bring-and-buy, and a great chance to meet local operators.",
       "url": "http://www.eswr.org.uk/",
       "type": "rally"
     }

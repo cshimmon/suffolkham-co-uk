@@ -33,6 +33,17 @@
   --mono:       'JetBrains Mono', 'Courier New', monospace;
 }
 
+/* ── GLOBAL LINK RESET ── */
+a { color: var(--cyan); }
+a:visited { color: var(--cyan); }
+
+/* ensure card inner links don't go browser-blue */
+.card a, .link-card a, .feature-card a, .net-card a,
+.repeater-card a, .event-card a, .step-body a,
+.codeplug-note a, .section-lead a, .page-header p a,
+footer a { color: var(--cyan); }
+
+
 html { scroll-behavior: smooth; }
 body { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 17px; line-height: 1.7; }
 
