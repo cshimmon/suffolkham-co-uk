@@ -65,6 +65,12 @@
 </div>
 
 <main>
+
+<div style="margin-bottom:1.75rem;">
+  <div class="section-label">Calculations</div>
+  <h2 class="section-title">Basic Calculators</h2>
+</div>
+
 <div class="calc-grid">
 
   <!-- ── FREQUENCY → WAVELENGTH ─────────────────────────────── -->
@@ -173,6 +179,110 @@
   </div>
 
 </div><!-- /.calc-grid -->
+
+<hr class="divider">
+
+<div style="margin-bottom:1.75rem;">
+  <div class="section-label">Antenna design</div>
+  <h2 class="section-title">Antenna Calculators</h2>
+  <p class="section-lead">Element lengths and spacings for common antenna types. All dimensions apply a 0.95 velocity factor — the standard practical correction for wire antennas. Always verify final dimensions on the bench.</p>
+</div>
+
+<div class="calc-grid">
+
+  <!-- ── DIPOLE ─────────────────────────────────────────────── -->
+  <div class="calc-card">
+    <div class="section-label">Half-wave</div>
+    <h2 class="section-title" style="font-size:1.1rem;margin-bottom:0.5rem;">Dipole Antenna</h2>
+    <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:1rem;">Classic centre-fed half-wave dipole. Cut to resonance, feed with 50 Ω or 75 Ω coax.</p>
+    <span class="calc-field-label">Frequency</span>
+    <div class="calc-row">
+      <input class="calc-input" type="number" id="dip-freq" placeholder="e.g. 145.5" min="0" step="any">
+      <select class="calc-select" id="dip-unit">
+        <option value="MHz" selected>MHz</option>
+        <option value="GHz">GHz</option>
+        <option value="kHz">kHz</option>
+      </select>
+    </div>
+    <button class="calc-btn" onclick="calcDipole()">Calculate</button>
+    <div class="calc-err" id="dip-err">Enter a valid frequency greater than zero.</div>
+    <div class="calc-result" id="dip-res"></div>
+  </div>
+
+  <!-- ── VERTICAL ───────────────────────────────────────────── -->
+  <div class="calc-card">
+    <div class="section-label">Quarter-wave</div>
+    <h2 class="section-title" style="font-size:1.1rem;margin-bottom:0.5rem;">Vertical Antenna</h2>
+    <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:1rem;">Quarter-wave ground-plane vertical. Radials should be the same length as the element.</p>
+    <span class="calc-field-label">Frequency</span>
+    <div class="calc-row">
+      <input class="calc-input" type="number" id="vert-freq" placeholder="e.g. 145.5" min="0" step="any">
+      <select class="calc-select" id="vert-unit">
+        <option value="MHz" selected>MHz</option>
+        <option value="GHz">GHz</option>
+        <option value="kHz">kHz</option>
+      </select>
+    </div>
+    <button class="calc-btn" onclick="calcVert()">Calculate</button>
+    <div class="calc-err" id="vert-err">Enter a valid frequency greater than zero.</div>
+    <div class="calc-result" id="vert-res"></div>
+  </div>
+
+  <!-- ── YAGI ───────────────────────────────────────────────── -->
+  <div class="calc-card">
+    <div class="section-label">Directional</div>
+    <h2 class="section-title" style="font-size:1.1rem;margin-bottom:0.5rem;">3-Element Yagi</h2>
+    <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:1rem;">Standard 3-element Yagi — reflector, driven element and one director. These are starting dimensions; final tuning on the bench is always needed.</p>
+    <span class="calc-field-label">Frequency</span>
+    <div class="calc-row">
+      <input class="calc-input" type="number" id="yagi-freq" placeholder="e.g. 145.5" min="0" step="any">
+      <select class="calc-select" id="yagi-unit">
+        <option value="MHz" selected>MHz</option>
+        <option value="GHz">GHz</option>
+        <option value="kHz">kHz</option>
+      </select>
+    </div>
+    <button class="calc-btn" onclick="calcYagi()">Calculate</button>
+    <div class="calc-err" id="yagi-err">Enter a valid frequency greater than zero.</div>
+    <div class="calc-result" id="yagi-res"></div>
+  </div>
+
+  <!-- ── ANTENNA GAIN ───────────────────────────────────────── -->
+  <div class="calc-card">
+    <div class="section-label">Gain</div>
+    <h2 class="section-title" style="font-size:1.1rem;margin-bottom:1rem;">Antenna Gain</h2>
+    <div class="calc-tabs" id="gain-tabs">
+      <button class="calc-tab active" onclick="gainTab(this,'gain-conv')">dBi ↔ dBd</button>
+      <button class="calc-tab"        onclick="gainTab(this,'gain-erp')">ERP / EIRP</button>
+    </div>
+
+    <div id="gain-conv">
+      <span class="calc-field-label">Value</span>
+      <div class="calc-row">
+        <input class="calc-input" type="number" id="gain-val" placeholder="e.g. 7.5" step="any">
+        <select class="calc-select" id="gain-from">
+          <option value="dBd">dBd</option>
+          <option value="dBi">dBi</option>
+        </select>
+      </div>
+      <button class="calc-btn" onclick="calcGainConv()">Convert</button>
+      <div class="calc-err" id="gain-conv-err">Enter a gain value.</div>
+      <div class="calc-result" id="gain-conv-res"></div>
+    </div>
+
+    <div id="gain-erp" style="display:none">
+      <span class="calc-field-label">TX power (W)</span>
+      <div class="calc-row"><input class="calc-input" type="number" id="erp-power" placeholder="e.g. 50" min="0" step="any"></div>
+      <span class="calc-field-label">Antenna gain (dBd)</span>
+      <div class="calc-row"><input class="calc-input" type="number" id="erp-gain" placeholder="e.g. 7.5" step="any"></div>
+      <button class="calc-btn" onclick="calcERP()">Calculate</button>
+      <div class="calc-err" id="erp-err">Enter a valid TX power greater than zero.</div>
+      <div class="calc-result" id="erp-res"></div>
+    </div>
+  </div>
+
+</div><!-- /.calc-grid antenna -->
+
 </main>
 
 <footer>
@@ -276,7 +386,7 @@ function calcSWR() {
 // ── dB ───────────────────────────────────────────────────────────────────────
 
 function dbTab(btn, show) {
-  document.querySelectorAll('.calc-tab').forEach(function(b) { b.classList.remove('active'); });
+  btn.closest('.calc-card').querySelectorAll('.calc-tab').forEach(function(b) { b.classList.remove('active'); });
   btn.classList.add('active');
   ['db-pwr','db-vol','db-rev'].forEach(function(id) {
     document.getElementById(id).style.display = id === show ? '' : 'none';
@@ -324,6 +434,92 @@ function calcCap() {
     ['Picofarads (pF)',  pf.toLocaleString() + ' pF'],
     ['Nanofarads (nF)',  nf >= 1    ? nf + ' nF'   : '< 1 nF'],
     ['Microfarads (µF)', uf >= 0.001 ? uf + ' µF'  : '< 0.001 µF'],
+  ]);
+}
+
+// ── Antenna helpers ──────────────────────────────────────────────────────────
+
+function freqToHz(f, u) {
+  return u === 'kHz' ? f * 1e3 : u === 'GHz' ? f * 1e9 : f * 1e6;
+}
+
+// ── Dipole ───────────────────────────────────────────────────────────────────
+
+function calcDipole() {
+  var f = parseFloat(document.getElementById('dip-freq').value);
+  var u = document.getElementById('dip-unit').value;
+  if (!f || f <= 0) { showErr('dip-res', 'dip-err'); return; }
+  var lam = 299792458 / freqToHz(f, u);
+  var total = 0.95 * lam / 2;
+  showRes('dip-res', [
+    ['Total length',   fmtLen(total)],
+    ['Each leg (arm)', fmtLen(total / 2)],
+  ]);
+}
+
+// ── Vertical ─────────────────────────────────────────────────────────────────
+
+function calcVert() {
+  var f = parseFloat(document.getElementById('vert-freq').value);
+  var u = document.getElementById('vert-unit').value;
+  if (!f || f <= 0) { showErr('vert-res', 'vert-err'); return; }
+  var lam = 299792458 / freqToHz(f, u);
+  var len = 0.95 * lam / 4;
+  showRes('vert-res', [
+    ['Element length',      fmtLen(len)],
+    ['Radial length (each)', fmtLen(len)],
+    ['Recommended radials', '4 (minimum)'],
+  ]);
+}
+
+// ── 3-element Yagi ───────────────────────────────────────────────────────────
+
+function calcYagi() {
+  var f = parseFloat(document.getElementById('yagi-freq').value);
+  var u = document.getElementById('yagi-unit').value;
+  if (!f || f <= 0) { showErr('yagi-res', 'yagi-err'); return; }
+  var lam = 299792458 / freqToHz(f, u);
+  showRes('yagi-res', [
+    ['Reflector',              fmtLen(0.510 * lam)],
+    ['Driven element',         fmtLen(0.473 * lam)],
+    ['Director',               fmtLen(0.440 * lam)],
+    ['Refl → driven spacing',  fmtLen(0.125 * lam)],
+    ['Driven → dir spacing',   fmtLen(0.125 * lam)],
+    ['Approx. gain',           '~7.5 dBd  /  ~9.65 dBi'],
+  ]);
+}
+
+// ── Antenna gain ─────────────────────────────────────────────────────────────
+
+function gainTab(btn, show) {
+  btn.closest('.calc-card').querySelectorAll('.calc-tab').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  ['gain-conv','gain-erp'].forEach(function(id) {
+    document.getElementById(id).style.display = id === show ? '' : 'none';
+  });
+}
+
+function calcGainConv() {
+  var val  = parseFloat(document.getElementById('gain-val').value);
+  var from = document.getElementById('gain-from').value;
+  if (isNaN(val)) { showErr('gain-conv-res', 'gain-conv-err'); return; }
+  var dbd = from === 'dBd' ? val : val - 2.15;
+  var dbi = dbd + 2.15;
+  showRes('gain-conv-res', [
+    ['dBd', dbd.toFixed(2) + ' dBd'],
+    ['dBi', dbi.toFixed(2) + ' dBi'],
+  ]);
+}
+
+function calcERP() {
+  var pw   = parseFloat(document.getElementById('erp-power').value);
+  var gain = parseFloat(document.getElementById('erp-gain').value);
+  if (isNaN(pw) || pw <= 0 || isNaN(gain)) { showErr('erp-res', 'erp-err'); return; }
+  var erp  = pw * Math.pow(10, gain / 10);
+  var eirp = erp * Math.pow(10, 0.215);
+  showRes('erp-res', [
+    ['ERP',  erp.toFixed(2)  + ' W  (' + (10 * Math.log10(erp)).toFixed(2)  + ' dBW)'],
+    ['EIRP', eirp.toFixed(2) + ' W  (' + (10 * Math.log10(eirp)).toFixed(2) + ' dBW)'],
   ]);
 }
 </script>
