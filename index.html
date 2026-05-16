@@ -217,11 +217,8 @@
       });
   }
 
-  fetchFeed('https://rsgb.org/main/news/gb2rs-news-bulletins/feed/')
+  fetchFeed('https://rsgb.org/main/blog/all-regions/region-9/feed/')
     .then(renderItems)
-    .catch(function () {
-      return fetchFeed('https://rsgb.org/main/feed/').then(renderItems);
-    })
     .catch(showError);
 }());
 </script>
