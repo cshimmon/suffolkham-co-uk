@@ -168,8 +168,8 @@ main { max-width:1060px; margin:0 auto; padding:0 2rem 5rem; }
 .legend-item { display:flex; align-items:center; gap:5px; }
 .legend-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
 
-.repeater-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
-.repeater-card { background:var(--bg2); padding:1.4rem; border-top:3px solid var(--border2); transition:background 0.15s; }
+.repeater-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:12px; }
+.repeater-card { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:1.4rem; border-top:3px solid var(--border2); transition:background 0.15s; }
 .repeater-card:hover { background:var(--bg3); }
 .repeater-card.live   { border-top-color:var(--green); }
 .repeater-card.warn   { border-top-color:var(--amber); }
@@ -234,8 +234,8 @@ main { max-width:1060px; margin:0 auto; padding:0 2rem 5rem; }
 .net-note  { font-size:13px; color:var(--muted); padding-top:0.75rem; line-height:1.55; }
 
 /* ── STEP LIST ── */
-.steps-list { display:flex; flex-direction:column; gap:1px; background:var(--border); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
-.step-item { background:var(--bg2); padding:1.4rem 1.75rem; display:grid; grid-template-columns:44px 1fr; gap:1.25rem; align-items:flex-start; transition:background 0.15s; }
+.steps-list { display:flex; flex-direction:column; gap:12px; }
+.step-item { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:1.4rem 1.75rem; display:grid; grid-template-columns:44px 1fr; gap:1.25rem; align-items:flex-start; transition:background 0.15s; }
 .step-item:hover { background:var(--bg3); }
 .step-n { font-family:var(--mono); font-size:1.3rem; font-weight:500; color:var(--cyan); opacity:0.4; line-height:1; padding-top:3px; }
 .step-body h3 { font-size:1rem; font-weight:600; margin-bottom:0.35rem; }
