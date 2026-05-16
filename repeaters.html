@@ -104,7 +104,7 @@ fetch('repeaters.json')
     // Cards
     const grid = document.getElementById('repeater-grid');
     data.repeaters.forEach(r => {
-      const rows = r.frequencies.map(f => `<tr><td>${f.label}</td><td>${f.value}</td></tr>`).join('');
+      const rows = r.frequencies.map(f => `<tr><td>${f.label}</td><td>${f.value}<button class="copy-chip" onclick="copyVal(this,'${f.value}')" aria-label="Copy ${f.value}">Copy</button></td></tr>`).join('');
       const note = r.note ? `<div class="card-note note-${r.noteType}">${r.note}</div>` : '';
       const locMt = r.note ? 'style="margin-top:0.75rem;"' : '';
       const groupHtml = r.groupUrl
@@ -141,5 +141,19 @@ fetch('repeaters.json')
 </script>
 
 <script src="nav.js"></script>
+<script>
+function copyVal(btn, val) {
+  navigator.clipboard.writeText(val).then(function () {
+    btn.textContent = '✓';
+    btn.style.color = 'var(--green)';
+    btn.style.borderColor = 'var(--green-bd)';
+    setTimeout(function () {
+      btn.textContent = 'Copy';
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 1500);
+  });
+}
+</script>
 </body>
 </html>

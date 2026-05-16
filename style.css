@@ -200,6 +200,9 @@ main { max-width:1060px; margin:0 auto; padding:0 2rem 5rem; }
 .note-info { background:var(--cyan-dim);  border-left-color:var(--cyan);  color:var(--cyan);  }
 .note-red  { background:var(--red-dim);   border-left-color:var(--red);   color:var(--red);   }
 
+.copy-chip { font-family:var(--mono); font-size:10px; padding:2px 7px; border-radius:4px; border:1px solid var(--border2); background:var(--bg3); color:var(--muted); cursor:pointer; transition:all 0.15s; vertical-align:middle; margin-left:6px; }
+.copy-chip:hover { border-color:var(--cyan-bd); color:var(--cyan); }
+
 /* ── EVENT CARDS ── */
 .event-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(300px,1fr)); gap:16px; }
 .event-card { background:var(--bg2); border:1px solid var(--border); border-radius:10px; overflow:hidden; display:flex; flex-direction:column; transition:border-color 0.15s; }
