@@ -207,18 +207,9 @@
       '<a href="https://rsgb.org/main/news/gb2rs-news-bulletins/" target="_blank" rel="noopener" style="color:var(--cyan);">visit rsgb.org</a> for the latest.</span></div>';
   }
 
-  function fetchFeed(feedUrl) {
-    var api = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feedUrl) + '&count=5';
-    return fetch(api)
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
-        if (data.status !== 'ok' || !data.items || !data.items.length) throw new Error('bad');
-        return data.items;
-      });
-  }
-
-  fetchFeed('https://rsgb.org/main/blog/all-regions/region-9/feed/')
-    .then(renderItems)
+  fetch('rsgb-news.json')
+    .then(function (r) { return r.json(); })
+    .then(function (data) { renderItems(data.items); })
     .catch(showError);
 }());
 </script>

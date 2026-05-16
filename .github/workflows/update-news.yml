@@ -1,0 +1,54 @@
+name: Update RSGB News
+
+on:
+  schedule:
+    - cron: '0 7 * * *'   # Daily at 7am UTC
+  workflow_dispatch:        # Allow manual trigger from Actions tab
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch RSGB Region 9 feed
+        run: |
+          curl -sf \
+            -A "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36" \
+            -H "Accept: application/rss+xml, application/xml, text/xml, */*" \
+            "https://rsgb.org/main/blog/all-regions/region-9/feed/" \
+            -o feed.xml
+
+      - name: Parse feed to JSON
+        run: |
+          python3 - <<'EOF'
+          import xml.etree.ElementTree as ET
+          import json
+          from datetime import datetime
+
+          tree = ET.parse('feed.xml')
+          root = tree.getroot()
+          channel = root.find('channel')
+          items = []
+          for item in (channel.findall('item') if channel is not None else [])[:6]:
+              title = (item.findtext('title') or '').strip()
+              link  = (item.findtext('link')  or '').strip()
+              pub   = (item.findtext('pubDate') or '').strip()
+              if title and link:
+                  items.append({'title': title, 'link': link, 'pubDate': pub})
+          if not items:
+              raise ValueError('No items parsed from feed')
+          out = {'updated': datetime.utcnow().isoformat() + 'Z', 'items': items}
+          with open('rsgb-news.json', 'w') as f:
+              json.dump(out, f, indent=2)
+          print(f'Wrote {len(items)} items')
+          EOF
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add rsgb-news.json
+          git diff --staged --quiet || git commit -m "Update RSGB Region 9 news feed" && git push
