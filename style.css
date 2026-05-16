@@ -91,8 +91,9 @@ nav {
   display:flex; align-items:center; justify-content:space-between;
   flex-wrap:wrap; gap:0.5rem; min-height:56px;
 }
-.nav-brand { font-family:var(--mono); font-size:14px; font-weight:500; color:var(--cyan); text-decoration:none; letter-spacing:0.04em; white-space:nowrap; }
+.nav-brand { font-family:var(--mono); font-size:14px; font-weight:500; color:var(--cyan); text-decoration:none; letter-spacing:0.04em; white-space:nowrap; display:flex; align-items:center; gap:9px; }
 .nav-brand span { color:var(--muted); }
+.nav-brand svg { flex-shrink:0; }
 .nav-links { display:flex; flex-wrap:wrap; gap:0.1rem; list-style:none; }
 .nav-links a { font-size:13px; color:var(--muted); text-decoration:none; padding:5px 10px; border-radius:4px; transition:color 0.15s,background 0.15s; display:block; white-space:nowrap; }
 .nav-links a:hover, .nav-links a:focus { color:var(--text); background:var(--bg3); }
