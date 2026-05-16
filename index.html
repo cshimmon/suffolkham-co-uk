@@ -186,29 +186,43 @@
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
   var container = document.getElementById('rsgb-news');
-  var proxyUrl = 'https://api.allorigins.win/get?url=' + encodeURIComponent('https://rsgb.org/main/feed/');
-  fetch(proxyUrl)
-    .then(function (r) { return r.json(); })
-    .then(function (data) {
-      var xml = new DOMParser().parseFromString(data.contents, 'text/xml');
-      var items = Array.from(xml.querySelectorAll('channel > item')).slice(0, 5);
-      if (!items.length) throw new Error('empty');
-      container.innerHTML = items.map(function (item) {
-        var title = item.querySelector('title') ? item.querySelector('title').textContent : '';
-        var link  = item.getElementsByTagName('link')[0] ? item.getElementsByTagName('link')[0].textContent.trim() : '';
-        var pub   = item.querySelector('pubDate') ? item.querySelector('pubDate').textContent : '';
-        var date  = pub ? new Date(pub).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : '';
-        if (!/^https?:\/\//.test(link)) link = 'https://rsgb.org/main/news/';
-        return '<a href="' + esc(link) + '" target="_blank" rel="noopener" class="news-item">' +
-          '<span class="news-date">' + esc(date) + '</span>' +
-          '<span class="news-title">' + esc(title) + '</span>' +
-          '<span class="news-arrow">↗</span>' +
-        '</a>';
-      }).join('');
-    })
+
+  function renderItems(items) {
+    if (!items || !items.length) throw new Error('empty');
+    container.innerHTML = items.slice(0, 5).map(function (item) {
+      var title = item.title || '';
+      var link  = (item.link && /^https?:\/\//.test(item.link)) ? item.link : 'https://rsgb.org/main/news/';
+      var date  = item.pubDate ? new Date(item.pubDate).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : '';
+      return '<a href="' + esc(link) + '" target="_blank" rel="noopener" class="news-item">' +
+        '<span class="news-date">' + esc(date) + '</span>' +
+        '<span class="news-title">' + esc(title) + '</span>' +
+        '<span class="news-arrow">↗</span>' +
+      '</a>';
+    }).join('');
+  }
+
+  function showError() {
+    container.innerHTML = '<div class="news-item" style="cursor:default;"><span class="news-date"></span>' +
+      '<span class="news-title" style="color:var(--muted);">News unavailable — ' +
+      '<a href="https://rsgb.org/main/news/gb2rs-news-bulletins/" target="_blank" rel="noopener" style="color:var(--cyan);">visit rsgb.org</a> for the latest.</span></div>';
+  }
+
+  function fetchFeed(feedUrl) {
+    var api = 'https://api.rss2json.com/v1/api.json?rss_url=' + encodeURIComponent(feedUrl) + '&count=5';
+    return fetch(api)
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (data.status !== 'ok' || !data.items || !data.items.length) throw new Error('bad');
+        return data.items;
+      });
+  }
+
+  fetchFeed('https://rsgb.org/main/news/gb2rs-news-bulletins/feed/')
+    .then(renderItems)
     .catch(function () {
-      container.innerHTML = '<div class="news-item" style="cursor:default;"><span class="news-date"></span><span class="news-title" style="color:var(--muted);">News unavailable — <a href="https://rsgb.org/main/news/" target="_blank" rel="noopener" style="color:var(--cyan);">visit rsgb.org</a> for the latest.</span></div>';
-    });
+      return fetchFeed('https://rsgb.org/main/feed/').then(renderItems);
+    })
+    .catch(showError);
 }());
 </script>
 </body>
