@@ -8,6 +8,7 @@
     { "label": "Equipment",       "href": "equipment.html" },
     { "label": "Repeaters",       "href": "repeaters.html" },
     { "label": "Nets",            "href": "nets.html" },
+    { "label": "DMR",             "href": "dmr.html" },
     { "label": "Events",          "href": "events.html" },
     { "label": "Calculators",     "href": "calculators.html" },
     { "label": "QTH Locator",     "href": "locator.html" },

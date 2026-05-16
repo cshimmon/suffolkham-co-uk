@@ -20,7 +20,8 @@
   .hero-actions { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:3rem; }
   .stat-row { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:10px; overflow:hidden; max-width:560px; }
   @media (max-width:480px) { .stat-row { grid-template-columns:repeat(2,1fr); max-width:100%; } }
-  .stat-cell { background:var(--bg2); padding:1rem 1.25rem; }
+  .stat-cell { background:var(--bg2); padding:1rem 1.25rem; text-decoration:none; display:block; transition:background 0.15s; }
+  .stat-cell:hover { background:var(--bg3); }
   .stat-val { font-family:var(--mono); font-size:1.3rem; font-weight:500; color:var(--cyan); display:block; line-height:1; margin-bottom:4px; }
   .stat-lbl { font-size:11px; color:var(--muted); letter-spacing:0.06em; text-transform:uppercase; }
 
@@ -29,6 +30,7 @@
   .news-item:hover { background:var(--bg3); }
   .news-date { font-family:var(--mono); font-size:11px; color:var(--faint); }
   .news-title { font-size:13px; color:var(--text); line-height:1.45; flex:1; margin:0.6rem 0; }
+  .news-icon { color:var(--faint); flex-shrink:0; }
   .news-arrow { font-family:var(--mono); font-size:11px; color:var(--cyan); align-self:flex-end; }
   @media (max-width:640px) {
     .news-feed { grid-template-columns:1fr; gap:8px; }
@@ -62,10 +64,10 @@
     <a href="repeaters.html" class="btn btn-ghost">Local repeaters</a>
   </div>
   <div class="stat-row" aria-label="At a glance">
-    <div class="stat-cell"><span class="stat-val" data-count="10">10</span><span class="stat-lbl">Repeaters</span></div>
-    <div class="stat-cell"><span class="stat-val" data-count="4">4</span><span class="stat-lbl">Local nets</span></div>
-    <div class="stat-cell"><span class="stat-val">DMR</span><span class="stat-lbl">Digital guide</span></div>
-    <div class="stat-cell"><span class="stat-val">Mesh</span><span class="stat-lbl">Off-grid</span></div>
+    <a href="repeaters.html" class="stat-cell"><span class="stat-val" data-count="10">10</span><span class="stat-lbl">Repeaters</span></a>
+    <a href="nets.html"      class="stat-cell"><span class="stat-val" data-count="4">4</span><span class="stat-lbl">Local nets</span></a>
+    <a href="dmr.html"       class="stat-cell"><span class="stat-val">DMR</span><span class="stat-lbl">Digital guide</span></a>
+    <a href="meshcore.html"  class="stat-cell"><span class="stat-val">Mesh</span><span class="stat-lbl">Off-grid</span></a>
   </div>
 </header>
 
@@ -200,6 +202,7 @@
       var link  = (item.link && /^https?:\/\//.test(item.link)) ? item.link : 'https://rsgb.org/main/news/';
       var date  = item.pubDate ? new Date(item.pubDate).toLocaleDateString('en-GB', {day:'numeric',month:'short',year:'numeric'}) : '';
       return '<a href="' + esc(link) + '" target="_blank" rel="noopener" class="news-item">' +
+        '<svg class="news-icon" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.75" viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="7" y1="8" x2="17" y2="8"/><line x1="7" y1="12" x2="17" y2="12"/><line x1="7" y1="16" x2="12" y2="16"/></svg>' +
         '<span class="news-date">' + esc(date) + '</span>' +
         '<span class="news-title">' + esc(title) + '</span>' +
         '<span class="news-arrow">↗</span>' +
