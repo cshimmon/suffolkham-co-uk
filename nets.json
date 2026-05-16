@@ -47,7 +47,7 @@
       "schedule": "Every Friday",
       "time": "20:00",
       "mode": "D-STAR",
-      "via": "reflector",
+      "via": "repeater",
       "repeater": "GB7DI",
       "frequency": "REF079C",
       "notes": "Regular D-STAR net used by operators across Suffolk and surrounding areas. Newcomers welcome — listening in first is perfectly fine before joining the conversation."
