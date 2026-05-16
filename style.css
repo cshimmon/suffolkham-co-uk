@@ -12,8 +12,8 @@
   --border:     rgba(255,255,255,0.07);
   --border2:    rgba(255,255,255,0.13);
   --text:       #e8eaf0;
-  --muted:      #7a8099;
-  --faint:      #3d4259;
+  --muted:      #9da4bc;
+  --faint:      #7f879e;
   --cyan:       #38bdf8;
   --cyan-dim:   rgba(56,189,248,0.12);
   --cyan-bd:    rgba(56,189,248,0.25);
@@ -103,7 +103,7 @@ main { max-width:1060px; margin:0 auto; padding:0 2rem 5rem; }
 /* ── GENERIC CARD ── */
 .card { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:1.5rem; }
 .card h3 { font-size:1rem; font-weight:600; margin-bottom:0.5rem; }
-.card p  { font-size:14px; color:var(--muted); line-height:1.7; }
+.card p  { font-size:15px; color:var(--muted); line-height:1.7; }
 .card a  { color:var(--cyan); }
 
 /* ── REPEATER CARDS ── */
@@ -133,7 +133,7 @@ main { max-width:1060px; margin:0 auto; padding:0 2rem 5rem; }
 .freq-table td { padding:5px 0; vertical-align:top; }
 .freq-table td:first-child { font-family:var(--mono); font-size:10px; color:var(--faint); letter-spacing:0.08em; text-transform:uppercase; width:68px; padding-top:7px; }
 .freq-table td:last-child  { font-family:var(--mono); font-size:14px; font-weight:500; color:var(--text); }
-.card-location { font-size:13px; color:var(--muted); display:flex; align-items:center; gap:5px; margin-bottom:0.3rem; }
+.card-location { font-size:14px; color:var(--muted); display:flex; align-items:center; gap:5px; margin-bottom:0.3rem; }
 .card-group    { font-size:11px; color:var(--faint); font-family:var(--mono); margin-bottom:0.3rem; letter-spacing:0.04em; }
 .keeper { font-size:12px; color:var(--muted); font-family:var(--mono); }
 .keeper a { color:var(--cyan); text-decoration:none; }
@@ -156,7 +156,7 @@ main { max-width:1060px; margin:0 auto; padding:0 2rem 5rem; }
 .event-title { font-size:1rem; font-weight:600; color:var(--text); }
 .event-time  { font-family:var(--mono); font-size:12px; color:var(--cyan); }
 .event-location { font-size:13px; color:var(--muted); display:flex; align-items:center; gap:5px; }
-.event-desc  { font-size:13px; color:var(--muted); line-height:1.6; flex:1; }
+.event-desc  { font-size:14px; color:var(--muted); line-height:1.6; flex:1; }
 .event-card-footer { padding:0.85rem 1.25rem; border-top:1px solid var(--border); }
 .event-card-footer a { font-family:var(--mono); font-size:12px; color:var(--cyan); text-decoration:none; }
 .event-card-footer a:hover { text-decoration:underline; }
@@ -174,7 +174,7 @@ main { max-width:1060px; margin:0 auto; padding:0 2rem 5rem; }
 .net-val   { font-family:var(--mono); font-size:13px; font-weight:500; color:var(--text); text-align:right; }
 .net-val a { color:var(--cyan); text-decoration:none; }
 .net-val a:hover { text-decoration:underline; }
-.net-note  { font-size:12px; color:var(--muted); padding-top:0.75rem; line-height:1.55; }
+.net-note  { font-size:13px; color:var(--muted); padding-top:0.75rem; line-height:1.55; }
 
 /* ── STEP LIST ── */
 .steps-list { display:flex; flex-direction:column; gap:1px; background:var(--border); border:1px solid var(--border); border-radius:12px; overflow:hidden; }
@@ -182,7 +182,7 @@ main { max-width:1060px; margin:0 auto; padding:0 2rem 5rem; }
 .step-item:hover { background:var(--bg3); }
 .step-n { font-family:var(--mono); font-size:1.3rem; font-weight:500; color:var(--cyan); opacity:0.4; line-height:1; padding-top:3px; }
 .step-body h3 { font-size:1rem; font-weight:600; margin-bottom:0.35rem; }
-.step-body p  { font-size:14px; color:var(--muted); line-height:1.7; }
+.step-body p  { font-size:15px; color:var(--muted); line-height:1.7; }
 .step-body a  { color:var(--cyan); text-decoration:underline; }
 .step-tag { display:inline-block; margin-top:0.5rem; font-family:var(--mono); font-size:10px; padding:3px 8px; border-radius:4px; background:var(--cyan-dim); color:var(--cyan); border:1px solid var(--cyan-bd); letter-spacing:0.05em; }
 
@@ -193,7 +193,7 @@ main { max-width:1060px; margin:0 auto; padding:0 2rem 5rem; }
 .cp-item { background:var(--bg3); border:1px solid var(--border); border-radius:8px; padding:0.85rem 1rem; }
 .cp-label { font-family:var(--mono); font-size:10px; color:var(--faint); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:4px; display:block; }
 .cp-val   { font-family:var(--mono); font-size:14px; font-weight:500; color:var(--text); }
-.codeplug-note { font-size:13px; color:var(--muted); line-height:1.65; padding-top:1rem; border-top:1px solid var(--border); }
+.codeplug-note { font-size:14px; color:var(--muted); line-height:1.65; padding-top:1rem; border-top:1px solid var(--border); }
 .codeplug-note a { color:var(--cyan); }
 
 /* ── LINKS ── */
@@ -203,13 +203,13 @@ main { max-width:1060px; margin:0 auto; padding:0 2rem 5rem; }
 .link-card:hover { background:var(--bg3); border-color:var(--border2); }
 .link-title { font-size:15px; font-weight:600; color:var(--text); margin-bottom:3px; display:flex; align-items:center; gap:6px; }
 .link-title .arrow { color:var(--cyan); font-size:13px; }
-.link-desc { font-size:13px; color:var(--muted); line-height:1.6; }
+.link-desc { font-size:14px; color:var(--muted); line-height:1.6; }
 
 /* ── GLOSSARY ── */
 .glossary-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(280px,1fr)); gap:12px; }
 .glossary-item { background:var(--bg2); border:1px solid var(--border); border-radius:8px; padding:1.1rem 1.25rem; }
 .glossary-term { font-family:var(--mono); font-size:13px; font-weight:500; color:var(--cyan); margin-bottom:4px; }
-.glossary-def  { font-size:13px; color:var(--muted); line-height:1.6; }
+.glossary-def  { font-size:14px; color:var(--muted); line-height:1.6; }
 
 /* ── FOOTER ── */
 footer { border-top:1px solid var(--border); padding:2rem; text-align:center; }
@@ -224,10 +224,4 @@ footer a { color:var(--muted); text-decoration:underline; }
   .page-header { padding:2.5rem 1rem 2rem; }
   main { padding:0 1rem 4rem; }
   .step-item { grid-template-columns:32px 1fr; padding:1.1rem; }
-
-  /* Improve readability on small screens */
-  :root { --muted: #9da4bc; }
-  .section-lead, .card p, .step-body p { font-size:15px; }
-  .link-desc, .glossary-def, .event-desc,
-  .card-location, .codeplug-note, .net-note { font-size:14px; }
 }
