@@ -104,7 +104,12 @@ fetch('repeaters.json')
     // Cards
     const grid = document.getElementById('repeater-grid');
     data.repeaters.forEach(r => {
-      const rows = r.frequencies.map(f => `<tr><td>${f.label}</td><td>${f.value}<button class="copy-chip" onclick="copyVal(this,'${f.value}')" aria-label="Copy ${f.value}">Copy</button></td></tr>`).join('');
+      const rows = r.frequencies.map(f => {
+        const chip = f.label !== 'Network'
+          ? `<button class="copy-chip" onclick="copyVal(this,'${f.value.split(' ')[0]}')" aria-label="Copy ${f.value}">Copy</button>`
+          : '';
+        return `<tr><td>${f.label}</td><td>${f.value}${chip}</td></tr>`;
+      }).join('');
       const note = r.note ? `<div class="card-note note-${r.noteType}">${r.note}</div>` : '';
       const locMt = r.note ? 'style="margin-top:0.75rem;"' : '';
       const groupHtml = r.groupUrl
