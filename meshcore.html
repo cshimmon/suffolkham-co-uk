@@ -165,6 +165,44 @@
   <hr class="divider">
 
   <div style="margin-bottom:3rem;">
+    <div class="section-label">#suffolkham</div>
+    <h2 class="section-title">Join the SuffolkHam channel</h2>
+    <p style="font-size:1rem; color:var(--muted); max-width:580px; margin-bottom:1.5rem; line-height:1.7;">We run a <strong style="color:var(--text);">#suffolkham</strong> channel on MeshCore for this site's community. Once your node is set up, add the channel using the key below or scan the QR code from the MeshCore companion app.</p>
+
+    <div style="display:grid; grid-template-columns:repeat(auto-fit,minmax(280px,1fr)); gap:16px; align-items:start;">
+
+      <div style="background:var(--bg2); border:1px solid var(--purple-bd); border-radius:12px; padding:1.75rem; display:flex; flex-direction:column; gap:1.25rem;">
+        <div>
+          <div style="font-family:var(--mono); font-size:10px; color:var(--faint); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:6px;">Channel name</div>
+          <div style="font-family:var(--mono); font-size:1.1rem; font-weight:500; color:var(--purple);">#suffolkham</div>
+        </div>
+        <div>
+          <div style="font-family:var(--mono); font-size:10px; color:var(--faint); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:8px;">Channel key</div>
+          <div style="display:flex; align-items:center; gap:8px;">
+            <code style="font-family:var(--mono); font-size:12px; background:var(--bg3); border:1px solid var(--border); border-radius:6px; padding:7px 10px; color:var(--text); word-break:break-all; flex:1; line-height:1.6;">680b59ee98ce1bb2a4181c77b011cfa7</code>
+            <button onclick="copyChannelKey(this)" style="font-family:var(--mono); font-size:11px; padding:7px 12px; border-radius:6px; border:1px solid var(--border2); background:var(--bg3); color:var(--muted); cursor:pointer; white-space:nowrap; transition:all 0.15s; flex-shrink:0;">Copy</button>
+          </div>
+        </div>
+        <p style="font-size:13px; color:var(--muted); line-height:1.6; margin:0;">In the MeshCore companion app, go to <strong style="color:var(--text);">Channels</strong>, tap <strong style="color:var(--text);">Add</strong>, enter the channel name and paste the key above.</p>
+      </div>
+
+      <div style="background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:1.75rem; display:flex; flex-direction:column; align-items:center; gap:0.85rem;">
+        <div style="font-family:var(--mono); font-size:10px; color:var(--faint); letter-spacing:0.08em; text-transform:uppercase;">Scan to copy key</div>
+        <div style="background:#ffffff; border-radius:8px; padding:10px; line-height:0;">
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=180x180&data=680b59ee98ce1bb2a4181c77b011cfa7"
+               alt="QR code for #suffolkham channel key"
+               width="180" height="180"
+               style="display:block; border-radius:4px;">
+        </div>
+        <p style="font-size:12px; color:var(--muted); text-align:center; line-height:1.55; margin:0;">Scan from the MeshCore<br>companion app</p>
+      </div>
+
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div style="margin-bottom:3rem;">
     <div class="section-label">MeshCore vs Meshtastic</div>
     <h2 class="section-title">What's the difference?</h2>
     <p style="font-size:1rem; color:var(--muted); max-width:600px; margin-bottom:1.5rem; line-height:1.7;">You may have heard of Meshtastic, which is another popular LoRa mesh system. Both use similar hardware, but they are different projects with different protocols — nodes from one cannot communicate with nodes from the other.</p>
@@ -188,5 +226,20 @@
 </footer>
 
 <script src="nav.js"></script>
+<script>
+function copyChannelKey(btn) {
+  navigator.clipboard.writeText('680b59ee98ce1bb2a4181c77b011cfa7').then(function () {
+    var prev = btn.textContent;
+    btn.textContent = 'Copied!';
+    btn.style.color = 'var(--green)';
+    btn.style.borderColor = 'var(--green-bd)';
+    setTimeout(function () {
+      btn.textContent = prev;
+      btn.style.color = '';
+      btn.style.borderColor = '';
+    }, 2000);
+  });
+}
+</script>
 </body>
 </html>
