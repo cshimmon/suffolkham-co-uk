@@ -19,6 +19,9 @@
   .hero-sub { font-size:1.1rem; color:var(--muted); max-width:520px; margin-bottom:2.5rem; line-height:1.7; }
   .hero-actions { display:flex; gap:12px; flex-wrap:wrap; margin-bottom:4rem; }
   .stat-row { display:grid; grid-template-columns:repeat(4,1fr); gap:1px; background:var(--border); border:1px solid var(--border); border-radius:10px; overflow:hidden; max-width:560px; }
+  @media (max-width:480px) {
+    .stat-row { grid-template-columns:repeat(2,1fr); max-width:100%; }
+  }
   .stat-cell { background:var(--bg2); padding:1rem 1.25rem; }
   .stat-val { font-family:var(--mono); font-size:1.3rem; font-weight:500; color:var(--cyan); display:block; line-height:1; margin-bottom:4px; }
   .stat-lbl { font-size:11px; color:var(--muted); letter-spacing:0.06em; text-transform:uppercase; }
@@ -46,8 +49,8 @@
     <a href="index.html#getting-started" class="btn btn-ghost">Getting started</a>
   </div>
   <div class="stat-row" aria-label="At a glance">
-    <div class="stat-cell"><span class="stat-val">10</span><span class="stat-lbl">Repeaters</span></div>
-    <div class="stat-cell"><span class="stat-val">4</span><span class="stat-lbl">Local nets</span></div>
+    <div class="stat-cell"><span class="stat-val" data-count="10">10</span><span class="stat-lbl">Repeaters</span></div>
+    <div class="stat-cell"><span class="stat-val" data-count="4">4</span><span class="stat-lbl">Local nets</span></div>
     <div class="stat-cell"><span class="stat-val">DMR</span><span class="stat-lbl">Digital guide</span></div>
     <div class="stat-cell"><span class="stat-val">Mesh</span><span class="stat-lbl">Off-grid</span></div>
   </div>
@@ -258,5 +261,30 @@
 </footer>
 
 <script src="nav.js"></script>
+<script>
+(function () {
+  var els = document.querySelectorAll('.stat-val[data-count]');
+  if (!els.length || !('IntersectionObserver' in window)) return;
+  function animate(el) {
+    var target = parseInt(el.dataset.count, 10);
+    var start = null;
+    var duration = 1200;
+    function step(ts) {
+      if (!start) start = ts;
+      var p = Math.min((ts - start) / duration, 1);
+      var eased = 1 - Math.pow(1 - p, 3);
+      el.textContent = Math.round(eased * target);
+      if (p < 1) requestAnimationFrame(step);
+    }
+    requestAnimationFrame(step);
+  }
+  var observer = new IntersectionObserver(function (entries) {
+    entries.forEach(function (e) {
+      if (e.isIntersecting) { animate(e.target); observer.unobserve(e.target); }
+    });
+  }, { threshold: 0.5 });
+  els.forEach(function (el) { observer.observe(el); });
+}());
+</script>
 </body>
 </html>
