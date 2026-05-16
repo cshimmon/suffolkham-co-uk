@@ -2,149 +2,291 @@
   "alert": null,
   "repeaters": [
     {
-      "callsign": "GB7AL",
-      "status": "live", "statusLabel": "On Air",
-      "mode": "70cm · DMR", "band": "70cm", "type": "DMR",
-      "location": "Tunstall, Suffolk", "keeper": "2E0TDN",
-      "group": "South Anglia Repeater Group (SARG)",
-      "groupUrl": "https://sargroup.co.uk",
-      "frequencies": [
-        { "label": "Input",   "value": "430.400 MHz" },
-        { "label": "Output",  "value": "439.400 MHz" },
-        { "label": "CC",      "value": "2" },
-        { "label": "Network", "value": "DV Scotland Phoenix" }
-      ],
-      "note": null, "noteType": null
-    },
-    {
-      "callsign": "GB7MK",
-      "status": "live", "statusLabel": "On Air",
-      "mode": "70cm · DMR", "band": "70cm", "type": "DMR",
-      "location": "Ipswich Hospital", "keeper": "M1NIZ",
-      "group": "South Anglia Repeater Group (SARG)",
-      "groupUrl": "https://sargroup.co.uk",
-      "frequencies": [
-        { "label": "Input",   "value": "430.600 MHz" },
-        { "label": "Output",  "value": "439.600 MHz" },
-        { "label": "CC",      "value": "13" },
-        { "label": "Network", "value": "DV Scotland Phoenix" }
-      ],
-      "note": null, "noteType": null
-    },
-    {
-      "callsign": "GB7DI",
-      "status": "live", "statusLabel": "On Air",
-      "mode": "70cm · FM / D-Star", "band": "70cm", "type": "FM",
-      "location": "Ipswich", "keeper": "M0WRB",
-      "group": "Independent",
-      "groupUrl": null,
-      "frequencies": [
-        { "label": "Input",  "value": "430.4625 MHz" },
-        { "label": "Output", "value": "439.4625 MHz" },
-        { "label": "CTCSS",  "value": "110.9 Hz" }
-      ],
-      "note": null, "noteType": null
-    },
-    {
-      "callsign": "GB3IH",
-      "status": "warn", "statusLabel": "Updated",
-      "mode": "70cm · FM", "band": "70cm", "type": "FM",
-      "location": "Ipswich Hospital", "keeper": "G6PDE",
-      "group": "South Anglia Repeater Group (SARG)",
-      "groupUrl": "https://sargroup.co.uk",
-      "frequencies": [
-        { "label": "Input",  "value": "430.362500 MHz" },
-        { "label": "Output", "value": "439.362500 MHz" },
-        { "label": "CTCSS",  "value": "110.9 Hz" }
-      ],
-      "note": "New hardware install attempted April 2026. Interference investigation ongoing near hospital site.",
-      "noteType": "info"
-    },
-    {
       "callsign": "GB3PO",
-      "status": "warn", "statusLabel": "Degraded",
-      "mode": "2m · FM", "band": "2m", "type": "FM",
-      "location": "Ipswich Hospital", "keeper": "G6PDE",
+      "status": "warn",
+      "statusLabel": "Degraded",
+      "mode": "2m \u00b7 FM",
+      "band": "2m",
+      "type": "FM",
+      "location": "Ipswich Hospital",
+      "keeper": "G6PDE",
       "group": "South Anglia Repeater Group (SARG)",
       "groupUrl": "https://sargroup.co.uk",
       "frequencies": [
-        { "label": "Input",  "value": "145.050 MHz" },
-        { "label": "Output", "value": "145.650 MHz" },
-        { "label": "CTCSS",  "value": "110.9 Hz" }
+        {
+          "label": "Input",
+          "value": "145.050 MHz"
+        },
+        {
+          "label": "Output",
+          "value": "145.650 MHz"
+        },
+        {
+          "label": "CTCSS",
+          "value": "110.9 Hz"
+        }
       ],
       "note": "Reduced coverage due to nearby cellular antenna installation. Working with hospital to resolve.",
       "noteType": "warn"
     },
     {
-      "callsign": "GB3DE",
-      "status": "live", "statusLabel": "On Air",
-      "mode": "70cm · FM", "band": "70cm", "type": "FM",
-      "location": "Ipswich", "keeper": null,
+      "callsign": "GB3IH",
+      "status": "warn",
+      "statusLabel": "Updated",
+      "mode": "70cm \u00b7 FM",
+      "band": "70cm",
+      "type": "FM",
+      "location": "Ipswich Hospital",
+      "keeper": "G6PDE",
+      "group": "South Anglia Repeater Group (SARG)",
+      "groupUrl": "https://sargroup.co.uk",
+      "frequencies": [
+        {
+          "label": "Input",
+          "value": "430.362500 MHz"
+        },
+        {
+          "label": "Output",
+          "value": "439.362500 MHz"
+        },
+        {
+          "label": "CTCSS",
+          "value": "110.9 Hz"
+        }
+      ],
+      "note": "New hardware install attempted April 2026. Interference investigation ongoing near hospital site.",
+      "noteType": "info"
+    },
+    {
+      "callsign": "GB7AL",
+      "status": "live",
+      "statusLabel": "On Air",
+      "mode": "70cm \u00b7 DMR",
+      "band": "70cm",
+      "type": "DMR",
+      "location": "Tunstall, Suffolk",
+      "keeper": "2E0TDN",
+      "group": "South Anglia Repeater Group (SARG)",
+      "groupUrl": "https://sargroup.co.uk",
+      "frequencies": [
+        {
+          "label": "Input",
+          "value": "430.400 MHz"
+        },
+        {
+          "label": "Output",
+          "value": "439.400 MHz"
+        },
+        {
+          "label": "CC",
+          "value": "2"
+        },
+        {
+          "label": "Network",
+          "value": "DV Scotland Phoenix"
+        }
+      ],
+      "note": null,
+      "noteType": null
+    },
+    {
+      "callsign": "GB7MK",
+      "status": "live",
+      "statusLabel": "On Air",
+      "mode": "70cm \u00b7 DMR",
+      "band": "70cm",
+      "type": "DMR",
+      "location": "Ipswich Hospital",
+      "keeper": "M1NIZ",
+      "group": "South Anglia Repeater Group (SARG)",
+      "groupUrl": "https://sargroup.co.uk",
+      "frequencies": [
+        {
+          "label": "Input",
+          "value": "430.600 MHz"
+        },
+        {
+          "label": "Output",
+          "value": "439.600 MHz"
+        },
+        {
+          "label": "CC",
+          "value": "13"
+        },
+        {
+          "label": "Network",
+          "value": "DV Scotland Phoenix"
+        }
+      ],
+      "note": null,
+      "noteType": null
+    },
+    {
+      "callsign": "GB7DI",
+      "status": "live",
+      "statusLabel": "On Air",
+      "mode": "70cm \u00b7 FM / D-Star",
+      "band": "70cm",
+      "type": "FM",
+      "location": "Ipswich",
+      "keeper": "M0WRB",
       "group": "Independent",
       "groupUrl": null,
       "frequencies": [
-        { "label": "Input",  "value": "434.775 MHz" },
-        { "label": "Output", "value": "433.175 MHz" },
-        { "label": "CTCSS",  "value": "110.9 Hz" }
+        {
+          "label": "Input",
+          "value": "430.4625 MHz"
+        },
+        {
+          "label": "Output",
+          "value": "439.4625 MHz"
+        },
+        {
+          "label": "CTCSS",
+          "value": "110.9 Hz"
+        }
       ],
-      "note": null, "noteType": null
+      "note": null,
+      "noteType": null
+    },
+    {
+      "callsign": "GB3DE",
+      "status": "live",
+      "statusLabel": "On Air",
+      "mode": "70cm \u00b7 FM",
+      "band": "70cm",
+      "type": "FM",
+      "location": "Ipswich",
+      "keeper": null,
+      "group": "Independent",
+      "groupUrl": null,
+      "frequencies": [
+        {
+          "label": "Input",
+          "value": "434.775 MHz"
+        },
+        {
+          "label": "Output",
+          "value": "433.175 MHz"
+        },
+        {
+          "label": "CTCSS",
+          "value": "110.9 Hz"
+        }
+      ],
+      "note": null,
+      "noteType": null
     },
     {
       "callsign": "GB3EA",
-      "status": "live", "statusLabel": "On Air",
-      "mode": "2m · FM", "band": "2m", "type": "FM",
-      "location": "Bury St Edmunds", "keeper": null,
+      "status": "live",
+      "statusLabel": "On Air",
+      "mode": "2m \u00b7 FM",
+      "band": "2m",
+      "type": "FM",
+      "location": "Bury St Edmunds",
+      "keeper": null,
       "group": "Independent",
       "groupUrl": null,
       "frequencies": [
-        { "label": "Input",  "value": "145.0875 MHz" },
-        { "label": "Output", "value": "145.6875 MHz" },
-        { "label": "CTCSS",  "value": "110.9 Hz" }
+        {
+          "label": "Input",
+          "value": "145.0875 MHz"
+        },
+        {
+          "label": "Output",
+          "value": "145.6875 MHz"
+        },
+        {
+          "label": "CTCSS",
+          "value": "110.9 Hz"
+        }
       ],
       "note": "Under new management. See depden.radio for full details.",
       "noteType": "info"
     },
     {
       "callsign": "GB3CE",
-      "status": "live", "statusLabel": "On Air",
-      "mode": "70cm · FM", "band": "70cm", "type": "FM",
-      "location": "Colchester, Essex", "keeper": null,
+      "status": "live",
+      "statusLabel": "On Air",
+      "mode": "70cm \u00b7 FM",
+      "band": "70cm",
+      "type": "FM",
+      "location": "Colchester, Essex",
+      "keeper": null,
       "group": "Martello Tower Group",
       "groupUrl": "https://martellotowergroup.com",
       "frequencies": [
-        { "label": "Input",  "value": "434.950 MHz" },
-        { "label": "Output", "value": "433.350 MHz" },
-        { "label": "CTCSS",  "value": "67.0 Hz" }
+        {
+          "label": "Input",
+          "value": "434.950 MHz"
+        },
+        {
+          "label": "Output",
+          "value": "433.350 MHz"
+        },
+        {
+          "label": "CTCSS",
+          "value": "67.0 Hz"
+        }
       ],
-      "note": null, "noteType": null
+      "note": null,
+      "noteType": null
     },
     {
       "callsign": "GB3CL",
-      "status": "live", "statusLabel": "On Air",
-      "mode": "70cm · FM", "band": "70cm", "type": "FM",
-      "location": "Clacton-on-Sea, Essex", "keeper": null,
+      "status": "live",
+      "statusLabel": "On Air",
+      "mode": "70cm \u00b7 FM",
+      "band": "70cm",
+      "type": "FM",
+      "location": "Clacton-on-Sea, Essex",
+      "keeper": null,
       "group": "Martello Tower Group",
       "groupUrl": "https://martellotowergroup.com",
       "frequencies": [
-        { "label": "Input",  "value": "434.825 MHz" },
-        { "label": "Output", "value": "433.225 MHz" },
-        { "label": "CTCSS",  "value": "103.5 Hz" }
+        {
+          "label": "Input",
+          "value": "434.825 MHz"
+        },
+        {
+          "label": "Output",
+          "value": "433.225 MHz"
+        },
+        {
+          "label": "CTCSS",
+          "value": "103.5 Hz"
+        }
       ],
-      "note": null, "noteType": null
+      "note": null,
+      "noteType": null
     },
     {
       "callsign": "GB3EF",
-      "status": "offair", "statusLabel": "Off Air",
-      "mode": "6m · FM", "band": "6m", "type": "FM",
-      "location": "Mendlesham, Suffolk", "keeper": "G0OZS",
+      "status": "offair",
+      "statusLabel": "Off Air",
+      "mode": "6m \u00b7 FM",
+      "band": "6m",
+      "type": "FM",
+      "location": "Mendlesham, Suffolk",
+      "keeper": "G0OZS",
       "group": "South Anglia Repeater Group (SARG)",
       "groupUrl": "https://sargroup.co.uk",
       "frequencies": [
-        { "label": "Input",  "value": "51.220 MHz" },
-        { "label": "Output", "value": "51.720 MHz" },
-        { "label": "CTCSS",  "value": "110.9 Hz" }
+        {
+          "label": "Input",
+          "value": "51.220 MHz"
+        },
+        {
+          "label": "Output",
+          "value": "51.720 MHz"
+        },
+        {
+          "label": "CTCSS",
+          "value": "110.9 Hz"
+        }
       ],
-      "note": "Off air for refurbishment — reported loss of output power.",
+      "note": "Off air for refurbishment \u2014 reported loss of output power.",
       "noteType": "red"
     }
   ]
