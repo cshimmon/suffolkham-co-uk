@@ -3,14 +3,15 @@
   "brandSuffix": ".co.uk",
   "brandHref": "index.html",
   "links": [
-    { "label": "Home",        "href": "index.html" },
-    { "label": "Equipment",   "href": "equipment.html" },
-    { "label": "Repeaters",   "href": "repeaters.html" },
-    { "label": "Nets",        "href": "nets.html" },
-    { "label": "Events",      "href": "events.html" },
-    { "label": "Calculators", "href": "calculators.html" },
-    { "label": "QTH Locator", "href": "locator.html" },
-    { "label": "Glossary",    "href": "glossary.html" },
-    { "label": "MeshCore",    "href": "meshcore.html" }
+    { "label": "Home",            "href": "index.html" },
+    { "label": "Getting Started", "href": "getting-started.html" },
+    { "label": "Equipment",       "href": "equipment.html" },
+    { "label": "Repeaters",       "href": "repeaters.html" },
+    { "label": "Nets",            "href": "nets.html" },
+    { "label": "Events",          "href": "events.html" },
+    { "label": "Calculators",     "href": "calculators.html" },
+    { "label": "QTH Locator",     "href": "locator.html" },
+    { "label": "Glossary",        "href": "glossary.html" },
+    { "label": "MeshCore",        "href": "meshcore.html" }
   ]
 }
