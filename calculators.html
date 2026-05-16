@@ -1,0 +1,331 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amateur Radio Calculators | SuffolkHam</title>
+<meta name="description" content="Handy amateur radio calculators — frequency to wavelength, SWR, dB, and capacitor codes. All run locally in your browser.">
+<meta property="og:title" content="Radio Calculators | SuffolkHam">
+<meta property="og:description" content="Frequency, wavelength, SWR, dB and capacitor calculators for amateur radio operators.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<style>
+  .calc-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:16px; }
+  .calc-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:1.5rem; }
+  .calc-field-label { font-family:var(--mono); font-size:10px; color:var(--faint); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:5px; display:block; }
+  .calc-row { display:flex; gap:8px; margin-bottom:0.75rem; align-items:stretch; }
+  .calc-input {
+    flex:1; min-width:0;
+    background:var(--bg3); color:var(--text);
+    border:1px solid var(--border2); border-radius:6px;
+    padding:9px 12px;
+    font-family:var(--mono); font-size:15px;
+  }
+  .calc-input:focus { outline:2px solid var(--cyan); outline-offset:2px; border-color:transparent; }
+  .calc-select {
+    background:var(--bg3); color:var(--text);
+    border:1px solid var(--border2); border-radius:6px;
+    padding:9px 12px;
+    font-family:var(--mono); font-size:14px;
+    cursor:pointer; flex-shrink:0;
+  }
+  .calc-btn {
+    width:100%; margin-top:0.25rem;
+    background:var(--cyan); color:var(--bg);
+    border:none; border-radius:6px;
+    padding:10px 16px;
+    font-family:var(--sans); font-size:14px; font-weight:600;
+    cursor:pointer; transition:opacity 0.15s;
+  }
+  .calc-btn:hover { opacity:0.85; }
+  .calc-result { display:none; margin-top:1rem; background:var(--bg3); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+  .calc-result.show { display:block; }
+  .calc-rrow { display:flex; justify-content:space-between; align-items:baseline; padding:8px 12px; border-bottom:1px solid var(--border); gap:1rem; }
+  .calc-rrow:last-child { border-bottom:none; }
+  .calc-rlbl { font-family:var(--mono); font-size:11px; color:var(--faint); letter-spacing:0.06em; text-transform:uppercase; white-space:nowrap; }
+  .calc-rval { font-family:var(--mono); font-size:14px; font-weight:500; color:var(--cyan); text-align:right; }
+  .calc-err { display:none; margin-top:0.6rem; padding:8px 12px; background:var(--red-dim); border:1px solid var(--red-bd); border-radius:6px; font-size:13px; color:var(--red); }
+  .calc-err.show { display:block; }
+  .calc-tabs { display:flex; gap:4px; margin-bottom:1rem; flex-wrap:wrap; }
+  .calc-tab { font-family:var(--mono); font-size:11px; padding:5px 12px; border-radius:4px; border:1px solid var(--border2); background:none; color:var(--muted); cursor:pointer; transition:all 0.15s; }
+  .calc-tab.active { background:var(--cyan-dim); color:var(--cyan); border-color:var(--cyan-bd); }
+  @media (max-width:480px) { .calc-grid { grid-template-columns:1fr; } }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+<nav aria-label="Site navigation" id="site-nav"></nav>
+
+<div class="page-header" id="main">
+  <div class="page-tag">Tools</div>
+  <h1>Radio Calculators</h1>
+  <p>Handy calculators for common amateur radio tasks. Everything runs locally in your browser — nothing is sent anywhere.</p>
+</div>
+
+<main>
+<div class="calc-grid">
+
+  <!-- ── FREQUENCY → WAVELENGTH ─────────────────────────────── -->
+  <div class="calc-card">
+    <div class="section-label">Antenna</div>
+    <h2 class="section-title" style="font-size:1.1rem;margin-bottom:1.1rem;">Frequency → Wavelength</h2>
+    <span class="calc-field-label">Frequency</span>
+    <div class="calc-row">
+      <input class="calc-input" type="number" id="ftw-freq" placeholder="e.g. 145.5" min="0" step="any">
+      <select class="calc-select" id="ftw-unit">
+        <option value="MHz" selected>MHz</option>
+        <option value="GHz">GHz</option>
+        <option value="kHz">kHz</option>
+        <option value="Hz">Hz</option>
+      </select>
+    </div>
+    <button class="calc-btn" onclick="calcFTW()">Calculate</button>
+    <div class="calc-err" id="ftw-err">Enter a valid frequency greater than zero.</div>
+    <div class="calc-result" id="ftw-res"></div>
+  </div>
+
+  <!-- ── WAVELENGTH → FREQUENCY ─────────────────────────────── -->
+  <div class="calc-card">
+    <div class="section-label">Antenna</div>
+    <h2 class="section-title" style="font-size:1.1rem;margin-bottom:1.1rem;">Wavelength → Frequency</h2>
+    <span class="calc-field-label">Wavelength</span>
+    <div class="calc-row">
+      <input class="calc-input" type="number" id="wtf-wave" placeholder="e.g. 2.06" min="0" step="any">
+      <select class="calc-select" id="wtf-unit">
+        <option value="m" selected>m</option>
+        <option value="cm">cm</option>
+        <option value="mm">mm</option>
+        <option value="ft">ft</option>
+      </select>
+    </div>
+    <button class="calc-btn" onclick="calcWTF()">Calculate</button>
+    <div class="calc-err" id="wtf-err">Enter a valid wavelength greater than zero.</div>
+    <div class="calc-result" id="wtf-res"></div>
+  </div>
+
+  <!-- ── SWR ────────────────────────────────────────────────── -->
+  <div class="calc-card">
+    <div class="section-label">Transmission line</div>
+    <h2 class="section-title" style="font-size:1.1rem;margin-bottom:1.1rem;">SWR Calculator</h2>
+    <span class="calc-field-label">Forward power (W)</span>
+    <div class="calc-row">
+      <input class="calc-input" type="number" id="swr-fwd" placeholder="e.g. 50" min="0" step="any">
+    </div>
+    <span class="calc-field-label">Reflected power (W)</span>
+    <div class="calc-row">
+      <input class="calc-input" type="number" id="swr-ref" placeholder="e.g. 2" min="0" step="any">
+    </div>
+    <button class="calc-btn" onclick="calcSWR()">Calculate</button>
+    <div class="calc-err" id="swr-err">Check your values — reflected power cannot exceed forward power.</div>
+    <div class="calc-result" id="swr-res"></div>
+  </div>
+
+  <!-- ── dB ─────────────────────────────────────────────────── -->
+  <div class="calc-card">
+    <div class="section-label">Signal levels</div>
+    <h2 class="section-title" style="font-size:1.1rem;margin-bottom:1rem;">dB Calculator</h2>
+    <div class="calc-tabs">
+      <button class="calc-tab active" onclick="dbTab(this,'db-pwr')">Power ratio</button>
+      <button class="calc-tab"        onclick="dbTab(this,'db-vol')">Voltage ratio</button>
+      <button class="calc-tab"        onclick="dbTab(this,'db-rev')">dB → ratio</button>
+    </div>
+
+    <div id="db-pwr">
+      <span class="calc-field-label">P₂ / P₁ ratio</span>
+      <div class="calc-row"><input class="calc-input" type="number" id="db-pwr-in" placeholder="e.g. 2" min="0" step="any"></div>
+      <button class="calc-btn" onclick="calcDbPwr()">Calculate</button>
+      <div class="calc-err" id="db-pwr-err">Enter a positive ratio greater than zero.</div>
+      <div class="calc-result" id="db-pwr-res"></div>
+    </div>
+
+    <div id="db-vol" style="display:none">
+      <span class="calc-field-label">V₂ / V₁ ratio</span>
+      <div class="calc-row"><input class="calc-input" type="number" id="db-vol-in" placeholder="e.g. 1.414" min="0" step="any"></div>
+      <button class="calc-btn" onclick="calcDbVol()">Calculate</button>
+      <div class="calc-err" id="db-vol-err">Enter a positive ratio greater than zero.</div>
+      <div class="calc-result" id="db-vol-res"></div>
+    </div>
+
+    <div id="db-rev" style="display:none">
+      <span class="calc-field-label">Value in dB</span>
+      <div class="calc-row"><input class="calc-input" type="number" id="db-rev-in" placeholder="e.g. 3" step="any"></div>
+      <button class="calc-btn" onclick="calcDbRev()">Calculate</button>
+      <div class="calc-err" id="db-rev-err">Enter a dB value.</div>
+      <div class="calc-result" id="db-rev-res"></div>
+    </div>
+  </div>
+
+  <!-- ── CAPACITOR CODE ─────────────────────────────────────── -->
+  <div class="calc-card">
+    <div class="section-label">Components</div>
+    <h2 class="section-title" style="font-size:1.1rem;margin-bottom:0.5rem;">Capacitor Code</h2>
+    <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:1rem;">Decodes the 3-digit code printed on ceramic capacitors. Example: <code style="font-family:var(--mono);color:var(--cyan);">104</code> = 100 nF.</p>
+    <span class="calc-field-label">3-digit code</span>
+    <div class="calc-row">
+      <input class="calc-input" type="text" id="cap-in" placeholder="e.g. 104" maxlength="3"
+        style="text-align:center;letter-spacing:0.15em;font-size:1.3rem;">
+    </div>
+    <button class="calc-btn" onclick="calcCap()">Decode</button>
+    <div class="calc-err" id="cap-err">Enter a valid 3-digit code. Third digit must be 0–6.</div>
+    <div class="calc-result" id="cap-res"></div>
+  </div>
+
+</div><!-- /.calc-grid -->
+</main>
+
+<footer>
+  <div class="brand">SuffolkHam.co.uk</div>
+  <p>Site by <a href="http://qrz.com/db/M9XCN" target="_blank" rel="noopener">M9XCN</a></p>
+</footer>
+
+<script src="nav.js"></script>
+<script>
+// ── Helpers ──────────────────────────────────────────────────────────────────
+
+function showRes(id, rows) {
+  var el = document.getElementById(id);
+  el.innerHTML = rows.map(function(r) {
+    return '<div class="calc-rrow"><span class="calc-rlbl">' + r[0] +
+           '</span><span class="calc-rval">' + r[1] + '</span></div>';
+  }).join('');
+  el.classList.add('show');
+}
+
+function showErr(resId, errId) {
+  document.getElementById(resId).classList.remove('show');
+  var err = document.getElementById(errId);
+  err.classList.add('show');
+  setTimeout(function() { err.classList.remove('show'); }, 3500);
+}
+
+function fmtLen(m) {
+  if (m >= 1)     return m.toFixed(3) + ' m  (' + (m * 3.28084).toFixed(3) + ' ft)';
+  if (m >= 0.01)  return (m * 100).toFixed(3) + ' cm';
+  return (m * 1000).toFixed(3) + ' mm';
+}
+
+function fmtFreq(hz) {
+  if (hz >= 1e9) return (hz / 1e9).toPrecision(6) + ' GHz';
+  if (hz >= 1e6) return (hz / 1e6).toPrecision(6) + ' MHz';
+  if (hz >= 1e3) return (hz / 1e3).toPrecision(6) + ' kHz';
+  return hz.toPrecision(6) + ' Hz';
+}
+
+// ── Frequency → Wavelength ───────────────────────────────────────────────────
+
+function calcFTW() {
+  var f = parseFloat(document.getElementById('ftw-freq').value);
+  var u = document.getElementById('ftw-unit').value;
+  if (!f || f <= 0) { showErr('ftw-res', 'ftw-err'); return; }
+  var hz = u === 'Hz' ? f : u === 'kHz' ? f * 1e3 : u === 'MHz' ? f * 1e6 : f * 1e9;
+  var lam = 299792458 / hz;
+  showRes('ftw-res', [
+    ['Full wavelength (λ)',  fmtLen(lam)],
+    ['Half-wave (λ / 2)',    fmtLen(lam / 2)],
+    ['Quarter-wave (λ / 4)', fmtLen(lam / 4)],
+  ]);
+}
+
+// ── Wavelength → Frequency ───────────────────────────────────────────────────
+
+function calcWTF() {
+  var w = parseFloat(document.getElementById('wtf-wave').value);
+  var u = document.getElementById('wtf-unit').value;
+  if (!w || w <= 0) { showErr('wtf-res', 'wtf-err'); return; }
+  var m = u === 'm' ? w : u === 'cm' ? w / 100 : u === 'mm' ? w / 1000 : w / 3.28084;
+  var hz = 299792458 / m;
+  showRes('wtf-res', [
+    ['Frequency',                  fmtFreq(hz)],
+    ['Half-wave element length',   fmtLen(m / 2)],
+    ['Quarter-wave element length', fmtLen(m / 4)],
+  ]);
+}
+
+// ── SWR ──────────────────────────────────────────────────────────────────────
+
+function calcSWR() {
+  var fwd = parseFloat(document.getElementById('swr-fwd').value);
+  var ref = parseFloat(document.getElementById('swr-ref').value);
+  if (isNaN(fwd) || isNaN(ref) || fwd <= 0 || ref < 0 || ref > fwd) {
+    showErr('swr-res', 'swr-err'); return;
+  }
+  var gamma = Math.sqrt(ref / fwd);
+  if (gamma >= 1) {
+    showRes('swr-res', [
+      ['SWR', '∞  (open or short circuit)'],
+      ['Reflection coefficient (Γ)', '1.000'],
+      ['Return loss', '0.00 dB'],
+      ['Power reflected', '100.0 %'],
+      ['Power delivered', '0.0 %'],
+    ]); return;
+  }
+  var swr = (1 + gamma) / (1 - gamma);
+  var rl  = gamma > 0 ? (-20 * Math.log10(gamma)).toFixed(2) + ' dB' : '∞ dB';
+  var pRef = (ref / fwd * 100).toFixed(1);
+  showRes('swr-res', [
+    ['SWR',                          swr.toFixed(2) + ' : 1'],
+    ['Reflection coefficient (Γ)',   gamma.toFixed(4)],
+    ['Return loss',                  rl],
+    ['Power reflected',              pRef + ' %'],
+    ['Power delivered',              (100 - parseFloat(pRef)).toFixed(1) + ' %'],
+  ]);
+}
+
+// ── dB ───────────────────────────────────────────────────────────────────────
+
+function dbTab(btn, show) {
+  document.querySelectorAll('.calc-tab').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  ['db-pwr','db-vol','db-rev'].forEach(function(id) {
+    document.getElementById(id).style.display = id === show ? '' : 'none';
+  });
+}
+
+function calcDbPwr() {
+  var r = parseFloat(document.getElementById('db-pwr-in').value);
+  if (isNaN(r) || r <= 0) { showErr('db-pwr-res', 'db-pwr-err'); return; }
+  showRes('db-pwr-res', [
+    ['Power ratio (P₂/P₁)', r.toFixed(4)],
+    ['Result',               (10 * Math.log10(r)).toFixed(3) + ' dB'],
+  ]);
+}
+
+function calcDbVol() {
+  var r = parseFloat(document.getElementById('db-vol-in').value);
+  if (isNaN(r) || r <= 0) { showErr('db-vol-res', 'db-vol-err'); return; }
+  showRes('db-vol-res', [
+    ['Voltage ratio (V₂/V₁)', r.toFixed(4)],
+    ['Result',                 (20 * Math.log10(r)).toFixed(3) + ' dB'],
+  ]);
+}
+
+function calcDbRev() {
+  var db = parseFloat(document.getElementById('db-rev-in').value);
+  if (isNaN(db)) { showErr('db-rev-res', 'db-rev-err'); return; }
+  showRes('db-rev-res', [
+    ['Power ratio (P₂/P₁)',   Math.pow(10, db / 10).toFixed(4)],
+    ['Voltage ratio (V₂/V₁)', Math.pow(10, db / 20).toFixed(4)],
+  ]);
+}
+
+// ── Capacitor code ───────────────────────────────────────────────────────────
+
+function calcCap() {
+  var code = document.getElementById('cap-in').value.trim();
+  if (!/^\d{3}$/.test(code) || parseInt(code[2]) > 6) {
+    showErr('cap-res', 'cap-err'); return;
+  }
+  var pf = (parseInt(code[0]) * 10 + parseInt(code[1])) * Math.pow(10, parseInt(code[2]));
+  var nf = pf / 1000;
+  var uf = pf / 1e6;
+  showRes('cap-res', [
+    ['Picofarads (pF)',  pf.toLocaleString() + ' pF'],
+    ['Nanofarads (nF)',  nf >= 1    ? nf + ' nF'   : '< 1 nF'],
+    ['Microfarads (µF)', uf >= 0.001 ? uf + ' µF'  : '< 0.001 µF'],
+  ]);
+}
+</script>
+</body>
+</html>

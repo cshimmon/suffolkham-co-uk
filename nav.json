@@ -9,6 +9,7 @@
     { "label": "Nets",      "href": "nets.html" },
     { "label": "Events",    "href": "events.html" },
     { "label": "MeshCore",  "href": "meshcore.html" },
-    { "label": "Glossary",  "href": "glossary.html" }
+    { "label": "Glossary",    "href": "glossary.html" },
+    { "label": "Calculators", "href": "calculators.html" }
   ]
 }
