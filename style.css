@@ -224,4 +224,10 @@ footer a { color:var(--muted); text-decoration:underline; }
   .page-header { padding:2.5rem 1rem 2rem; }
   main { padding:0 1rem 4rem; }
   .step-item { grid-template-columns:32px 1fr; padding:1.1rem; }
+
+  /* Improve readability on small screens */
+  :root { --muted: #9da4bc; }
+  .section-lead, .card p, .step-body p { font-size:15px; }
+  .link-desc, .glossary-def, .event-desc,
+  .card-location, .codeplug-note, .net-note { font-size:14px; }
 }
