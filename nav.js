@@ -55,6 +55,9 @@
         '</a>' +
         '<ul class="nav-links" id="nav-menu" role="list">' + items + '</ul>' +
         '<div class="nav-controls">' +
+          '<a href="index.html#qrz-search" class="nav-search-btn" aria-label="Callsign search" title="Callsign search">' +
+            '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>' +
+          '</a>' +
           '<button class="nav-theme-toggle" aria-label="' + (isDark ? 'Switch to light mode' : 'Switch to dark mode') + '">' +
             (isDark ? sunIcon : moonIcon) +
           '</button>' +
