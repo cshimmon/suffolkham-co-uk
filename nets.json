@@ -53,6 +53,19 @@
       "notes": "Weekly net run by the Martello Tower Group. All licensed operators welcome."
     },
     {
+      "id": "mtg-monday",
+      "name": "Martello Tower Group Monday Evening Net",
+      "group": "Martello Tower Group",
+      "groupUrl": "https://martellotowergroup.com",
+      "schedule": "Every Monday",
+      "time": "20:00",
+      "mode": "FM Analogue",
+      "via": "repeater",
+      "repeater": "GB3CL",
+      "frequency": null,
+      "notes": "Weekly net run by the Martello Tower Group. All licensed operators welcome."
+    },
+    {
       "id": "ref079c-dstar",
       "name": "REF079C D-STAR Net",
       "group": "2E0UCB",
