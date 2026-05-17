@@ -217,6 +217,21 @@ function qrzSearch(e) {
 <script src="nav.js"></script>
 <script>
 (function () {
+  fetch('events.json').then(function(r){return r.json();}).then(function(data){
+    var today = new Date(); today.setHours(0,0,0,0);
+    var upcoming = (data.events||[]).filter(function(e){ return new Date(e.date) >= today; });
+    if (!upcoming.length) return;
+    var row = document.querySelector('.stat-row');
+    if (!row) return;
+    var cell = document.createElement('a');
+    cell.href = 'events.html';
+    cell.className = 'stat-cell';
+    cell.innerHTML = '<span class="stat-val" data-count="' + upcoming.length + '">' + upcoming.length + '</span><span class="stat-lbl">Event' + (upcoming.length !== 1 ? 's' : '') + '</span>';
+    row.appendChild(cell);
+    var cols = row.querySelectorAll('.stat-cell').length;
+    row.style.gridTemplateColumns = 'repeat(' + cols + ',1fr)';
+  }).catch(function(){});
+
   var els = document.querySelectorAll('.stat-val[data-count]');
   if (els.length && ('IntersectionObserver' in window)) {
     function animate(el) {
