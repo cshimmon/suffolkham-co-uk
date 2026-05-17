@@ -107,12 +107,22 @@ fetch('repeaters.json')
     // Cards
     const grid = document.getElementById('repeater-grid');
     data.repeaters.forEach(r => {
+      let inputMHz = null, outputMHz = null;
       const rows = r.frequencies.map(f => {
         const chip = f.label !== 'Network'
           ? `<button class="copy-chip" onclick="copyVal(this,'${f.value.split(' ')[0]}')" aria-label="Copy ${f.value}">Copy</button>`
           : '';
+        if (f.label === 'Input')  inputMHz  = parseFloat(f.value);
+        if (f.label === 'Output') outputMHz = parseFloat(f.value);
         return `<tr><td>${f.label}</td><td>${f.value}${chip}</td></tr>`;
-      }).join('');
+      });
+      if (inputMHz !== null && outputMHz !== null) {
+        const off = inputMHz - outputMHz;
+        const offStr = (off >= 0 ? '+' : '') + (Math.abs(off) >= 1 ? off.toFixed(3) + ' MHz' : (off * 1000).toFixed(0) + ' kHz');
+        const idx = rows.findIndex(row => row.includes('<td>Input</td>'));
+        if (idx !== -1) rows.splice(idx + 1, 0, `<tr><td>Offset</td><td>${offStr}</td></tr>`);
+      }
+      const rowsHtml = rows.join('');
       const note = r.note ? `<div class="card-note note-${r.noteType}">${r.note}</div>` : '';
       const locMt = r.note ? 'style="margin-top:0.75rem;"' : '';
       const groupHtml = r.groupUrl
@@ -128,7 +138,7 @@ fetch('repeaters.json')
             <span class="status-badge badge-${r.status}">${r.statusLabel}</span>
           </div>
           <div class="card-mode">${r.mode}</div>
-          <table class="freq-table" aria-label="${r.callsign} frequency details"><tbody>${rows}</tbody></table>
+          <table class="freq-table" aria-label="${r.callsign} frequency details"><tbody>${rowsHtml}</tbody></table>
           ${note}
           <div class="card-location" ${locMt}>${PIN} ${r.location}</div>
           ${groupHtml}
