@@ -53,7 +53,18 @@
   .calc-tabs { display:flex; gap:4px; margin-bottom:1rem; flex-wrap:wrap; }
   .calc-tab { font-family:var(--mono); font-size:11px; padding:5px 12px; border-radius:4px; border:1px solid var(--border2); background:none; color:var(--muted); cursor:pointer; transition:all 0.15s; }
   .calc-tab.active { background:var(--cyan-dim); color:var(--cyan); border-color:var(--cyan-bd); }
-  @media (max-width:480px) { .calc-grid { grid-template-columns:1fr; } }
+  .offset-presets { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:0.5rem; }
+  .offset-preset { font-family:var(--mono); font-size:13px; font-weight:500; padding:8px 16px; border-radius:6px; border:1px solid var(--border2); background:var(--bg3); color:var(--muted); cursor:pointer; transition:all 0.15s; text-align:center; line-height:1.3; }
+  .offset-preset:hover { border-color:var(--cyan-bd); color:var(--cyan); }
+  .offset-preset.active { background:var(--cyan-dim); color:var(--cyan); border-color:var(--cyan-bd); }
+  .offset-preset span { display:block; font-size:10px; letter-spacing:0.06em; text-transform:uppercase; margin-top:2px; opacity:0.7; }
+  .offset-preset.active span { opacity:1; }
+  .offset-band-badge { display:inline-flex; align-items:center; font-family:var(--mono); font-size:11px; padding:5px 10px; border-radius:4px; margin-bottom:1rem; gap:6px; }
+  .offset-band-2m   { background:var(--cyan-dim);   color:var(--cyan);   border:1px solid var(--cyan-bd); }
+  .offset-band-70cm { background:var(--purple-dim); color:var(--purple); border:1px solid var(--purple-bd); }
+  .offset-band-warn { background:var(--amber-dim);  color:var(--amber);  border:1px solid var(--amber-bd); }
+  .offset-swap-btn { background:var(--bg3); color:var(--muted); border:1px solid var(--border2); border-radius:6px; padding:0 12px; cursor:pointer; display:flex; align-items:center; gap:5px; font-family:var(--mono); font-size:11px; transition:all 0.15s; flex-shrink:0; }
+  .offset-swap-btn:hover { color:var(--text); border-color:var(--border2); background:var(--bg4); }
 </style>
 </head>
 <body>
@@ -185,6 +196,87 @@
 
 <hr class="divider">
 
+<div id="offset" style="margin-bottom:1.75rem;">
+  <div class="section-label">Repeaters</div>
+  <h2 class="section-title">Repeater Offset Calculator</h2>
+  <p class="section-lead">Enter an output or input frequency, pick the standard offset for the band, and the calculator works out the other frequency. All values shown to 4 decimal places.</p>
+</div>
+
+<div style="margin-bottom:1.5rem; max-width:620px;">
+  <div class="calc-card">
+
+    <!-- Known frequency tab -->
+    <div style="margin-bottom:1.1rem;">
+      <span class="calc-field-label" style="margin-bottom:6px;">I am entering the…</span>
+      <div class="calc-tabs" id="offset-know-tabs">
+        <button class="calc-tab active" onclick="setOffsetKnow(this,'output')">Output frequency</button>
+        <button class="calc-tab"        onclick="setOffsetKnow(this,'input')">Input frequency</button>
+      </div>
+    </div>
+
+    <!-- Frequency input + swap -->
+    <span class="calc-field-label" id="offset-freq-label">Output frequency (MHz)</span>
+    <div class="calc-row">
+      <input class="calc-input" type="number" id="offset-freq" placeholder="e.g. 145.650" step="any" min="0" oninput="offsetBandDetect()">
+      <button class="offset-swap-btn" onclick="offsetSwap()" title="Swap input / output">
+        <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+        Swap
+      </button>
+    </div>
+
+    <!-- Band detection badge -->
+    <div id="offset-band-badge" style="display:none;"></div>
+
+    <!-- Offset presets -->
+    <span class="calc-field-label" style="margin-bottom:8px; display:block; margin-top:0.1rem;">Offset</span>
+    <div class="offset-presets" id="offset-presets">
+      <button class="offset-preset active" data-val="-0.6"  onclick="selectOffsetPreset(this)">−0.6 MHz<span>2m</span></button>
+      <button class="offset-preset"        data-val="0.6"   onclick="selectOffsetPreset(this)">+0.6 MHz<span>2m</span></button>
+      <button class="offset-preset"        data-val="1.6"   onclick="selectOffsetPreset(this)">+1.6 MHz<span>70cm</span></button>
+      <button class="offset-preset"        data-val="-1.6"  onclick="selectOffsetPreset(this)">−1.6 MHz<span>70cm</span></button>
+      <button class="offset-preset"        data-val="custom" onclick="selectOffsetPreset(this)">Custom</button>
+    </div>
+
+    <!-- Custom offset -->
+    <div id="offset-custom-row" style="display:none; margin-top:0.75rem;">
+      <span class="calc-field-label">Custom offset (MHz) — use − for negative</span>
+      <div class="calc-row" style="max-width:220px;">
+        <input class="calc-input" type="number" id="offset-custom-val" placeholder="e.g. −9.0" step="any">
+      </div>
+    </div>
+
+    <!-- Error -->
+    <div class="calc-err" id="offset-err">Please enter a valid frequency in MHz greater than zero.</div>
+
+    <!-- Calculate -->
+    <button class="calc-btn" style="margin-top:1rem;" onclick="calcOffset()">Calculate</button>
+
+    <!-- Results -->
+    <div class="calc-result" id="offset-res"></div>
+
+  </div>
+</div>
+
+<!-- Explainer cards -->
+<div style="margin-bottom:3rem;">
+  <div class="grid-3">
+    <div class="card">
+      <h3>What is an offset?</h3>
+      <p>A repeater transmits and receives on two different frequencies at the same time. The gap between those frequencies is called the offset. A typical 2m repeater uses a 600 kHz offset; 70cm FM repeaters typically use 1.6 MHz.</p>
+    </div>
+    <div class="card">
+      <h3>Input vs output</h3>
+      <p>The <strong style="color:var(--text);">output</strong> is the frequency the repeater transmits on — what you tune to and listen on. The <strong style="color:var(--text);">input</strong> is the frequency you transmit on. Your radio needs both programmed, plus the correct CTCSS tone.</p>
+    </div>
+    <div class="card">
+      <h3>Why the offset?</h3>
+      <p>If the repeater used the same frequency for both transmit and receive, it would hear its own output and loop continuously. The offset keeps them separate so the repeater can listen and talk simultaneously without interfering with itself.</p>
+    </div>
+  </div>
+</div>
+
+<hr class="divider">
+
 <div id="antenna" style="margin-bottom:1.75rem;">
   <div class="section-label">Antenna design</div>
   <h2 class="section-title">Antenna Calculators</h2>
@@ -299,6 +391,130 @@
 
 <script src="nav.js"></script>
 <script>
+// ── Repeater Offset Calculator ───────────────────────────────────────────────
+
+var offsetKnow = 'output';
+var offsetPresetVal = '-0.6';
+
+function setOffsetKnow(btn, know) {
+  offsetKnow = know;
+  document.querySelectorAll('#offset-know-tabs .calc-tab').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  var label = document.getElementById('offset-freq-label');
+  var inp   = document.getElementById('offset-freq');
+  label.textContent = know === 'output' ? 'Output frequency (MHz)' : 'Input frequency (MHz)';
+  inp.placeholder   = know === 'output' ? 'e.g. 145.650' : 'e.g. 145.050';
+  offsetBandDetect();
+}
+
+function selectOffsetPreset(btn) {
+  document.querySelectorAll('.offset-preset').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  offsetPresetVal = btn.dataset.val;
+  document.getElementById('offset-custom-row').style.display = offsetPresetVal === 'custom' ? '' : 'none';
+}
+
+function selectPresetByVal(val) {
+  document.querySelectorAll('.offset-preset').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.val === val);
+  });
+  offsetPresetVal = val;
+  document.getElementById('offset-custom-row').style.display = 'none';
+}
+
+function offsetBandDetect() {
+  var f     = parseFloat(document.getElementById('offset-freq').value);
+  var badge = document.getElementById('offset-band-badge');
+  if (!f || f <= 0) { badge.style.display = 'none'; return; }
+
+  var text, cls, preset2m = offsetKnow === 'output' ? '-0.6' : '0.6';
+  var preset70 = offsetKnow === 'output' ? '1.6' : '-1.6';
+
+  if (f >= 144 && f <= 146) {
+    text = '2m band — standard offset is ' + (offsetKnow === 'output' ? '−0.6 MHz' : '+0.6 MHz');
+    cls  = 'offset-band-2m';
+    selectPresetByVal(preset2m);
+  } else if (f >= 430 && f <= 440) {
+    text = '70cm band — standard FM offset is ' + (offsetKnow === 'output' ? '+1.6 MHz' : '−1.6 MHz');
+    cls  = 'offset-band-70cm';
+    selectPresetByVal(preset70);
+  } else if (f >= 50 && f <= 52) {
+    text = '6m band — offset varies, check with repeater keeper';
+    cls  = 'offset-band-warn';
+  } else if (f > 0) {
+    text = 'Outside common UK amateur bands — check offset carefully';
+    cls  = 'offset-band-warn';
+  }
+
+  badge.className     = 'offset-band-badge ' + cls;
+  badge.textContent   = text;
+  badge.style.display = 'inline-flex';
+}
+
+function offsetSwap() {
+  var newKnow = offsetKnow === 'output' ? 'input' : 'output';
+  var tabs = document.querySelectorAll('#offset-know-tabs .calc-tab');
+  setOffsetKnow(tabs[newKnow === 'output' ? 0 : 1], newKnow);
+}
+
+function calcOffset() {
+  var f = parseFloat(document.getElementById('offset-freq').value);
+  if (!f || f <= 0) {
+    document.getElementById('offset-err').textContent = 'Enter a valid frequency in MHz greater than zero.';
+    showErr('offset-res', 'offset-err');
+    return;
+  }
+  var offset;
+  if (offsetPresetVal === 'custom') {
+    offset = parseFloat(document.getElementById('offset-custom-val').value);
+    if (isNaN(offset)) {
+      document.getElementById('offset-err').textContent = 'Enter a custom offset value in MHz (use − for negative).';
+      showErr('offset-res', 'offset-err');
+      return;
+    }
+  } else {
+    offset = parseFloat(offsetPresetVal);
+  }
+
+  var output = offsetKnow === 'output' ? f : f - offset;
+  var input  = offsetKnow === 'output' ? f + offset : f;
+
+  if (input <= 0 || output <= 0) {
+    document.getElementById('offset-err').textContent = 'Result would be a negative frequency — check the offset direction.';
+    showErr('offset-res', 'offset-err');
+    return;
+  }
+
+  var outStr = output.toFixed(4) + ' MHz';
+  var inStr  = input.toFixed(4)  + ' MHz';
+  var sign   = offset >= 0 ? '+' : '';
+  var offStr = sign + offset.toFixed(4) + ' MHz  (' + sign + (offset * 1000).toFixed(0) + ' kHz)';
+
+  var el = document.getElementById('offset-res');
+  el.innerHTML =
+    rrow('Output — listen on',   outStr, output.toFixed(4)) +
+    rrow('Input — transmit on',  inStr,  input.toFixed(4))  +
+    '<div class="calc-rrow"><span class="calc-rlbl">Offset</span><span class="calc-rval">' + offStr + '</span></div>';
+  el.classList.add('show');
+}
+
+function rrow(label, display, copyVal) {
+  return '<div class="calc-rrow"><span class="calc-rlbl">' + label + '</span>' +
+    '<span class="calc-rval" style="display:flex;align-items:center;gap:6px;">' +
+    '<span>' + display + '</span>' +
+    '<button class="copy-chip" onclick="copyOffsetFreq(this,\'' + copyVal + '\')">Copy</button>' +
+    '</span></div>';
+}
+
+function copyOffsetFreq(btn, val) {
+  navigator.clipboard.writeText(val).then(function() {
+    btn.textContent = '✓';
+    btn.style.color = 'var(--green)';
+    btn.style.borderColor = 'var(--green-bd)';
+    setTimeout(function() { btn.textContent = 'Copy'; btn.style.color = ''; btn.style.borderColor = ''; }, 1500);
+  });
+}
+
 // ── Helpers ──────────────────────────────────────────────────────────────────
 
 function showRes(id, rows) {
