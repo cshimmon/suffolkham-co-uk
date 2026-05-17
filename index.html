@@ -50,9 +50,30 @@
   .feature-card h3 { font-size:1rem; font-weight:600; color:var(--text); margin-bottom:0.5rem; }
   .feature-card p  { font-size:14px; color:var(--muted); line-height:1.7; }
   .feature-card .go { font-family:var(--mono); font-size:11px; color:var(--cyan); margin-top:0.75rem; display:block; }
+
+  @media (max-width:768px) {
+    #splash { position:fixed; inset:0; z-index:9999; background:#0369a1; display:flex; align-items:center; justify-content:center; animation:splash-fade 0.5s ease 0.8s forwards; }
+    @keyframes splash-fade { to { opacity:0; pointer-events:none; } }
+  }
+  @media (min-width:769px) { #splash { display:none; } }
 </style>
 </head>
 <body>
+
+<div id="splash" aria-hidden="true">
+  <svg height="100" viewBox="0 0 64.24 181.96" fill="none" style="color:#fff;">
+    <path fill="currentColor" d="M62.81,69.23v3.63h-15.23v-2.54c0-9.68-6.07-13.91-15.58-13.91-8.33,0-13.44,4.23-13.44,10.04,0,7.98,7.38,9.44,17.37,11.73l1.07.24c17.13,3.87,27.24,10.04,27.24,25.4,0,17.06-13.08,26.61-30.81,26.61-20.34,0-33.43-11.13-33.43-30.97v-2.66h15.46v2.18c0,10.4,5.83,17.42,18.44,17.42,10.11,0,14.87-5.44,14.87-11.73,0-7.38-6.19-9.8-17.13-12.22l-1.07-.24c-17.25-3.87-27.48-9.92-27.48-25.28s12.73-24.56,28.91-24.56c17.84,0,30.81,9.92,30.81,26.86z"/>
+    <polygon points="33.08 31.25 54.69 3 11.46 3 33.08 31.25" stroke="currentColor" stroke-miterlimit="10" stroke-width="6"/>
+    <line x1="33.08" y1="3" x2="33.08" y2="40.56" stroke="currentColor" stroke-miterlimit="10" stroke-width="6"/>
+    <line x1="33.13" y1="131.74" x2="33.13" y2="147.45" stroke="currentColor" stroke-miterlimit="10" stroke-width="6"/>
+    <line x1="9.57" y1="147.45" x2="56.58" y2="147.45" stroke="currentColor" stroke-miterlimit="10" stroke-width="6"/>
+    <line x1="13.25" y1="155.33" x2="50.51" y2="155.33" stroke="currentColor" stroke-miterlimit="10" stroke-width="6"/>
+    <line x1="18.44" y1="163.21" x2="45.32" y2="163.21" stroke="currentColor" stroke-miterlimit="10" stroke-width="6"/>
+    <line x1="22.06" y1="171.08" x2="41.7" y2="171.08" stroke="currentColor" stroke-miterlimit="10" stroke-width="6"/>
+    <line x1="26.5" y1="178.96" x2="37.26" y2="178.96" stroke="currentColor" stroke-miterlimit="10" stroke-width="6"/>
+  </svg>
+</div>
+<script>var s=document.getElementById('splash');if(s)s.addEventListener('animationend',function(){this.remove();});</script>
 
 <a href="#main" class="skip-link">Skip to main content</a>
 
