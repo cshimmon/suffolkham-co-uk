@@ -245,7 +245,7 @@ function qrzSearch(e) {
         var cell = document.createElement('a');
         cell.href = 'events.html';
         cell.className = 'stat-cell';
-        cell.innerHTML = '<span class="stat-val" data-count="' + upcoming.length + '">' + upcoming.length + '</span><span class="stat-lbl">Event' + (upcoming.length !== 1 ? 's' : '') + '</span>';
+        cell.innerHTML = '<span class="stat-val" data-count="' + upcoming.length + '">0</span><span class="stat-lbl">Event' + (upcoming.length !== 1 ? 's' : '') + '</span>';
         row.appendChild(cell);
         row.style.gridTemplateColumns = 'repeat(' + row.querySelectorAll('.stat-cell').length + ',1fr)';
       }
