@@ -73,7 +73,17 @@
     <line x1="26.5" y1="178.96" x2="37.26" y2="178.96" stroke="currentColor" stroke-miterlimit="10" stroke-width="6"/>
   </svg>
 </div>
-<script>var s=document.getElementById('splash');if(s)s.addEventListener('animationend',function(){this.remove();});</script>
+<script>
+  var s=document.getElementById('splash');
+  if(s){
+    if(sessionStorage.getItem('splashSeen')){
+      s.remove();
+    } else {
+      sessionStorage.setItem('splashSeen','1');
+      s.addEventListener('animationend',function(){this.remove();});
+    }
+  }
+</script>
 
 <a href="#main" class="skip-link">Skip to main content</a>
 
