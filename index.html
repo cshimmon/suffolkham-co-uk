@@ -174,14 +174,6 @@
 </footer>
 
 <script>
-document.addEventListener('click', function(e) {
-  var a = e.target.closest('a[href="index.html#qrz-search"]');
-  if (a) {
-    var el = document.getElementById('qrz-search');
-    if (el) { e.preventDefault(); el.scrollIntoView({ behavior: 'smooth', block: 'start' }); setTimeout(function(){ document.getElementById('qrz-input').focus(); }, 400); }
-  }
-});
-
 function qrzSearch(e) {
   e.preventDefault();
   var call = document.getElementById('qrz-input').value.trim().toUpperCase();

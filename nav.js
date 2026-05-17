@@ -3,6 +3,7 @@
 
   var moonIcon = '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>';
   var sunIcon  = '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>';
+  var searchIcon = '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>';
 
   function getTheme() {
     return document.documentElement.getAttribute('data-theme') || 'light';
@@ -23,6 +24,53 @@
   if (saved) document.documentElement.setAttribute('data-theme', saved);
 
   var page = location.pathname.split('/').pop() || 'index.html';
+
+  /* ---- QRZ Modal ---- */
+  var modal = document.createElement('div');
+  modal.id = 'qrz-modal';
+  modal.setAttribute('role', 'dialog');
+  modal.setAttribute('aria-modal', 'true');
+  modal.setAttribute('aria-label', 'Callsign lookup');
+  modal.innerHTML =
+    '<div class="qrz-modal-backdrop"></div>' +
+    '<div class="qrz-modal-box">' +
+      '<div class="qrz-modal-header">' +
+        '<span>Callsign lookup</span>' +
+        '<button class="qrz-modal-close" aria-label="Close">✕</button>' +
+      '</div>' +
+      '<form class="qrz-modal-form" id="qrz-modal-form">' +
+        '<input id="qrz-modal-input" type="text" placeholder="e.g. M9XCN" autocomplete="off" autocapitalize="characters" spellcheck="false" style="text-transform:uppercase;">' +
+        '<button type="submit" class="btn btn-primary">Look up ↗</button>' +
+      '</form>' +
+      '<p class="qrz-modal-hint">Opens qrz.com in a new tab</p>' +
+    '</div>';
+  document.body.appendChild(modal);
+
+  function openModal() {
+    modal.classList.add('qrz-modal-open');
+    document.body.style.overflow = 'hidden';
+    setTimeout(function () { document.getElementById('qrz-modal-input').focus(); }, 50);
+  }
+
+  function closeModal() {
+    modal.classList.remove('qrz-modal-open');
+    document.body.style.overflow = '';
+  }
+
+  modal.querySelector('.qrz-modal-backdrop').addEventListener('click', closeModal);
+  modal.querySelector('.qrz-modal-close').addEventListener('click', closeModal);
+  modal.querySelector('#qrz-modal-form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    var call = document.getElementById('qrz-modal-input').value.trim().toUpperCase();
+    if (call) {
+      window.open('https://www.qrz.com/db/' + encodeURIComponent(call), '_blank', 'noopener');
+      closeModal();
+    }
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && modal.classList.contains('qrz-modal-open')) closeModal();
+  });
 
   fetch('nav.json')
     .then(function (r) { return r.json(); })
@@ -55,9 +103,9 @@
         '</a>' +
         '<ul class="nav-links" id="nav-menu" role="list">' + items + '</ul>' +
         '<div class="nav-controls">' +
-          '<a href="index.html#qrz-search" class="nav-search-btn" aria-label="Callsign search" title="Callsign search">' +
-            '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>' +
-          '</a>' +
+          '<button class="nav-search-btn" aria-label="Callsign search" title="Callsign search">' +
+            searchIcon +
+          '</button>' +
           '<button class="nav-theme-toggle" aria-label="' + (isDark ? 'Switch to light mode' : 'Switch to dark mode') + '">' +
             (isDark ? sunIcon : moonIcon) +
           '</button>' +
@@ -66,9 +114,11 @@
           '</button>' +
         '</div>';
 
-      var toggle     = nav.querySelector('.nav-toggle');
-      var themeBtn   = nav.querySelector('.nav-theme-toggle');
-      var menu       = document.getElementById('nav-menu');
+      nav.querySelector('.nav-search-btn').addEventListener('click', openModal);
+
+      var toggle   = nav.querySelector('.nav-toggle');
+      var themeBtn = nav.querySelector('.nav-theme-toggle');
+      var menu     = document.getElementById('nav-menu');
 
       themeBtn.addEventListener('click', function () {
         applyTheme(getTheme() === 'dark' ? 'light' : 'dark');
@@ -102,7 +152,7 @@
       });
 
       document.addEventListener('click', function (e) {
-        if (!nav.contains(e.target)) close();
+        if (!nav.contains(e.target) && !modal.contains(e.target)) close();
       });
     })
     .catch(function () {});
