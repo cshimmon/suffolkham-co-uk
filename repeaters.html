@@ -118,9 +118,14 @@ fetch('repeaters.json')
       });
       if (inputMHz !== null && outputMHz !== null) {
         const off = inputMHz - outputMHz;
-        const offStr = (off >= 0 ? '+' : '') + off.toFixed(3) + ' MHz';
-        const idx = rows.findIndex(row => row.includes('<td>Input</td>'));
-        if (idx !== -1) rows.splice(idx + 1, 0, `<tr><td>Offset</td><td>${offStr}</td></tr>`);
+        const offVal = (off >= 0 ? '+' : '') + off.toFixed(3);
+        const offStr = offVal + ' MHz';
+        const offRow = `<tr style="opacity:0.55;">` +
+          `<td style="font-style:italic;">Offset</td>` +
+          `<td>${offStr}<button class="copy-chip" onclick="copyVal(this,'${offVal}')" aria-label="Copy offset">Copy</button></td>` +
+          `</tr>`;
+        const idx = rows.findIndex(row => row.includes('<td>Output</td>'));
+        if (idx !== -1) rows.splice(idx + 1, 0, offRow);
       }
       const rowsHtml = rows.join('');
       const note = r.note ? `<div class="card-note note-${r.noteType}">${r.note}</div>` : '';
