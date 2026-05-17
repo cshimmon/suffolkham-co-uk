@@ -8,6 +8,7 @@
       "location": "Kirton Recreation Ground, Kirton, Suffolk",
       "what3words": "pickup.pirates.something",
       "description": "The East Suffolk Wireless Revival — a local radio rally for amateur radio operators and enthusiasts. Traders, bring-and-buy, and a great chance to meet local operators.",
+      "organiser": "ESWR",
       "url": "http://www.eswr.org.uk/",
       "type": "rally"
     },
@@ -32,7 +33,7 @@
       "endDate": "2026-06-28",
       "time": "10:00",
       "endTime": "16:00",
-      "location": "FDARS Shack",
+      "location": "FDARS Shack, Foxhall Road, Ipswich",
       "what3words": "canny.charge.dragon",
       "description": "FDARS will be demonstrating that, following the birth of land to air communication in 1910, wireless telegraphy still has its place in the modern world.",
       "organiser": "FDARS",
