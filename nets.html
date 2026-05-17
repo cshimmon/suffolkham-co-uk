@@ -88,6 +88,7 @@ fetch('nets.json')
   .then(data => {
     const grid = document.getElementById('net-grid');
     data.nets.forEach(n => {
+      const isBroadcast = n.type === 'broadcast';
       const viaHtml = n.repeater
         ? `<a href="repeaters.html#${n.repeater}" style="color:var(--cyan);text-decoration:none;">${n.repeater}</a>`
         : n.frequency;
@@ -95,11 +96,14 @@ fetch('nets.json')
       const groupHtml = n.groupUrl
         ? `<a href="${n.groupUrl}" target="_blank" rel="noopener">${n.group}</a>`
         : n.group;
+      const badgeHtml = isBroadcast
+        ? `<span class="net-mode-badge net-broadcast-badge">&#x1F4E1; Broadcast</span>`
+        : `<span class="net-mode-badge">${n.mode}</span>`;
       grid.insertAdjacentHTML('beforeend', `
-        <div class="net-card">
+        <div class="net-card${isBroadcast ? ' net-card-broadcast' : ''}">
           <div class="net-card-header">
             <span class="net-name">${n.name}</span>
-            <span class="net-mode-badge">${n.mode}</span>
+            ${badgeHtml}
           </div>
           <div class="net-card-body">
             <div class="net-row"><span class="net-label">Schedule</span><span class="net-val">${n.schedule}</span></div>

@@ -252,6 +252,9 @@ main { max-width:1060px; margin:0 auto; padding:0 2rem 5rem; }
 .net-val a { color:var(--cyan); text-decoration:none; }
 .net-val a:hover { text-decoration:underline; }
 .net-note  { font-size:13px; color:var(--muted); padding-top:0.75rem; line-height:1.55; }
+.net-card-broadcast { border-style:dashed; opacity:0.85; }
+.net-card-broadcast .net-card-header { background:transparent; }
+.net-broadcast-badge { background:var(--amber-dim); color:var(--amber); border-color:var(--amber-bd); }
 
 /* ── STEP LIST ── */
 .steps-list { display:flex; flex-direction:column; gap:12px; }

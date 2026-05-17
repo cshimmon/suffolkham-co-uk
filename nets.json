@@ -1,6 +1,20 @@
 {
   "nets": [
     {
+      "id": "gb2rs",
+      "name": "GB2RS News Broadcast",
+      "type": "broadcast",
+      "group": "RSGB",
+      "groupUrl": "https://rsgb.org/main/news/gb2rs-news-bulletins/",
+      "schedule": "Every Sunday",
+      "time": "09:30",
+      "mode": "FM Simplex",
+      "via": "simplex",
+      "repeater": null,
+      "frequency": "145.525 MHz",
+      "notes": "Weekly news bulletin read by a local amateur. Tune in and listen — no licence required to receive."
+    },
+    {
       "id": "fdars-wednesday",
       "name": "FDARS Wednesday Evening Net",
       "group": "FDARS",
