@@ -109,7 +109,7 @@ fetch('events.json')
 
       const timeStr = e.time ? (e.endTime ? `${e.time}–${e.endTime}` : e.time) : '';
       const w3wHtml = e.what3words
-        ? `<div class="event-location" style="color:var(--faint);">${W3W} <a href="https://what3words.com/${e.what3words}" target="_blank" rel="noopener" style="color:var(--faint);text-decoration:none;">///  ${e.what3words}</a></div>`
+        ? `<div class="event-location" style="color:var(--faint);">${W3W} <a href="https://what3words.com/${e.what3words}" target="_blank" rel="noopener" style="color:var(--faint);text-decoration:none;">${e.what3words}</a></div>`
         : '';
       const orgHtml = e.organiser
         ? `<div style="font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:0.5rem;">${e.organiser}</div>`
