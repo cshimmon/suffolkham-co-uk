@@ -9,6 +9,45 @@
       "description": "The East Suffolk Wireless Revival — a local radio rally for amateur radio operators and enthusiasts. Traders, bring-and-buy, and a great chance to meet local operators.",
       "url": "http://www.eswr.org.uk/",
       "type": "rally"
+    },
+    {
+      "id": "fdars-aviation-show-2026",
+      "title": "Suffolk Aviation Heritage Group Military Show",
+      "date": "2026-06-12",
+      "endDate": "2026-06-14",
+      "dayLabel": "12 & 14",
+      "time": "10:00",
+      "endTime": "16:00",
+      "location": "FDARS Shack, Foxhall Road, Ipswich",
+      "what3words": "canny.charge.dragon",
+      "organiser": "FDARS",
+      "url": "https://www.facebook.com/groups/124574503181",
+      "type": "special-event"
+    },
+    {
+      "id": "fdars-museums-on-air-2026",
+      "title": "International Museums on the Air",
+      "date": "2026-06-27",
+      "endDate": "2026-06-28",
+      "time": "10:00",
+      "endTime": "16:00",
+      "location": "FDARS Shack",
+      "what3words": "canny.charge.dragon",
+      "description": "FDARS will be demonstrating that, following the birth of land to air communication in 1910, wireless telegraphy still has its place in the modern world.",
+      "organiser": "FDARS",
+      "url": "https://www.facebook.com/groups/124574503181",
+      "type": "special-event"
+    },
+    {
+      "id": "fdars-beach-op-2026",
+      "title": "Beach Operation",
+      "date": "2026-06-30",
+      "time": "18:30",
+      "location": "FDARS Beach Hut",
+      "what3words": "dormant.mailings.care",
+      "organiser": "FDARS",
+      "url": "https://www.facebook.com/groups/124574503181",
+      "type": "portable"
     }
   ]
 }

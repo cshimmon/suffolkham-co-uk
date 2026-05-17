@@ -76,14 +76,15 @@
 <script>
 const MONTHS = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
 const PIN = `<svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M12 21c-4-4-7-8.5-7-12a7 7 0 1 1 14 0c0 3.5-3 8-7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>`;
+const W3W = `<svg width="12" height="12" viewBox="0 0 100 100" fill="currentColor" aria-hidden="true"><path d="M23.5 13L0 87h15.5l23.5-74H23.5zm27 0L27 87h15.5l23.5-74H50.5zm27 0L54 87h15.5L93 13H77.5z"/></svg>`;
 
 fetch('events.json')
   .then(r => r.json())
   .then(data => {
     const grid = document.getElementById('event-grid');
-    const now = new Date();
+    const today = new Date(); today.setHours(0,0,0,0);
     const upcoming = data.events
-      .filter(e => new Date(e.date) >= new Date(now.toDateString()))
+      .filter(e => new Date(e.endDate || e.date) >= today)
       .sort((a,b) => new Date(a.date) - new Date(b.date));
 
     if (upcoming.length === 0) {
@@ -92,14 +93,32 @@ fetch('events.json')
     }
 
     upcoming.forEach(e => {
-      const d = new Date(e.date);
-      const day   = d.getDate();
+      const d = new Date(e.date + 'T00:00:00');
       const month = MONTHS[d.getMonth()];
       const year  = d.getFullYear();
+
+      let dayHtml;
+      if (e.dayLabel) {
+        dayHtml = e.dayLabel;
+      } else if (e.endDate) {
+        const d2 = new Date(e.endDate + 'T00:00:00');
+        dayHtml = d.getDate() + '&ndash;' + d2.getDate();
+      } else {
+        dayHtml = String(d.getDate()).padStart(2, '0');
+      }
+
+      const timeStr = e.time ? (e.endTime ? `${e.time}–${e.endTime}` : e.time) : '';
+      const w3wHtml = e.what3words
+        ? `<div class="event-location" style="color:var(--faint);">${W3W} <a href="https://what3words.com/${e.what3words}" target="_blank" rel="noopener" style="color:var(--faint);text-decoration:none;">///  ${e.what3words}</a></div>`
+        : '';
+      const orgHtml = e.organiser
+        ? `<div style="font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:0.5rem;">${e.organiser}</div>`
+        : '';
+
       grid.insertAdjacentHTML('beforeend', `
         <div class="event-card">
           <div class="event-card-date">
-            <div class="event-day">${String(day).padStart(2,'0')}</div>
+            <div class="event-day">${dayHtml}</div>
             <div class="event-month-year">
               <span class="event-month">${month}</span>
               <span class="event-year">${year}</span>
@@ -107,9 +126,11 @@ fetch('events.json')
           </div>
           <div class="event-card-body">
             <div class="event-title">${e.title}</div>
-            ${e.time ? `<div class="event-time">${e.time}</div>` : ''}
+            ${timeStr ? `<div class="event-time">${timeStr}</div>` : ''}
             ${e.location ? `<div class="event-location">${PIN} ${e.location}</div>` : ''}
+            ${w3wHtml}
             ${e.description ? `<div class="event-desc">${e.description}</div>` : ''}
+            ${orgHtml}
           </div>
           ${e.url ? `<div class="event-card-footer"><a href="${e.url}" target="_blank" rel="noopener">More information ↗</a></div>` : ''}
         </div>
