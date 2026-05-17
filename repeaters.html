@@ -118,7 +118,7 @@ fetch('repeaters.json')
       });
       if (inputMHz !== null && outputMHz !== null) {
         const off = inputMHz - outputMHz;
-        const offStr = (off >= 0 ? '+' : '') + (Math.abs(off) >= 1 ? off.toFixed(3) + ' MHz' : (off * 1000).toFixed(0) + ' kHz');
+        const offStr = (off >= 0 ? '+' : '') + off.toFixed(3) + ' MHz';
         const idx = rows.findIndex(row => row.includes('<td>Input</td>'));
         if (idx !== -1) rows.splice(idx + 1, 0, `<tr><td>Offset</td><td>${offStr}</td></tr>`);
       }
