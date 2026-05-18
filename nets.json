@@ -30,15 +30,15 @@
     {
       "id": "fdars-sunday",
       "name": "FDARS Sunday Morning Net",
-      "group": "FDARS",
-      "groupUrl": "https://www.fdars.co.uk",
+      "group": "2E0DWU",
+      "groupUrl": "https://www.qrz.com/db/2E0DWU",
       "schedule": "Every Sunday",
       "time": "10:00",
       "mode": "FM Simplex",
       "via": "simplex",
       "repeater": null,
       "frequency": "145.400 MHz",
-      "notes": "Informal local net on simplex. Good for a casual Sunday morning chat."
+      "notes": "Informal local net on simplex run as part of <a href=\"https://www.fdars.co.uk\" target=\"_blank\" rel=\"noopener\">FDARS</a> activity. Good for a casual Sunday morning chat."
     },
     {
       "id": "mtg-sunday",
