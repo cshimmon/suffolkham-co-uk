@@ -80,6 +80,19 @@
       "notes": "Weekly net run by the Martello Tower Group. All licensed operators welcome."
     },
     {
+      "id": "g7ciy-sunday",
+      "name": "Sunday Morning Post-News Net",
+      "group": "G7CIY",
+      "groupUrl": "https://www.qrz.com/db/G7CIY",
+      "schedule": "Every Sunday",
+      "time": "After GB2RS",
+      "mode": "FM Simplex",
+      "via": "simplex",
+      "repeater": null,
+      "frequency": "145.550 MHz",
+      "notes": "Informal chat and signal reports following the GB2RS news broadcast. No fixed start time — just tune in after the news ends."
+    },
+    {
       "id": "ref079c-dstar",
       "name": "REF079C D-STAR Net",
       "group": "2E0UCB",
