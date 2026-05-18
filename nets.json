@@ -15,17 +15,17 @@
       "notes": "Weekly news bulletin read by a local amateur. Tune in and listen — no licence required to receive."
     },
     {
-      "id": "fdars-wednesday",
-      "name": "FDARS Wednesday Evening Net",
-      "group": "FDARS",
-      "groupUrl": "https://www.fdars.co.uk",
-      "schedule": "Every Wednesday",
-      "time": "19:30",
-      "mode": "FM Analogue",
-      "via": "repeater",
-      "repeater": "GB3PO",
-      "frequency": null,
-      "notes": "General chat and local radio discussion. All licensed operators welcome."
+      "id": "g7ciy-sunday",
+      "name": "Sunday Morning Post-News Net",
+      "group": "G7CIY",
+      "groupUrl": "https://www.qrz.com/db/G7CIY",
+      "schedule": "Every Sunday",
+      "time": "After GB2RS",
+      "mode": "FM Simplex",
+      "via": "simplex",
+      "repeater": null,
+      "frequency": "145.550 MHz",
+      "notes": "Informal chat and signal reports following the GB2RS news broadcast. No fixed start time — just tune in after the news ends."
     },
     {
       "id": "fdars-sunday",
@@ -39,19 +39,6 @@
       "repeater": null,
       "frequency": "145.400 MHz",
       "notes": "Informal local net on simplex. Good for a casual Sunday morning chat."
-    },
-    {
-      "id": "fdars-4m",
-      "name": "East Suffolk 4m Net",
-      "group": "FDARS",
-      "groupUrl": "https://www.fdars.co.uk",
-      "schedule": "2nd and 4th Fridays",
-      "time": "19:30",
-      "mode": "FM Analogue",
-      "via": "simplex",
-      "repeater": null,
-      "frequency": "70.450 MHz",
-      "notes": "Open to all licensed operators. A great way to use the 4m band."
     },
     {
       "id": "mtg-sunday",
@@ -80,17 +67,30 @@
       "notes": "Weekly net run by the Martello Tower Group. All licensed operators welcome."
     },
     {
-      "id": "g7ciy-sunday",
-      "name": "Sunday Morning Post-News Net",
-      "group": "G7CIY",
-      "groupUrl": "https://www.qrz.com/db/G7CIY",
-      "schedule": "Every Sunday",
-      "time": "After GB2RS",
-      "mode": "FM Simplex",
+      "id": "fdars-wednesday",
+      "name": "FDARS Wednesday Evening Net",
+      "group": "FDARS",
+      "groupUrl": "https://www.fdars.co.uk",
+      "schedule": "Every Wednesday",
+      "time": "19:30",
+      "mode": "FM Analogue",
+      "via": "repeater",
+      "repeater": "GB3PO",
+      "frequency": null,
+      "notes": "General chat and local radio discussion. All licensed operators welcome."
+    },
+    {
+      "id": "fdars-4m",
+      "name": "East Suffolk 4m Net",
+      "group": "FDARS",
+      "groupUrl": "https://www.fdars.co.uk",
+      "schedule": "2nd and 4th Fridays",
+      "time": "19:30",
+      "mode": "FM Analogue",
       "via": "simplex",
       "repeater": null,
-      "frequency": "145.550 MHz",
-      "notes": "Informal chat and signal reports following the GB2RS news broadcast. No fixed start time — just tune in after the news ends."
+      "frequency": "70.450 MHz",
+      "notes": "Open to all licensed operators. A great way to use the 4m band."
     },
     {
       "id": "ref079c-dstar",
