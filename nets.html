@@ -15,6 +15,12 @@
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="stylesheet" href="style.css">
+<style>
+  .day-picker { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1.5rem; }
+  .day-btn { font-family:var(--mono); font-size:12px; font-weight:500; padding:6px 14px; border-radius:20px; border:1px solid var(--border2); background:var(--bg2); color:var(--muted); cursor:pointer; transition:all 0.15s; }
+  .day-btn:hover { background:var(--bg3); color:var(--text); }
+  .day-btn.active { background:var(--cyan-dim); color:var(--cyan); border-color:var(--cyan-bd); }
+</style>
 </head>
 <body>
 
@@ -30,6 +36,7 @@
 
 <main>
 
+  <div class="day-picker" id="day-picker"></div>
   <div class="net-grid" id="net-grid" style="margin-bottom:3rem;"></div>
 
   <hr class="divider">
@@ -84,10 +91,15 @@
 </footer>
 
 <script>
+const DAY_ORDER = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+
 fetch('nets.json')
   .then(r => r.json())
   .then(data => {
     const grid = document.getElementById('net-grid');
+    const picker = document.getElementById('day-picker');
+
+    // Render cards
     data.nets.forEach(n => {
       const isBroadcast = n.type === 'broadcast';
       const viaHtml = n.repeater
@@ -101,7 +113,7 @@ fetch('nets.json')
         ? `<span class="net-mode-badge net-broadcast-badge">&#x1F4E1; Broadcast</span>`
         : `<span class="net-mode-badge">${n.mode}</span>`;
       grid.insertAdjacentHTML('beforeend', `
-        <div class="net-card${isBroadcast ? ' net-card-broadcast' : ''}">
+        <div class="net-card${isBroadcast ? ' net-card-broadcast' : ''}" data-day="${n.day || ''}">
           <div class="net-card-header">
             <span class="net-name">${n.name}</span>
             ${badgeHtml}
@@ -115,6 +127,32 @@ fetch('nets.json')
           </div>
         </div>
       `);
+    });
+
+    // Build day picker from days present in data
+    const presentDays = DAY_ORDER.filter(d => data.nets.some(n => n.day === d));
+
+    function filterDay(day) {
+      document.querySelectorAll('.day-btn').forEach(b => b.classList.toggle('active', b.dataset.day === day));
+      document.querySelectorAll('#net-grid .net-card').forEach(card => {
+        card.style.display = (day === 'all' || card.dataset.day === day) ? '' : 'none';
+      });
+    }
+
+    const allBtn = document.createElement('button');
+    allBtn.className = 'day-btn active';
+    allBtn.textContent = 'All';
+    allBtn.dataset.day = 'all';
+    allBtn.addEventListener('click', () => filterDay('all'));
+    picker.appendChild(allBtn);
+
+    presentDays.forEach(day => {
+      const btn = document.createElement('button');
+      btn.className = 'day-btn';
+      btn.textContent = day;
+      btn.dataset.day = day;
+      btn.addEventListener('click', () => filterDay(day));
+      picker.appendChild(btn);
     });
   })
   .catch(() => {
