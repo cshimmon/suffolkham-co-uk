@@ -1,17 +1,52 @@
 {
-  "updated": "Pending first update",
-  "solarflux": "—",
-  "sfi": "—",
-  "sunspots": "—",
+  "updated": "2026-05-22 14:42 UTC",
+  "sfi": "118",
+  "sunspots": "64",
   "bands": [
-    { "name": "160m", "day": "—", "night": "—" },
-    { "name": "80m",  "day": "—", "night": "—" },
-    { "name": "40m",  "day": "—", "night": "—" },
-    { "name": "30m",  "day": "—", "night": "—" },
-    { "name": "20m",  "day": "—", "night": "—" },
-    { "name": "17m",  "day": "—", "night": "—" },
-    { "name": "15m",  "day": "—", "night": "—" },
-    { "name": "12m",  "day": "—", "night": "—" },
-    { "name": "10m",  "day": "—", "night": "—" }
+    {
+      "name": "160m",
+      "day": "\u2014",
+      "night": "\u2014"
+    },
+    {
+      "name": "80m",
+      "day": "\u2014",
+      "night": "\u2014"
+    },
+    {
+      "name": "40m",
+      "day": "\u2014",
+      "night": "\u2014"
+    },
+    {
+      "name": "30m",
+      "day": "\u2014",
+      "night": "\u2014"
+    },
+    {
+      "name": "20m",
+      "day": "\u2014",
+      "night": "\u2014"
+    },
+    {
+      "name": "17m",
+      "day": "\u2014",
+      "night": "\u2014"
+    },
+    {
+      "name": "15m",
+      "day": "\u2014",
+      "night": "\u2014"
+    },
+    {
+      "name": "12m",
+      "day": "\u2014",
+      "night": "\u2014"
+    },
+    {
+      "name": "10m",
+      "day": "\u2014",
+      "night": "\u2014"
+    }
   ]
 }
