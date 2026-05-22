@@ -45,7 +45,7 @@ jobs:
               val  = (bc.text or '').strip()
               bands_raw.append({'name': name, 'time': time, 'val': val})
 
-          BANDS = ['160m','80m','40m','30m','20m','17m','15m','12m','10m']
+          PREFERRED = ['80m-40m','30m-20m','17m-15m','12m-10m']
           band_map = {}
           for b in bands_raw:
               n = b['name']
@@ -53,9 +53,13 @@ jobs:
                   band_map[n] = {}
               band_map[n][b['time']] = b['val']
 
+          # Use preferred order first, then any extra bands from the feed
+          names = PREFERRED + [n for n in band_map if n not in PREFERRED]
           bands = []
-          for name in BANDS:
-              entry = band_map.get(name, {})
+          for name in names:
+              if name not in band_map:
+                  continue
+              entry = band_map[name]
               bands.append({
                   'name':  name,
                   'day':   entry.get('day', '—'),

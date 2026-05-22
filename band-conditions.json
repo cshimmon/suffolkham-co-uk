@@ -3,50 +3,9 @@
   "sfi": "118",
   "sunspots": "64",
   "bands": [
-    {
-      "name": "160m",
-      "day": "\u2014",
-      "night": "\u2014"
-    },
-    {
-      "name": "80m",
-      "day": "\u2014",
-      "night": "\u2014"
-    },
-    {
-      "name": "40m",
-      "day": "\u2014",
-      "night": "\u2014"
-    },
-    {
-      "name": "30m",
-      "day": "\u2014",
-      "night": "\u2014"
-    },
-    {
-      "name": "20m",
-      "day": "\u2014",
-      "night": "\u2014"
-    },
-    {
-      "name": "17m",
-      "day": "\u2014",
-      "night": "\u2014"
-    },
-    {
-      "name": "15m",
-      "day": "\u2014",
-      "night": "\u2014"
-    },
-    {
-      "name": "12m",
-      "day": "\u2014",
-      "night": "\u2014"
-    },
-    {
-      "name": "10m",
-      "day": "\u2014",
-      "night": "\u2014"
-    }
+    { "name": "80m-40m", "day": "—", "night": "—" },
+    { "name": "30m-20m", "day": "—", "night": "—" },
+    { "name": "17m-15m", "day": "—", "night": "—" },
+    { "name": "12m-10m", "day": "—", "night": "—" }
   ]
 }
