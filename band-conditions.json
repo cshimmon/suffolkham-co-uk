@@ -1,0 +1,17 @@
+{
+  "updated": "Pending first update",
+  "solarflux": "—",
+  "sfi": "—",
+  "sunspots": "—",
+  "bands": [
+    { "name": "160m", "day": "—", "night": "—" },
+    { "name": "80m",  "day": "—", "night": "—" },
+    { "name": "40m",  "day": "—", "night": "—" },
+    { "name": "30m",  "day": "—", "night": "—" },
+    { "name": "20m",  "day": "—", "night": "—" },
+    { "name": "17m",  "day": "—", "night": "—" },
+    { "name": "15m",  "day": "—", "night": "—" },
+    { "name": "12m",  "day": "—", "night": "—" },
+    { "name": "10m",  "day": "—", "night": "—" }
+  ]
+}

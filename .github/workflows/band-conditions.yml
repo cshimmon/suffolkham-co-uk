@@ -1,0 +1,84 @@
+name: Update Band Conditions
+
+on:
+  schedule:
+    - cron: '0 */4 * * *'
+  workflow_dispatch:
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Fetch band conditions from HamQSL
+        run: |
+          curl -s --max-time 30 \
+            -A "Mozilla/5.0 (compatible; SuffolkHam/1.0; +https://suffolkham.co.uk)" \
+            "https://www.hamqsl.com/solarxml.php" \
+            -o solar.xml
+
+      - name: Parse and write band-conditions.json
+        run: |
+          python3 - <<'EOF'
+          import xml.etree.ElementTree as ET
+          import json, datetime, re
+
+          tree = ET.parse('solar.xml')
+          root = tree.getroot()
+          sc = root.find('solardata')
+
+          def txt(tag, default='—'):
+              el = sc.find(tag) if sc is not None else None
+              return el.text.strip() if el is not None and el.text else default
+
+          sfi       = txt('solarflux')
+          sunspots  = txt('sunspots')
+          updated   = datetime.datetime.utcnow().strftime('%Y-%m-%d %H:%M UTC')
+
+          bands_raw = []
+          for bc in (sc.findall('calculatedconditions/band') if sc is not None else []):
+              name = bc.get('name','')
+              time = bc.get('time','')
+              val  = (bc.text or '').strip()
+              bands_raw.append({'name': name, 'time': time, 'val': val})
+
+          BANDS = ['160m','80m','40m','30m','20m','17m','15m','12m','10m']
+          band_map = {}
+          for b in bands_raw:
+              n = b['name']
+              if n not in band_map:
+                  band_map[n] = {}
+              band_map[n][b['time']] = b['val']
+
+          bands = []
+          for name in BANDS:
+              entry = band_map.get(name, {})
+              bands.append({
+                  'name':  name,
+                  'day':   entry.get('day', '—'),
+                  'night': entry.get('night', '—')
+              })
+
+          data = {
+              'updated':    updated,
+              'sfi':        sfi,
+              'sunspots':   sunspots,
+              'bands':      bands
+          }
+
+          with open('band-conditions.json', 'w') as f:
+              json.dump(data, f, indent=2)
+
+          print('Band conditions updated:', updated)
+          EOF
+
+      - name: Commit if changed
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add band-conditions.json
+          git diff --cached --quiet || git commit -m "Update band conditions [skip ci]"
+          git push

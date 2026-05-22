@@ -72,6 +72,36 @@
     if (e.key === 'Escape' && modal.classList.contains('qrz-modal-open')) closeModal();
   });
 
+  /* ---- Breadcrumbs ---- */
+  var breadcrumbMap = {
+    'getting-started.html': [{ label: 'Home', href: 'index.html' }, { label: 'Getting Started' }],
+    'equipment.html':       [{ label: 'Home', href: 'index.html' }, { label: 'Equipment' }],
+    'repeaters.html':       [{ label: 'Home', href: 'index.html' }, { label: 'Repeaters' }],
+    'nets.html':            [{ label: 'Home', href: 'index.html' }, { label: 'Nets' }],
+    'dmr.html':             [{ label: 'Home', href: 'index.html' }, { label: 'DMR' }],
+    'events.html':          [{ label: 'Home', href: 'index.html' }, { label: 'Events' }],
+    'calculators.html':     [{ label: 'Home', href: 'index.html' }, { label: 'Calculators' }],
+    'locator.html':         [{ label: 'Home', href: 'index.html' }, { label: 'QTH Locator' }],
+    'glossary.html':        [{ label: 'Home', href: 'index.html' }, { label: 'Glossary' }],
+    'meshcore.html':        [{ label: 'Home', href: 'index.html' }, { label: 'MeshCore' }],
+    'about.html':           [{ label: 'Home', href: 'index.html' }, { label: 'About' }],
+  };
+
+  function injectBreadcrumbs() {
+    var crumbs = breadcrumbMap[page];
+    if (!crumbs) return;
+    var nav_el = document.getElementById('site-nav');
+    if (!nav_el) return;
+    var bc = document.createElement('nav');
+    bc.setAttribute('aria-label', 'Breadcrumb');
+    bc.className = 'breadcrumbs';
+    bc.innerHTML = crumbs.map(function (c, i) {
+      if (c.href) return '<a href="' + c.href + '">' + c.label + '</a><span class="sep" aria-hidden="true">/</span>';
+      return '<span>' + c.label + '</span>';
+    }).join('');
+    nav_el.insertAdjacentElement('afterend', bc);
+  }
+
   fetch('nav.json')
     .then(function (r) { return r.json(); })
     .then(function (d) {
@@ -154,6 +184,31 @@
       document.addEventListener('click', function (e) {
         if (!nav.contains(e.target) && !modal.contains(e.target)) close();
       });
+
+      /* ---- Footer injection ---- */
+      var footerEl = document.querySelector('footer');
+      if (footerEl && d.links) {
+        var half = Math.ceil(d.links.length / 2);
+        var col1 = d.links.slice(0, half);
+        var col2 = d.links.slice(half);
+        function navLink(l) {
+          return '<a href="' + l.href + '">' + l.label + '</a>';
+        }
+        footerEl.innerHTML =
+          '<div class="footer-inner">' +
+            '<div>' +
+              '<div class="footer-brand">SuffolkHam.co.uk</div>' +
+              '<p class="footer-tagline">A beginner-friendly amateur radio resource for Suffolk and East Anglia.</p>' +
+              '<p class="footer-meta">Site by <a href="https://www.qrz.com/db/M9XCN" target="_blank" rel="noopener">M9XCN</a> &nbsp;&middot;&nbsp; <a href="about.html">About</a></p>' +
+            '</div>' +
+            '<nav aria-label="Footer navigation" class="footer-nav">' +
+              col1.map(navLink).join('') +
+              col2.map(navLink).join('') +
+            '</nav>' +
+          '</div>';
+      }
+
+      injectBreadcrumbs();
     })
     .catch(function () {});
 }());

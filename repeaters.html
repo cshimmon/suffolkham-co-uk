@@ -9,6 +9,9 @@
 <meta name="keywords" content="GB3PO, GB3IH, GB7MK, GB7AL, GB7DI, GB3DE, GB3EA, GB3CE, GB3CL, GB3EF, Suffolk repeaters, Ipswich repeater, amateur radio Suffolk, SARG repeater, Martello Tower Group">
 <meta property="og:title" content="Suffolk Repeaters | SuffolkHam">
 <meta property="og:description" content="All repeaters serving Suffolk and East Anglia with frequencies, CTCSS, colour codes and status.">
+<meta property="og:image" content="https://suffolkham.co.uk/social-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -21,6 +24,7 @@
   .band-btn:hover { background:var(--bg3); color:var(--text); }
   .band-btn.active { background:var(--cyan-dim); color:var(--cyan); border-color:var(--cyan-bd); }
 </style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -87,7 +91,15 @@
     <span class="legend-item"><span class="legend-dot" style="background:var(--red);"   aria-hidden="true"></span>Off air</span>
   </div>
 
+  <div class="view-toggle" id="view-toggle">
+    <button class="view-btn active" id="btn-cards" onclick="setView('cards')">Cards</button>
+    <button class="view-btn" id="btn-map" onclick="setView('map')">Map</button>
+    <button class="print-btn" onclick="window.print()" title="Print frequency reference">Print</button>
+  </div>
+
   <div class="band-picker" id="band-picker"></div>
+
+  <div id="repeater-map"></div>
 
   <div class="repeater-grid" id="repeater-grid" style="margin-bottom:2rem;"></div>
 
@@ -142,9 +154,64 @@ function antennaIcon(status) {
   </svg>`;
 }
 
+let leafletMap = null;
+let currentView = 'cards';
+let allRepeaterData = [];
+
+function setView(view) {
+  currentView = view;
+  document.getElementById('btn-cards').classList.toggle('active', view === 'cards');
+  document.getElementById('btn-map').classList.toggle('active', view === 'map');
+  document.getElementById('repeater-grid').style.display = view === 'cards' ? '' : 'none';
+  document.getElementById('band-picker').style.display = view === 'cards' ? '' : 'none';
+  const mapEl = document.getElementById('repeater-map');
+  mapEl.style.display = view === 'map' ? 'block' : 'none';
+  if (view === 'map' && !leafletMap && allRepeaterData.length) {
+    initMap(allRepeaterData);
+  } else if (view === 'map' && leafletMap) {
+    leafletMap.invalidateSize();
+  }
+}
+
+function initMap(repeaters) {
+  const script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js';
+  script.onload = function() {
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    leafletMap = L.map('repeater-map').setView([52.05, 1.15], 9);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© <a href="https://openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+      maxZoom: 18
+    }).addTo(leafletMap);
+
+    const statusColour = { live: '#4ade80', warn: '#fbbf24', offair: '#f87171' };
+    repeaters.forEach(r => {
+      if (!r.lat || !r.lng) return;
+      const col = statusColour[r.status] || '#9da4bc';
+      const marker = L.circleMarker([r.lat, r.lng], {
+        radius: 10,
+        fillColor: col,
+        color: '#00000033',
+        weight: 1,
+        fillOpacity: 0.85
+      }).addTo(leafletMap);
+      const freqLine = r.frequencies.find(f => f.label === 'Output');
+      marker.bindPopup(
+        '<strong style="font-family:monospace">' + r.callsign + '</strong>' +
+        '<div style="font-size:12px;color:#666;margin:2px 0">' + r.mode + '</div>' +
+        (freqLine ? '<div style="font-family:monospace;font-size:13px">' + freqLine.value + '</div>' : '') +
+        '<div style="font-size:12px;margin-top:4px">' + r.location + '</div>' +
+        '<div style="margin-top:6px"><a href="repeaters.html#' + r.callsign + '" style="font-size:12px;color:#0369a1">View card →</a></div>'
+      );
+    });
+  };
+  document.body.appendChild(script);
+}
+
 fetch('repeaters.json')
   .then(r => r.json())
   .then(data => {
+    allRepeaterData = data.repeaters;
     // Alert
     if (data.alert) {
       const el = document.getElementById('alert-ribbon');
