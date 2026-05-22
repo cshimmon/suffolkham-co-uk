@@ -15,6 +15,12 @@
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="canonical" href="https://suffolkham.co.uk/repeaters.html">
 <link rel="stylesheet" href="style.css">
+<style>
+  .band-picker { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1.5rem; }
+  .band-btn { font-family:var(--mono); font-size:12px; font-weight:500; padding:6px 14px; border-radius:20px; border:1px solid var(--border2); background:var(--bg2); color:var(--muted); cursor:pointer; transition:all 0.15s; }
+  .band-btn:hover { background:var(--bg3); color:var(--text); }
+  .band-btn.active { background:var(--cyan-dim); color:var(--cyan); border-color:var(--cyan-bd); }
+</style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -80,6 +86,8 @@
     <span class="legend-item"><span class="legend-dot" style="background:var(--amber);" aria-hidden="true"></span>Issue noted</span>
     <span class="legend-item"><span class="legend-dot" style="background:var(--red);"   aria-hidden="true"></span>Off air</span>
   </div>
+
+  <div class="band-picker" id="band-picker"></div>
 
   <div class="repeater-grid" id="repeater-grid" style="margin-bottom:2rem;"></div>
 
@@ -179,7 +187,7 @@ fetch('repeaters.json')
         ? `<div class="keeper">Keeper: <a href="https://www.qrz.com/db/${r.keeper}" target="_blank" rel="noopener">${r.keeper}</a></div>`
         : '';
       grid.insertAdjacentHTML('beforeend', `
-        <article class="repeater-card ${r.status}" id="${r.callsign}" aria-label="${r.callsign} repeater">
+        <article class="repeater-card ${r.status}" id="${r.callsign}" data-band="${r.band || ''}" aria-label="${r.callsign} repeater">
           <div class="card-header">
             <div class="card-call-wrap">${antennaIcon(r.status)}<div class="callsign">${r.callsign}</div></div>
             <span class="status-badge badge-${r.status}">${r.statusLabel}</span>
@@ -193,6 +201,34 @@ fetch('repeaters.json')
         </article>
       `);
     });
+    // Band picker
+    const BAND_ORDER = ['2m','4m','6m','70cm'];
+    const presentBands = BAND_ORDER.filter(b => data.repeaters.some(r => r.band === b));
+    const picker = document.getElementById('band-picker');
+
+    function filterBand(band) {
+      document.querySelectorAll('.band-btn').forEach(b => b.classList.toggle('active', b.dataset.band === band));
+      document.querySelectorAll('#repeater-grid .repeater-card').forEach(card => {
+        card.style.display = (band === 'all' || card.dataset.band === band) ? '' : 'none';
+      });
+    }
+
+    const allBtn = document.createElement('button');
+    allBtn.className = 'band-btn active';
+    allBtn.textContent = 'All bands';
+    allBtn.dataset.band = 'all';
+    allBtn.addEventListener('click', () => filterBand('all'));
+    picker.appendChild(allBtn);
+
+    presentBands.forEach(band => {
+      const btn = document.createElement('button');
+      btn.className = 'band-btn';
+      btn.textContent = band;
+      btn.dataset.band = band;
+      btn.addEventListener('click', () => filterBand(band));
+      picker.appendChild(btn);
+    });
+
     // Anchor scroll after render
     if (location.hash) {
       const el = document.querySelector(location.hash);
