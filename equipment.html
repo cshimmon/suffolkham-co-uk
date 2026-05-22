@@ -9,6 +9,9 @@
 <meta name="keywords" content="beginner amateur radio equipment UK, first radio Suffolk, handheld radio amateur, Baofeng, Yaesu, antenna guide, coax connectors amateur radio">
 <meta property="og:title" content="Beginner Equipment Guide | SuffolkHam">
 <meta property="og:description" content="Plain-English beginner's guide to amateur radio equipment — radios, antennas, coax and connectors.">
+<meta property="og:image" content="https://suffolkham.co.uk/social-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -144,15 +147,9 @@
     <div style="margin-top:2rem;">
       <h3 style="font-size:1rem; font-weight:600; margin-bottom:0.4rem;">Video: equipment options to explore</h3>
       <p style="font-size:14px; color:var(--muted); margin-bottom:1rem; line-height:1.65;">The video below from Martin Lynch &amp; Sons gives a useful overview of some starter options. We have no affiliation with ML&amp;S — it's simply a good starting point for getting a feel for what's out there.</p>
-      <div style="position:relative; padding-bottom:56.25%; height:0; overflow:hidden; border-radius:10px; border:1px solid var(--border);">
-        <iframe
-          src="https://www.youtube.com/embed/iHlAchdXSfE"
-          title="Amateur radio starter equipment options – Martin Lynch &amp; Sons"
-          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          allowfullscreen
-          loading="lazy"
-          style="position:absolute; top:0; left:0; width:100%; height:100%; border:none; border-radius:9px;"
-        ></iframe>
+      <div class="yt-facade" onclick="ytPlay(this,'iHlAchdXSfE','yt')" role="button" tabindex="0" aria-label="Play: Amateur radio starter equipment options – Martin Lynch &amp; Sons" onkeydown="if(event.key==='Enter'||event.key===' ')ytPlay(this,'iHlAchdXSfE','yt')">
+        <img src="https://i.ytimg.com/vi/iHlAchdXSfE/hqdefault.jpg" alt="Amateur radio starter equipment options – Martin Lynch &amp; Sons" loading="lazy">
+        <div class="yt-play"><svg viewBox="0 0 68 48" fill="none" xmlns="http://www.w3.org/2000/svg"><rect width="68" height="48" rx="10" fill="#FF0000" fill-opacity="0.85"/><path d="M28 16l20 8-20 8V16z" fill="#fff"/></svg></div>
       </div>
     </div>
   </div>
@@ -165,5 +162,18 @@
 </footer>
 
 <script src="nav.js"></script>
+<script>
+function ytPlay(el, id, type) {
+  var domain = type === 'nocookie' ? 'www.youtube-nocookie.com' : 'www.youtube.com';
+  var iframe = document.createElement('iframe');
+  iframe.src = 'https://' + domain + '/embed/' + id + '?autoplay=1';
+  iframe.title = el.getAttribute('aria-label') || '';
+  iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture';
+  iframe.allowFullscreen = true;
+  el.innerHTML = '';
+  el.appendChild(iframe);
+  el.style.cursor = 'default';
+}
+</script>
 </body>
 </html>

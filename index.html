@@ -10,6 +10,9 @@
 <meta property="og:title" content="SuffolkHam – Amateur Radio in Suffolk">
 <meta property="og:description" content="Beginner-friendly amateur radio resource for Suffolk. Local repeaters, clubs, DMR guide and events.">
 <meta property="og:type" content="website">
+<meta property="og:image" content="https://suffolkham.co.uk/social-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="icon" type="image/png" href="favicon.png">
@@ -149,12 +152,38 @@
 
   <hr class="divider">
 
+  <!-- BAND CONDITIONS -->
+  <div style="margin-bottom:3rem;" id="band-cond-section">
+    <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:0.5rem; flex-wrap:wrap; gap:0.5rem;">
+      <div>
+        <div class="section-label">HF propagation</div>
+        <h2 class="section-title">Band Conditions</h2>
+      </div>
+      <span id="band-cond-updated" style="font-family:var(--mono);font-size:11px;color:var(--faint);"></span>
+    </div>
+    <p style="font-size:14px;color:var(--muted);margin-bottom:0.75rem;">Current HF band conditions from <a href="https://www.hamqsl.com/solar.html" target="_blank" rel="noopener" style="color:var(--cyan);">HamQSL</a>. Updated every 4 hours.</p>
+    <div class="band-cond-grid" id="band-cond-grid">
+      <div class="band-cond-cell"><div class="band-cond-name">Loading…</div></div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
   <!-- EXPLORE -->
   <div style="margin-bottom:3rem;">
     <div class="section-label">Explore the site</div>
     <h2 class="section-title">What would you like to know?</h2>
 
     <div class="feature-grid">
+
+      <div class="feature-card" onclick="location.href='getting-started.html'">
+        <div class="feature-icon" style="background:var(--cyan-dim);border:1px solid var(--cyan-bd);">
+          <svg width="18" height="18" fill="none" stroke="#38bdf8" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+        </div>
+        <h3>Getting Started</h3>
+        <p>New to amateur radio? Start here — what it is, how to get your UK licence, and where to find training and local clubs in Suffolk.</p>
+        <span class="go">Start here →</span>
+      </div>
 
       <div class="feature-card" onclick="location.href='repeaters.html'">
         <div class="feature-icon" style="background:var(--green-dim);border:1px solid var(--green-bd);">
@@ -293,6 +322,29 @@ function qrzSearch(e) {
       '<span class="news-title" style="color:var(--muted);">News unavailable — ' +
       '<a href="https://rsgb.org/main/news/gb2rs-news-bulletins/" target="_blank" rel="noopener" style="color:var(--cyan);">visit rsgb.org</a> for the latest.</span></div>';
   }
+
+  fetch('band-conditions.json')
+    .then(function(r){return r.json();})
+    .then(function(data){
+      var grid = document.getElementById('band-cond-grid');
+      var upd  = document.getElementById('band-cond-updated');
+      if (!grid || !data.bands) return;
+      if (data.updated && upd) upd.textContent = 'Updated: ' + data.updated;
+      function cls(v) {
+        if (!v || v === '—') return 'unknown';
+        v = v.toLowerCase();
+        if (v === 'good' || v === 'excellent') return 'good';
+        if (v === 'fair' || v === 'normal') return 'fair';
+        return 'poor';
+      }
+      grid.innerHTML = data.bands.map(function(b){
+        return '<div class="band-cond-cell"><div class="band-cond-name">' + b.name + '</div><div class="band-cond-val ' + cls(b.day) + '">' + (b.day||'—') + '</div></div>';
+      }).join('');
+    })
+    .catch(function(){
+      var s = document.getElementById('band-cond-section');
+      if (s) s.style.display = 'none';
+    });
 
   fetch('rsgb-news.json')
     .then(function (r) { return r.json(); })
