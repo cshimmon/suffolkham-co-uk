@@ -1,11 +1,27 @@
 {
-  "updated": "2026-05-22 14:42 UTC",
+  "updated": "2026-05-22 14:51 UTC",
   "sfi": "118",
   "sunspots": "64",
   "bands": [
-    { "name": "80m-40m", "day": "—", "night": "—" },
-    { "name": "30m-20m", "day": "—", "night": "—" },
-    { "name": "17m-15m", "day": "—", "night": "—" },
-    { "name": "12m-10m", "day": "—", "night": "—" }
+    {
+      "name": "80m-40m",
+      "day": "Fair",
+      "night": "Good"
+    },
+    {
+      "name": "30m-20m",
+      "day": "Good",
+      "night": "Good"
+    },
+    {
+      "name": "17m-15m",
+      "day": "Fair",
+      "night": "Fair"
+    },
+    {
+      "name": "12m-10m",
+      "day": "Poor",
+      "night": "Poor"
+    }
   ]
 }
