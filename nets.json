@@ -196,6 +196,20 @@
       "repeater": "GB3EA",
       "frequency": null,
       "notes": null
+    },
+    {
+      "id": "bsears-saturday",
+      "name": "BSEARS Saturday Morning Net",
+      "group": "BSEARS",
+      "groupUrl": "https://www.bsears.co.uk/",
+      "day": "Saturday",
+      "schedule": "Every Saturday",
+      "time": "09:30",
+      "mode": "FM Analogue",
+      "via": "repeater",
+      "repeater": "GB3EA",
+      "frequency": null,
+      "notes": null
     }
   ]
 }
