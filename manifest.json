@@ -1,0 +1,21 @@
+{
+  "name": "SuffolkHam",
+  "short_name": "SuffolkHam",
+  "description": "Amateur radio resource for Suffolk and East Anglia — repeaters, nets, events, guides and tools.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#f8f9fb",
+  "theme_color": "#0369a1",
+  "icons": [
+    {
+      "src": "/apple-touch-icon.png",
+      "sizes": "180x180",
+      "type": "image/png"
+    },
+    {
+      "src": "/favicon.png",
+      "sizes": "any",
+      "type": "image/png"
+    }
+  ]
+}
