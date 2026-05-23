@@ -27,6 +27,32 @@
       "type": "show"
     },
     {
+      "id": "imota-2026-day1",
+      "title": "International Museums on the Air",
+      "date": "2026-06-27",
+      "time": "10:00",
+      "endTime": "16:00",
+      "location": "Suffolk Aviation Heritage Museum, Foxhall Road, Ipswich IP3 8JU",
+      "what3words": "moss.price.foil",
+      "description": "FDARS are running a special event station at Suffolk Aviation Heritage Museum as part of International Museums on the Air. Visitors are welcome — come and see amateur radio in action.",
+      "organiser": "FDARS",
+      "url": "https://www.fdars.co.uk",
+      "type": "show"
+    },
+    {
+      "id": "imota-2026-day2",
+      "title": "International Museums on the Air",
+      "date": "2026-06-28",
+      "time": "10:00",
+      "endTime": "16:00",
+      "location": "Suffolk Aviation Heritage Museum, Foxhall Road, Ipswich IP3 8JU",
+      "what3words": "moss.price.foil",
+      "description": "FDARS are running a special event station at Suffolk Aviation Heritage Museum as part of International Museums on the Air. Visitors are welcome — come and see amateur radio in action.",
+      "organiser": "FDARS",
+      "url": "https://www.fdars.co.uk",
+      "type": "show"
+    },
+    {
       "id": "eswr-revival-2026",
       "title": "East Suffolk Wireless Revival",
       "date": "2026-06-21",
