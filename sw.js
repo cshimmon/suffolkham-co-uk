@@ -1,4 +1,4 @@
-var CACHE = 'suffolkham-v1';
+var CACHE = 'suffolkham-v2';
 
 var PRECACHE = [
   '/',
@@ -51,7 +51,7 @@ self.addEventListener('activate', function (e) {
 
 self.addEventListener('fetch', function (e) {
   var url = new URL(e.request.url);
-  if (url.origin !== self.location.origin || e.request.method !== 'GET') return;
+  if (url.origin !== self.location.origin || e.request.method !== 'GET' || e.request.mode === 'navigate') return;
 
   if (DATA.indexOf(url.pathname) !== -1) {
     // Network-first for live data — always try fresh, fall back to cache offline
