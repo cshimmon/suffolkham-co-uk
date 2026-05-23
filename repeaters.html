@@ -17,7 +17,7 @@
 <link rel="icon" type="image/png" href="favicon.png">
 <link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="manifest" href="/manifest.json">
-<link rel="canonical" href="https://suffolkham.co.uk/repeaters.html">
+<link rel="canonical" href="https://suffolkham.co.uk/repeaters">
 <link rel="stylesheet" href="style.css">
 <style>
   .band-picker { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:1.5rem; }
@@ -32,7 +32,7 @@
   "@type": "ItemList",
   "name": "Suffolk Amateur Radio Repeaters",
   "description": "Amateur radio repeaters serving Suffolk and East Anglia",
-  "url": "https://suffolkham.co.uk/repeaters.html",
+  "url": "https://suffolkham.co.uk/repeaters",
   "itemListElement": [
     {
       "@type": "ListItem",
@@ -153,7 +153,7 @@
       </div>
       <div class="card">
         <h3>DMR colour codes</h3>
-        <p>DMR repeaters use colour codes instead of CTCSS tones. A colour code is a number (0–15) that acts as a filter — your radio must be set to the matching colour code to access the repeater. Both <a href="repeaters.html#GB7AL">GB7AL</a> and <a href="repeaters.html#GB7MK">GB7MK</a> details are shown above.</p>
+        <p>DMR repeaters use colour codes instead of CTCSS tones. A colour code is a number (0–15) that acts as a filter — your radio must be set to the matching colour code to access the repeater. Both <a href="repeaters#GB7AL">GB7AL</a> and <a href="repeaters#GB7MK">GB7MK</a> details are shown above.</p>
       </div>
       <div class="card">
         <h3>Repeater etiquette</h3>
@@ -166,7 +166,7 @@
 
 <footer>
   <div class="brand">SuffolkHam.co.uk</div>
-  <p>Site by <a href="https://www.qrz.com/db/M9XCN" target="_blank" rel="noopener">M9XCN</a> &nbsp;&middot;&nbsp; <a href="about.html">About</a></p>
+  <p>Site by <a href="https://www.qrz.com/db/M9XCN" target="_blank" rel="noopener">M9XCN</a> &nbsp;&middot;&nbsp; <a href="about">About</a></p>
 </footer>
 
 <script>
@@ -232,7 +232,7 @@ function initMap(repeaters) {
         '<div style="font-size:12px;color:#666;margin:2px 0">' + r.mode + '</div>' +
         (freqLine ? '<div style="font-family:monospace;font-size:13px">' + freqLine.value + '</div>' : '') +
         '<div style="font-size:12px;margin-top:4px">' + r.location + '</div>' +
-        '<div style="margin-top:6px"><a href="repeaters.html#' + r.callsign + '" style="font-size:12px;color:#0369a1">View card →</a></div>'
+        '<div style="margin-top:6px"><a href="repeaters#' + r.callsign + '" style="font-size:12px;color:#0369a1">View card →</a></div>'
       );
     });
   };
