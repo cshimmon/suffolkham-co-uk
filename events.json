@@ -1,6 +1,30 @@
 {
   "events": [
     {
+      "id": "sahs-military-show-2026-day1",
+      "title": "Suffolk Aviation Heritage Annual Military Show",
+      "date": "2026-06-13",
+      "time": "10:00",
+      "endTime": "16:00",
+      "location": "Suffolk Aviation Heritage Museum, Foxhall Road, Ipswich IP3 8JU",
+      "description": "Annual Military Show at Suffolk Aviation Heritage Museum. FDARS will be operating their shack and demonstrating that — following the birth of land-to-air communications in 1910 — wireless telegraphy still has its place in the modern world. Adults £5, children free.",
+      "organiser": "Suffolk Aviation Heritage",
+      "url": "https://show.suffolkaviationheritage.org/",
+      "type": "show"
+    },
+    {
+      "id": "sahs-military-show-2026-day2",
+      "title": "Suffolk Aviation Heritage Annual Military Show",
+      "date": "2026-06-14",
+      "time": "10:00",
+      "endTime": "16:00",
+      "location": "Suffolk Aviation Heritage Museum, Foxhall Road, Ipswich IP3 8JU",
+      "description": "Annual Military Show at Suffolk Aviation Heritage Museum. FDARS will be operating their shack and demonstrating that — following the birth of land-to-air communications in 1910 — wireless telegraphy still has its place in the modern world. Adults £5, children free.",
+      "organiser": "Suffolk Aviation Heritage",
+      "url": "https://show.suffolkaviationheritage.org/",
+      "type": "show"
+    },
+    {
       "id": "eswr-revival-2026",
       "title": "East Suffolk Wireless Revival",
       "date": "2026-06-21",
