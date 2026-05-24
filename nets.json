@@ -78,7 +78,7 @@
       "groupUrl": "https://ldparc.co.uk",
       "day": "Monday",
       "schedule": "Every Monday",
-      "time": null,
+      "time": "19:00",
       "mode": "FM Simplex",
       "via": "simplex",
       "repeater": null,
