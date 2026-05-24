@@ -72,6 +72,20 @@
       "notes": "Weekly net run by the Martello Tower Group. All licensed operators welcome."
     },
     {
+      "id": "ldparc-monday-4m",
+      "name": "LDPARC Monday 4m Net",
+      "group": "Lowestoft District and Pye ARC",
+      "groupUrl": "https://ldparc.co.uk",
+      "day": "Monday",
+      "schedule": "Every Monday",
+      "time": null,
+      "mode": "FM Simplex",
+      "via": "simplex",
+      "repeater": null,
+      "frequency": "70.400 MHz",
+      "notes": null
+    },
+    {
       "id": "2e0diq-monday-4m",
       "name": "Monday Evening 4m Net",
       "group": "2E0DIQ",
@@ -97,6 +111,20 @@
       "via": "repeater",
       "repeater": "GB3EA",
       "frequency": null,
+      "notes": null
+    },
+    {
+      "id": "ldparc-tuesday",
+      "name": "LDPARC Tuesday Evening Net",
+      "group": "Lowestoft District and Pye ARC",
+      "groupUrl": "https://ldparc.co.uk",
+      "day": "Tuesday",
+      "schedule": "Every Tuesday",
+      "time": "19:00",
+      "mode": "FM Simplex",
+      "via": "simplex",
+      "repeater": null,
+      "frequency": "145.475 MHz",
       "notes": null
     },
     {
@@ -195,6 +223,20 @@
       "via": "repeater",
       "repeater": "GB3EA",
       "frequency": null,
+      "notes": null
+    },
+    {
+      "id": "ldparc-friday-6m",
+      "name": "LDPARC Friday 6m Net",
+      "group": "Lowestoft District and Pye ARC",
+      "groupUrl": "https://ldparc.co.uk",
+      "day": "Friday",
+      "schedule": "Every Friday",
+      "time": "19:00",
+      "mode": "FM Simplex",
+      "via": "simplex",
+      "repeater": null,
+      "frequency": "51.490 MHz",
       "notes": null
     },
     {
