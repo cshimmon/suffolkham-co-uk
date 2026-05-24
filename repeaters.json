@@ -193,6 +193,27 @@
       "noteType": null
     },
     {
+      "callsign": "GB7TE",
+      "status": "live",
+      "statusLabel": "On Air",
+      "mode": "2m · D-STAR",
+      "band": "2m",
+      "type": "D-STAR",
+      "location": "Walton-on-the-Naze, Essex",
+      "lat": 51.8090,
+      "lng": 1.2152,
+      "keeper": "G0MBA",
+      "group": "Martello Tower Group",
+      "groupUrl": "https://martellotowergroup.com",
+      "frequencies": [
+        { "label": "Input",   "value": "145.175 MHz" },
+        { "label": "Output",  "value": "145.775 MHz" },
+        { "label": "Gateway", "value": "Auto-link 08:00–22:00" }
+      ],
+      "note": "Automatically links to pre-set D-STAR reflectors daily 08:00–22:00.",
+      "noteType": "info"
+    },
+    {
       "callsign": "GB3EF",
       "status": "offair",
       "statusLabel": "Off Air",

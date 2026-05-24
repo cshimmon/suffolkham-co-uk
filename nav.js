@@ -23,7 +23,7 @@
   var saved = localStorage.getItem(STORAGE_KEY);
   if (saved) document.documentElement.setAttribute('data-theme', saved);
 
-  var page = location.pathname.split('/').pop() || 'index.html';
+  var page = location.pathname.split('/').pop();
 
   /* ---- QRZ Modal ---- */
   var modal = document.createElement('div');
@@ -74,17 +74,17 @@
 
   /* ---- Breadcrumbs ---- */
   var breadcrumbMap = {
-    'getting-started.html': [{ label: 'Home', href: 'index.html' }, { label: 'Getting Started' }],
-    'equipment.html':       [{ label: 'Home', href: 'index.html' }, { label: 'Equipment' }],
-    'repeaters.html':       [{ label: 'Home', href: 'index.html' }, { label: 'Repeaters' }],
-    'nets.html':            [{ label: 'Home', href: 'index.html' }, { label: 'Nets' }],
-    'dmr.html':             [{ label: 'Home', href: 'index.html' }, { label: 'DMR' }],
-    'events.html':          [{ label: 'Home', href: 'index.html' }, { label: 'Events' }],
-    'calculators.html':     [{ label: 'Home', href: 'index.html' }, { label: 'Calculators' }],
-    'locator.html':         [{ label: 'Home', href: 'index.html' }, { label: 'QTH Locator' }],
-    'glossary.html':        [{ label: 'Home', href: 'index.html' }, { label: 'Glossary' }],
-    'meshcore.html':        [{ label: 'Home', href: 'index.html' }, { label: 'MeshCore' }],
-    'about.html':           [{ label: 'Home', href: 'index.html' }, { label: 'About' }],
+    'getting-started': [{ label: 'Home', href: '/' }, { label: 'Getting Started' }],
+    'equipment':       [{ label: 'Home', href: '/' }, { label: 'Equipment' }],
+    'repeaters':       [{ label: 'Home', href: '/' }, { label: 'Repeaters' }],
+    'nets':            [{ label: 'Home', href: '/' }, { label: 'Nets' }],
+    'dmr':             [{ label: 'Home', href: '/' }, { label: 'DMR' }],
+    'events':          [{ label: 'Home', href: '/' }, { label: 'Events' }],
+    'calculators':     [{ label: 'Home', href: '/' }, { label: 'Calculators' }],
+    'locator':         [{ label: 'Home', href: '/' }, { label: 'QTH Locator' }],
+    'glossary':        [{ label: 'Home', href: '/' }, { label: 'Glossary' }],
+    'meshcore':        [{ label: 'Home', href: '/' }, { label: 'MeshCore' }],
+    'about':           [{ label: 'Home', href: '/' }, { label: 'About' }],
   };
 
   function injectBreadcrumbs() {
@@ -199,7 +199,7 @@
             '<div>' +
               '<div class="footer-brand">SuffolkHam.co.uk</div>' +
               '<p class="footer-tagline">A beginner-friendly amateur radio resource for Suffolk and East Anglia.</p>' +
-              '<p class="footer-meta">Site by <a href="https://www.qrz.com/db/M9XCN" target="_blank" rel="noopener">M9XCN</a> &nbsp;&middot;&nbsp; <a href="about.html">About</a></p>' +
+              '<p class="footer-meta">Site by <a href="https://www.qrz.com/db/M9XCN" target="_blank" rel="noopener">M9XCN</a> &nbsp;&middot;&nbsp; <a href="about">About</a></p>' +
             '</div>' +
             '<nav aria-label="Footer navigation" class="footer-nav">' +
               col1.map(navLink).join('') +

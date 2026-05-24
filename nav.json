@@ -1,18 +1,18 @@
 {
   "brand": "SuffolkHam",
   "brandSuffix": ".co.uk",
-  "brandHref": "index.html",
+  "brandHref": "/",
   "links": [
-    { "label": "Home",            "href": "index.html" },
-    { "label": "Getting Started", "href": "getting-started.html" },
-    { "label": "Equipment",       "href": "equipment.html" },
-    { "label": "Repeaters",       "href": "repeaters.html" },
-    { "label": "Nets",            "href": "nets.html" },
-    { "label": "DMR",             "href": "dmr.html" },
-    { "label": "Events",          "href": "events.html" },
-    { "label": "Calculators",     "href": "calculators.html" },
-    { "label": "QTH Locator",     "href": "locator.html" },
-    { "label": "Glossary",        "href": "glossary.html" },
-    { "label": "MeshCore",        "href": "meshcore.html" }
+    { "label": "Home",            "href": "/" },
+    { "label": "Getting Started", "href": "getting-started" },
+    { "label": "Equipment",       "href": "equipment" },
+    { "label": "Repeaters",       "href": "repeaters" },
+    { "label": "Nets",            "href": "nets" },
+    { "label": "DMR",             "href": "dmr" },
+    { "label": "Events",          "href": "events" },
+    { "label": "Calculators",     "href": "calculators" },
+    { "label": "QTH Locator",     "href": "locator" },
+    { "label": "Glossary",        "href": "glossary" },
+    { "label": "MeshCore",        "href": "meshcore" }
   ]
 }
