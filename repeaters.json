@@ -36,8 +36,8 @@
       "group": "South Anglia Repeater Group (SARG)",
       "groupUrl": "https://sargroup.co.uk",
       "frequencies": [
-        { "label": "Input",  "value": "430.362500 MHz" },
-        { "label": "Output", "value": "439.362500 MHz" },
+        { "label": "Input",  "value": "434.700 MHz" },
+        { "label": "Output", "value": "433.100 MHz" },
         { "label": "CTCSS",  "value": "110.9 Hz" }
       ],
       "note": "New hardware install attempted April 2026. Interference investigation ongoing near hospital site.",
