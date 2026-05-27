@@ -151,6 +151,27 @@
       "noteType": "info"
     },
     {
+      "callsign": "GB3DA",
+      "status": "live",
+      "statusLabel": "On Air",
+      "mode": "2m · FM",
+      "band": "2m",
+      "type": "FM",
+      "location": "Essex",
+      "lat": 51.71570,
+      "lng": 0.57440,
+      "keeper": null,
+      "group": "Essex Repeater Group",
+      "groupUrl": "http://www.essexrepeatergroup.org.uk/",
+      "frequencies": [
+        { "label": "Input",  "value": "145.125 MHz" },
+        { "label": "Output", "value": "145.725 MHz" },
+        { "label": "CTCSS",  "value": "110.9 Hz" }
+      ],
+      "note": null,
+      "noteType": null
+    },
+    {
       "callsign": "GB3CE",
       "status": "live",
       "statusLabel": "On Air",
