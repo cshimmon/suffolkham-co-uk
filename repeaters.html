@@ -238,7 +238,7 @@ function initMap(repeaters) {
         '<div style="font-size:12px;color:#666;margin:2px 0">' + r.mode + '</div>' +
         (freqLine ? '<div style="font-family:monospace;font-size:13px">' + freqLine.value + '</div>' : '') +
         '<div style="font-size:12px;margin-top:4px">' + r.location + '</div>' +
-        '<div style="margin-top:6px"><a href="repeaters#' + r.callsign + '" style="font-size:12px;color:#0369a1">View card →</a></div>'
+        '<div style="margin-top:6px"><a href="#' + r.callsign + '" onclick="setView(\'cards\')" style="font-size:12px;color:#0369a1">View card →</a></div>'
       );
     });
   };
