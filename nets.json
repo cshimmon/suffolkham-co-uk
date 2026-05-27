@@ -142,18 +142,18 @@
       "notes": "General chat and local radio discussion. All licensed operators welcome."
     },
     {
-      "id": "bsears-wednesday-ssb",
-      "name": "2m SSB Net",
-      "group": "BSEARS",
-      "groupUrl": "https://www.bsears.co.uk/",
-      "day": "Wednesday",
-      "schedule": "Every Wednesday",
+      "id": "g8lbs-friday-ssb",
+      "name": "2m SSB Vertical Net",
+      "group": "G8LBS",
+      "groupUrl": "https://www.qrz.com/db/G8LBS",
+      "day": "Friday",
+      "schedule": "1st, 3rd and 5th Fridays",
       "time": "19:30",
       "mode": "SSB",
       "via": "simplex",
       "repeater": null,
       "frequency": "144.280 MHz USB",
-      "notes": "Chaired by G8IBR."
+      "notes": "Vertical polarisation. Chaired by G8LBS."
     },
     {
       "id": "g3yrz-60m",
