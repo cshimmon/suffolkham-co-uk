@@ -291,7 +291,7 @@ fetch('repeaters.json')
         ? `<div class="keeper">Keeper: <a href="https://www.qrz.com/db/${r.keeper}" target="_blank" rel="noopener">${r.keeper}</a></div>`
         : '';
       grid.insertAdjacentHTML('beforeend', `
-        <article class="repeater-card ${r.status}" id="${r.callsign}" data-band="${r.band || ''}" aria-label="${r.callsign} repeater">
+        <article class="repeater-card ${r.status}" id="${r.callsign}" data-band="${r.band || ''}" data-type="${r.type || ''}" aria-label="${r.callsign} repeater">
           <div class="card-header">
             <div class="card-call-wrap">${antennaIcon(r.status)}<div class="callsign">${r.callsign}</div></div>
             <span class="status-badge badge-${r.status}">${r.statusLabel}</span>
@@ -310,17 +310,19 @@ fetch('repeaters.json')
     const presentBands = BAND_ORDER.filter(b => data.repeaters.some(r => r.band === b));
     const picker = document.getElementById('band-picker');
 
-    function filterBand(band) {
-      document.querySelectorAll('.band-btn').forEach(b => b.classList.toggle('active', b.dataset.band === band));
+    function filterBand(filter) {
+      document.querySelectorAll('.band-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === filter));
       document.querySelectorAll('#repeater-grid .repeater-card').forEach(card => {
-        card.style.display = (band === 'all' || card.dataset.band === band) ? '' : 'none';
+        if (filter === 'all') { card.style.display = ''; return; }
+        const [key, val] = filter.split(':');
+        card.style.display = card.dataset[key] === val ? '' : 'none';
       });
     }
 
     const allBtn = document.createElement('button');
     allBtn.className = 'band-btn active';
-    allBtn.textContent = 'All bands';
-    allBtn.dataset.band = 'all';
+    allBtn.textContent = 'All';
+    allBtn.dataset.filter = 'all';
     allBtn.addEventListener('click', () => filterBand('all'));
     picker.appendChild(allBtn);
 
@@ -328,10 +330,21 @@ fetch('repeaters.json')
       const btn = document.createElement('button');
       btn.className = 'band-btn';
       btn.textContent = band;
-      btn.dataset.band = band;
-      btn.addEventListener('click', () => filterBand(band));
+      btn.dataset.filter = 'band:' + band;
+      btn.addEventListener('click', () => filterBand('band:' + band));
       picker.appendChild(btn);
     });
+
+    [{ label: 'DMR', type: 'DMR' }, { label: 'D-Star', type: 'D-STAR' }]
+      .filter(m => data.repeaters.some(r => r.type === m.type))
+      .forEach(m => {
+        const btn = document.createElement('button');
+        btn.className = 'band-btn';
+        btn.textContent = m.label;
+        btn.dataset.filter = 'type:' + m.type;
+        btn.addEventListener('click', () => filterBand('type:' + m.type));
+        picker.appendChild(btn);
+      });
 
     // Anchor scroll after render
     if (location.hash) {
