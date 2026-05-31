@@ -49,20 +49,8 @@
     <changefreq>monthly</changefreq>
   </url>
   <url>
-    <loc>https://suffolkham.co.uk/calculators</loc>
-    <lastmod>2026-05-22</lastmod>
-    <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://suffolkham.co.uk/glossary</loc>
-    <lastmod>2026-05-22</lastmod>
-    <priority>0.7</priority>
-    <changefreq>monthly</changefreq>
-  </url>
-  <url>
-    <loc>https://suffolkham.co.uk/locator</loc>
-    <lastmod>2026-05-01</lastmod>
+    <loc>https://suffolkham.co.uk/tools</loc>
+    <lastmod>2026-05-31</lastmod>
     <priority>0.7</priority>
     <changefreq>monthly</changefreq>
   </url>
