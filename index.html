@@ -109,6 +109,15 @@
 
 <nav aria-label="Site navigation" id="site-nav"></nav>
 
+<div id="site-banner" style="background:var(--cyan-dim);border-bottom:1px solid var(--cyan-bd);color:var(--cyan);padding:10px 20px;font-size:13px;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap;">
+  <span>
+    <strong>GB3IH updated</strong> — now on new frequencies from 1 June 2026. Input 430.725 MHz · Output 439.725 MHz · CTCSS 110.9 Hz.
+    <a href="repeaters#GB3IH" style="color:var(--cyan);text-decoration:underline;white-space:nowrap;">View repeater card →</a>
+  </span>
+  <button onclick="sessionStorage.setItem('banner-gb3ih','1');document.getElementById('site-banner').remove();" style="background:none;border:none;color:var(--cyan);cursor:pointer;font-size:1.3rem;line-height:1;padding:0;flex-shrink:0;" aria-label="Dismiss announcement">×</button>
+</div>
+<script>if(sessionStorage.getItem('banner-gb3ih'))document.getElementById('site-banner').remove();</script>
+
 <header class="hero" id="main">
   <div class="page-tag">Suffolk · East Anglia</div>
   <h1>Amateur radio<br><em>in Suffolk</em></h1>

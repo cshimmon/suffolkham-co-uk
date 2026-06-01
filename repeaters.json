@@ -24,8 +24,8 @@
     },
     {
       "callsign": "GB3IH",
-      "status": "warn",
-      "statusLabel": "Updated",
+      "status": "live",
+      "statusLabel": "On Air",
       "mode": "70cm · FM",
       "band": "70cm",
       "type": "FM",
@@ -40,7 +40,7 @@
         { "label": "Output", "value": "439.725 MHz" },
         { "label": "CTCSS",  "value": "110.9 Hz" }
       ],
-      "note": "Frequency change effective 1 June 2026 — update your radio. Input: 430.725 MHz, Output: 439.725 MHz.",
+      "note": "Frequencies updated 1 June 2026 — now on 430.725 MHz input / 439.725 MHz output. Please update your radio channel data.",
       "noteType": "info"
     },
     {
