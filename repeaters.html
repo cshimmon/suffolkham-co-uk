@@ -24,17 +24,10 @@
   .band-btn { font-family:var(--mono); font-size:12px; font-weight:500; padding:6px 14px; border-radius:20px; border:1px solid var(--border2); background:var(--bg2); color:var(--muted); cursor:pointer; transition:all 0.15s; }
   .band-btn:hover { background:var(--bg3); color:var(--text); }
   .band-btn.active { background:var(--cyan-dim); color:var(--cyan); border-color:var(--cyan-bd); }
-  .card-guide { margin-top:0.85rem; border-top:1px solid var(--border); padding-top:0.75rem; }
-  .card-guide summary { font-family:var(--mono); font-size:11px; color:var(--muted); cursor:pointer; list-style:none; display:flex; align-items:center; gap:5px; user-select:none; transition:color 0.15s; }
-  .card-guide summary::-webkit-details-marker { display:none; }
-  .card-guide summary:hover { color:var(--text); }
-  .card-guide[open] summary { color:var(--cyan); }
-  .card-guide-chevron { transition:transform 0.2s; flex-shrink:0; }
-  .card-guide[open] .card-guide-chevron { transform:rotate(180deg); }
-  .card-guide-body { margin-top:0.75rem; font-size:12px; color:var(--muted); line-height:1.75; }
-  .card-guide-body p { margin-bottom:0.6rem; }
-  .card-guide-body p:last-child { margin-bottom:0; }
-  .card-guide-meta { margin-top:0.6rem; font-family:var(--mono); font-size:10px; color:var(--faint); padding-top:0.5rem; border-top:1px solid var(--border); }
+  .card-guide-btn { display:flex; align-items:center; gap:5px; font-family:var(--mono); font-size:11px; color:var(--muted); background:none; border:none; border-top:1px solid var(--border); cursor:pointer; padding:0.75rem 0 0; margin-top:0.85rem; width:100%; text-align:left; transition:color 0.15s; }
+  .card-guide-btn:hover { color:var(--cyan); }
+  .guide-overlay { position:fixed; inset:0; z-index:500; background:rgba(0,0,0,0.55); display:flex; align-items:center; justify-content:center; padding:1rem; }
+  .guide-dialog { background:var(--bg2); border:1px solid var(--border2); border-radius:12px; padding:1.75rem; max-width:560px; width:100%; max-height:85vh; overflow-y:auto; }
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
 <script type="application/ld+json">
@@ -256,6 +249,8 @@ function initMap(repeaters) {
   document.body.appendChild(script);
 }
 
+var guideMap = {};
+
 fetch('repeaters.json')
   .then(r => r.json())
   .then(data => {
@@ -301,15 +296,12 @@ fetch('repeaters.json')
       const keeperHtml = r.keeper
         ? `<div class="keeper">Keeper: <a href="https://www.qrz.com/db/${r.keeper}" target="_blank" rel="noopener">${r.keeper}</a></div>`
         : '';
-      const chevron = `<svg class="card-guide-chevron" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>`;
+      if (r.guide) guideMap[r.callsign] = r.guide;
       const guideHtml = r.guide ? `
-        <details class="card-guide">
-          <summary>${chevron} Controller guide</summary>
-          <div class="card-guide-body">
-            ${r.guide.body.map(p => `<p>${p}</p>`).join('')}
-            <div class="card-guide-meta">${r.guide.author} &nbsp;·&nbsp; ${r.guide.date}</div>
-          </div>
-        </details>` : '';
+        <button class="card-guide-btn" onclick="openGuide('${r.callsign}')">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+          Controller guide
+        </button>` : '';
       grid.insertAdjacentHTML('beforeend', `
         <article class="repeater-card ${r.status}" id="${r.callsign}" data-band="${r.band || ''}" data-type="${r.type || ''}" aria-label="${r.callsign} repeater">
           <div class="card-header">
@@ -379,7 +371,37 @@ fetch('repeaters.json')
   });
 </script>
 
+<div id="guide-overlay" class="guide-overlay" style="display:none;" onclick="if(event.target===this)closeGuide()" role="dialog" aria-modal="true" aria-labelledby="guide-dialog-title">
+  <div class="guide-dialog">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1.25rem;">
+      <div>
+        <div class="section-label" id="guide-dialog-callsign"></div>
+        <h2 class="section-title" id="guide-dialog-title" style="font-size:1.1rem;margin-bottom:0;">Controller Guide</h2>
+      </div>
+      <button onclick="closeGuide()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.4rem;line-height:1;padding:0;flex-shrink:0;" aria-label="Close guide">×</button>
+    </div>
+    <div id="guide-dialog-body" style="font-size:13px;color:var(--muted);line-height:1.75;"></div>
+    <div id="guide-dialog-meta" style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--faint);"></div>
+  </div>
+</div>
+
 <script src="nav.js"></script>
+<script>
+function openGuide(callsign) {
+  const g = guideMap[callsign];
+  if (!g) return;
+  document.getElementById('guide-dialog-callsign').textContent = callsign;
+  document.getElementById('guide-dialog-body').innerHTML = g.body.map(p => `<p style="margin-bottom:0.6rem">${p}</p>`).join('');
+  document.getElementById('guide-dialog-meta').textContent = g.author + ' · ' + g.date;
+  document.getElementById('guide-overlay').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+}
+function closeGuide() {
+  document.getElementById('guide-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeGuide(); });
+</script>
 <script>
 function copyVal(btn, val) {
   navigator.clipboard.writeText(val).then(function () {

@@ -185,7 +185,7 @@ main { max-width:1060px; margin:0 auto; padding:0 2rem 5rem; }
 .legend-item { display:flex; align-items:center; gap:5px; }
 .legend-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
 
-.repeater-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:12px; align-items:start; }
+.repeater-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(290px,1fr)); gap:12px; }
 .repeater-card { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:1.4rem; border-top:3px solid var(--border2); transition:background 0.15s; }
 .repeater-card:hover { background:var(--bg3); }
 .repeater-card.live   { border-top-color:var(--green); }
