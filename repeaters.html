@@ -24,6 +24,17 @@
   .band-btn { font-family:var(--mono); font-size:12px; font-weight:500; padding:6px 14px; border-radius:20px; border:1px solid var(--border2); background:var(--bg2); color:var(--muted); cursor:pointer; transition:all 0.15s; }
   .band-btn:hover { background:var(--bg3); color:var(--text); }
   .band-btn.active { background:var(--cyan-dim); color:var(--cyan); border-color:var(--cyan-bd); }
+  .card-guide { margin-top:0.85rem; border-top:1px solid var(--border); padding-top:0.75rem; }
+  .card-guide summary { font-family:var(--mono); font-size:11px; color:var(--muted); cursor:pointer; list-style:none; display:flex; align-items:center; gap:5px; user-select:none; transition:color 0.15s; }
+  .card-guide summary::-webkit-details-marker { display:none; }
+  .card-guide summary:hover { color:var(--text); }
+  .card-guide[open] summary { color:var(--cyan); }
+  .card-guide-chevron { transition:transform 0.2s; flex-shrink:0; }
+  .card-guide[open] .card-guide-chevron { transform:rotate(180deg); }
+  .card-guide-body { margin-top:0.75rem; font-size:12px; color:var(--muted); line-height:1.75; }
+  .card-guide-body p { margin-bottom:0.6rem; }
+  .card-guide-body p:last-child { margin-bottom:0; }
+  .card-guide-meta { margin-top:0.6rem; font-family:var(--mono); font-size:10px; color:var(--faint); padding-top:0.5rem; border-top:1px solid var(--border); }
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
 <script type="application/ld+json">
@@ -290,6 +301,15 @@ fetch('repeaters.json')
       const keeperHtml = r.keeper
         ? `<div class="keeper">Keeper: <a href="https://www.qrz.com/db/${r.keeper}" target="_blank" rel="noopener">${r.keeper}</a></div>`
         : '';
+      const chevron = `<svg class="card-guide-chevron" width="12" height="12" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>`;
+      const guideHtml = r.guide ? `
+        <details class="card-guide">
+          <summary>${chevron} Controller guide</summary>
+          <div class="card-guide-body">
+            ${r.guide.body.map(p => `<p>${p}</p>`).join('')}
+            <div class="card-guide-meta">${r.guide.author} &nbsp;·&nbsp; ${r.guide.date}</div>
+          </div>
+        </details>` : '';
       grid.insertAdjacentHTML('beforeend', `
         <article class="repeater-card ${r.status}" id="${r.callsign}" data-band="${r.band || ''}" data-type="${r.type || ''}" aria-label="${r.callsign} repeater">
           <div class="card-header">
@@ -302,6 +322,7 @@ fetch('repeaters.json')
           <div class="card-location" ${locMt}>${PIN} ${r.location}</div>
           ${groupHtml}
           ${keeperHtml}
+          ${guideHtml}
         </article>
       `);
     });

@@ -41,7 +41,18 @@
         { "label": "CTCSS",  "value": "110.9 Hz" }
       ],
       "note": "Frequencies updated 1 June 2026 — now on 430.725 MHz input / 439.725 MHz output. Please update your radio channel data.",
-      "noteType": "info"
+      "noteType": "info",
+      "guide": {
+        "author": "James M0ZAH",
+        "date": "01-06-2026",
+        "body": [
+          "The repeater controller is based on an Atmel328P.",
+          "A morse ident is sent every 10 minutes when in use, or up to 10 minutes after last access. When the repeater is idle the morse speed is set to 18 WPM, otherwise 25 WPM.",
+          "From cold the repeater requires more than 2 seconds of valid carrier to latch. If the repeater is not latched the transmitter will terminate after 1 second. Once latched the repeater will send 5 re-access pips spaced 2 seconds apart. If the last valid carrier was more than 3 seconds, the letter K precedes the re-access pips. The K is replaced with the morse ident (at 25 WPM) if the ident timer has expired.",
+          "The timeout is set to 10 minutes. The timer resets on either the K or the first access pip (whichever comes first). Stations that don't allow the timer to reset will inherit the previous station's timer.",
+          "When a station exceeds the timeout the repeater will send TO in morse and close down. Once the offending signal has cleared the repeater will send OK in morse and return to normal operation."
+        ]
+      }
     },
     {
       "callsign": "GB7AL",
