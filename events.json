@@ -65,6 +65,17 @@
       "type": "rally"
     },
     {
+      "id": "ipnet-mesh-core-meetup-2026-06",
+      "title": "IPNet Mesh Core Meet-up",
+      "date": "2026-06-08",
+      "time": "19:30",
+      "location": "The Douglas Bader, Martlesham",
+      "what3words": "operated.surprised.curable",
+      "description": "An informal evening for anyone interested in mesh networking and amateur radio. Come along to chat with like-minded people — all are welcome, no experience necessary.",
+      "organiser": "IPNet",
+      "type": "activity"
+    },
+    {
       "id": "145alive-2026",
       "title": "145 Alive — Mill Farm Radio Group",
       "date": "2026-07-12",
