@@ -339,6 +339,11 @@ footer { border-top:1px solid var(--border); padding:2.5rem 2rem; }
 .leaflet-popup-content-wrapper { background:var(--bg2) !important; color:var(--text) !important; border:1px solid var(--border2) !important; box-shadow:0 4px 20px rgba(0,0,0,0.3) !important; }
 .leaflet-popup-tip { background:var(--bg2) !important; }
 .leaflet-popup-content { font-family:var(--sans); font-size:13px; line-height:1.5; }
+.map-back-btn { display:none; }
+@media (max-width:768px) {
+  body.map-active #repeater-map { position:fixed; inset:0; z-index:200; height:100dvh !important; border-radius:0; margin:0; display:block !important; }
+  body.map-active .map-back-btn { display:flex; align-items:center; gap:6px; position:fixed; bottom:28px; left:50%; transform:translateX(-50%); z-index:300; background:var(--bg2); border:1px solid var(--border2); color:var(--text); font-family:var(--mono); font-size:13px; padding:10px 22px; border-radius:20px; cursor:pointer; box-shadow:0 2px 16px rgba(0,0,0,0.35); white-space:nowrap; }
+}
 
 /* ── PRINT ── */
 .print-btn { font-family:var(--mono); font-size:10px; padding:3px 8px; border-radius:4px; border:1px solid var(--border); background:transparent; color:var(--faint); cursor:pointer; transition:all 0.15s; vertical-align:middle; margin-left:4px; opacity:0.5; }
