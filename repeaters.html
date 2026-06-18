@@ -145,7 +145,7 @@
   <div class="band-picker" id="band-picker"></div>
 
   <div id="repeater-map"></div>
-  <button class="map-back-btn" onclick="setView('cards')" aria-label="Back to list">← Back to list</button>
+  <button class="map-back-btn" style="display:none" onclick="setView('cards')" aria-label="Back to list">← Back to list</button>
 
   <div class="repeater-grid" id="repeater-grid" style="margin-bottom:2rem;"></div>
 
@@ -214,6 +214,8 @@ function setView(view) {
   const mapEl = document.getElementById('repeater-map');
   mapEl.style.display = view === 'map' ? 'block' : 'none';
   document.body.classList.toggle('map-active', view === 'map');
+  const backBtn = document.querySelector('.map-back-btn');
+  if (backBtn) backBtn.style.display = view === 'map' ? '' : 'none';
   if (view === 'map' && !leafletMap && allRepeaterData.length) {
     initMap(allRepeaterData);
   } else if (view === 'map' && leafletMap) {
