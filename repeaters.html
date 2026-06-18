@@ -28,6 +28,10 @@
   .card-guide-btn:hover { color:var(--cyan); }
   .guide-overlay { position:fixed; inset:0; z-index:500; background:rgba(0,0,0,0.55); display:flex; align-items:center; justify-content:center; padding:1rem; }
   .guide-dialog { background:var(--bg2); border:1px solid var(--border2); border-radius:12px; padding:1.75rem; max-width:560px; width:100%; max-height:85vh; overflow-y:auto; }
+  .user-loc-dot { width:14px; height:14px; background:#38bdf8; border:2px solid #fff; border-radius:50%; box-shadow:0 0 0 0 rgba(56,189,248,0.4); animation:loc-pulse 2s infinite; }
+  @keyframes loc-pulse { 0%{box-shadow:0 0 0 0 rgba(56,189,248,0.4)} 70%{box-shadow:0 0 0 8px rgba(56,189,248,0)} 100%{box-shadow:0 0 0 0 rgba(56,189,248,0)} }
+  .loc-btn { background:#fff; border:2px solid rgba(0,0,0,0.2); border-radius:4px; cursor:pointer; width:30px; height:30px; display:flex; align-items:center; justify-content:center; padding:0; }
+  .loc-btn:hover { background:#f4f4f4; }
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
 <script type="application/ld+json">
@@ -246,6 +250,36 @@ function initMap(repeaters) {
         '<div style="margin-top:6px"><a href="#' + r.callsign + '" onclick="setView(\'cards\')" style="font-size:12px;color:#0369a1">View card →</a></div>'
       );
     });
+
+    // My location control
+    let userLocMarker = null, userAccCircle = null;
+    function locateUser() {
+      if (!navigator.geolocation) { alert('Geolocation is not supported by your browser.'); return; }
+      navigator.geolocation.getCurrentPosition(function(pos) {
+        const lat = pos.coords.latitude, lng = pos.coords.longitude, acc = pos.coords.accuracy;
+        if (userLocMarker) leafletMap.removeLayer(userLocMarker);
+        if (userAccCircle) leafletMap.removeLayer(userAccCircle);
+        userAccCircle = L.circle([lat, lng], { radius: acc, color: '#38bdf8', fillColor: '#38bdf8', fillOpacity: 0.1, weight: 1 }).addTo(leafletMap);
+        const icon = L.divIcon({ className: '', html: '<div class="user-loc-dot"></div>', iconSize: [14, 14], iconAnchor: [7, 7] });
+        userLocMarker = L.marker([lat, lng], { icon: icon }).addTo(leafletMap);
+        userLocMarker.bindPopup('<strong>Your location</strong><div style="font-size:11px;color:#666;margin-top:2px;">±' + Math.round(acc) + ' m accuracy</div>').openPopup();
+        leafletMap.setView([lat, lng], 11);
+      }, function(err) {
+        alert('Unable to get your location. Please check your browser permissions.');
+      });
+    }
+    const LocCtrl = L.Control.extend({
+      options: { position: 'topright' },
+      onAdd: function() {
+        const btn = L.DomUtil.create('button', 'loc-btn');
+        btn.title = 'Show my location';
+        btn.setAttribute('aria-label', 'Show my location');
+        btn.innerHTML = '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>';
+        L.DomEvent.on(btn, 'click', function(e) { L.DomEvent.stopPropagation(e); locateUser(); });
+        return btn;
+      }
+    });
+    new LocCtrl().addTo(leafletMap);
   };
   document.body.appendChild(script);
 }
