@@ -336,6 +336,7 @@ footer { border-top:1px solid var(--border); padding:2.5rem 2rem; }
 .view-btn:hover { background:var(--bg3); color:var(--text); }
 .view-btn.active { background:var(--cyan-dim); color:var(--cyan); border-color:var(--cyan-bd); }
 #repeater-map { height:420px; border-radius:10px; border:1px solid var(--border); overflow:hidden; margin-bottom:2rem; display:none; }
+@media (min-width:769px) { #repeater-map { height:600px; } }
 .leaflet-popup-content-wrapper { background:var(--bg2) !important; color:var(--text) !important; border:1px solid var(--border2) !important; box-shadow:0 4px 20px rgba(0,0,0,0.3) !important; }
 .leaflet-popup-tip { background:var(--bg2) !important; }
 .leaflet-popup-content { font-family:var(--sans); font-size:13px; line-height:1.5; }

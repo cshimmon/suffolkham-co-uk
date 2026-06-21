@@ -28,6 +28,7 @@
   .card-guide-btn:hover { color:var(--cyan); }
   .guide-overlay { position:fixed; inset:0; z-index:500; background:rgba(0,0,0,0.55); display:flex; align-items:center; justify-content:center; padding:1rem; }
   .guide-dialog { background:var(--bg2); border:1px solid var(--border2); border-radius:12px; padding:1.75rem; max-width:560px; width:100%; max-height:85vh; overflow-y:auto; }
+  .map-cluster-badge { width:26px; height:26px; background:#38bdf8; border:2px solid #fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#07384d; box-shadow:0 1px 6px rgba(0,0,0,0.35); cursor:pointer; font-family:monospace; }
   .user-loc-dot { width:14px; height:14px; background:#38bdf8; border:2px solid #fff; border-radius:50%; box-shadow:0 0 0 0 rgba(56,189,248,0.4); animation:loc-pulse 2s infinite; }
   @keyframes loc-pulse { 0%{box-shadow:0 0 0 0 rgba(56,189,248,0.4)} 70%{box-shadow:0 0 0 8px rgba(56,189,248,0)} 100%{box-shadow:0 0 0 0 rgba(56,189,248,0)} }
   .loc-btn { background:#fff; border:2px solid rgba(0,0,0,0.2); border-radius:4px; cursor:pointer; width:30px; height:30px; display:flex; align-items:center; justify-content:center; padding:0; }
@@ -235,24 +236,50 @@ function initMap(repeaters) {
     }).addTo(leafletMap);
 
     const statusColour = { live: '#4ade80', warn: '#fbbf24', offair: '#f87171' };
-    repeaters.forEach(r => {
-      if (!r.lat || !r.lng) return;
-      const col = statusColour[r.status] || '#9da4bc';
-      const marker = L.circleMarker([r.lat, r.lng], {
-        radius: 10,
-        fillColor: col,
-        color: '#00000033',
-        weight: 1,
-        fillOpacity: 0.85
-      }).addTo(leafletMap);
-      const freqLine = r.frequencies.find(f => f.label === 'Output');
-      marker.bindPopup(
-        '<strong style="font-family:monospace">' + r.callsign + '</strong>' +
-        '<div style="font-size:12px;color:#666;margin:2px 0">' + r.mode + '</div>' +
-        (freqLine ? '<div style="font-family:monospace;font-size:13px">' + freqLine.value + '</div>' : '') +
-        '<div style="font-size:12px;margin-top:4px">' + r.location + '</div>' +
-        '<div style="margin-top:6px"><a href="#' + r.callsign + '" onclick="setView(\'cards\')" style="font-size:12px;color:#0369a1">View card →</a></div>'
-      );
+
+    // Group repeaters within ~100m of each other (0.001°) to avoid stacked markers
+    const groups = [], used = new Set();
+    repeaters.forEach((r, i) => {
+      if (!r.lat || !r.lng || used.has(i)) return;
+      const group = [r]; used.add(i);
+      repeaters.forEach((r2, j) => {
+        if (i === j || used.has(j) || !r2.lat || !r2.lng) return;
+        if (Math.abs(r.lat - r2.lat) < 0.001 && Math.abs(r.lng - r2.lng) < 0.001) { group.push(r2); used.add(j); }
+      });
+      groups.push(group);
+    });
+
+    groups.forEach(group => {
+      const r0 = group[0];
+      const lat = group.reduce((s, r) => s + r.lat, 0) / group.length;
+      const lng = group.reduce((s, r) => s + r.lng, 0) / group.length;
+
+      if (group.length === 1) {
+        const col = statusColour[r0.status] || '#9da4bc';
+        const marker = L.circleMarker([lat, lng], { radius: 10, fillColor: col, color: '#00000033', weight: 1, fillOpacity: 0.85 }).addTo(leafletMap);
+        const freqLine = r0.frequencies.find(f => f.label === 'Output' || f.label === 'Frequency');
+        marker.bindPopup(
+          '<strong style="font-family:monospace">' + r0.callsign + '</strong>' +
+          '<div style="font-size:12px;color:#666;margin:2px 0">' + r0.mode + '</div>' +
+          (freqLine ? '<div style="font-family:monospace;font-size:13px">' + freqLine.value + '</div>' : '') +
+          '<div style="font-size:12px;margin-top:4px">' + r0.location + '</div>' +
+          '<div style="margin-top:6px"><a href="#' + r0.callsign + '" onclick="setView(\'cards\')" style="font-size:12px;color:#0369a1">View card →</a></div>'
+        );
+      } else {
+        const icon = L.divIcon({ className: '', html: '<div class="map-cluster-badge">' + group.length + '</div>', iconSize: [26, 26], iconAnchor: [13, 13], popupAnchor: [0, -13] });
+        const marker = L.marker([lat, lng], { icon: icon }).addTo(leafletMap);
+        const rows = group.map(r => {
+          const freqLine = r.frequencies.find(f => f.label === 'Output' || f.label === 'Frequency');
+          const dot = '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + (statusColour[r.status] || '#9da4bc') + ';margin-right:5px;vertical-align:middle;"></span>';
+          return '<div style="padding:5px 0">' +
+            dot + '<strong style="font-family:monospace;font-size:13px">' + r.callsign + '</strong>' +
+            '<span style="font-size:11px;color:#888;margin-left:5px">' + r.mode + '</span>' +
+            (freqLine ? '<div style="font-family:monospace;font-size:12px;color:#555;margin-left:13px">' + freqLine.value + '</div>' : '') +
+            '<div style="margin-left:13px;margin-top:3px"><a href="#' + r.callsign + '" onclick="setView(\'cards\')" style="font-size:12px;color:#0369a1">View card →</a></div>' +
+          '</div>';
+        }).join('<div style="border-top:1px solid #e5e7eb;"></div>');
+        marker.bindPopup('<div style="min-width:180px"><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px">' + group.length + ' repeaters at this site</div>' + rows + '</div>');
+      }
     });
 
     // My location control
