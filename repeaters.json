@@ -246,6 +246,27 @@
       "noteType": "info"
     },
     {
+      "callsign": "MB7IBW",
+      "status": "live",
+      "statusLabel": "On Air",
+      "mode": "2m · FM",
+      "band": "2m",
+      "type": "FM",
+      "location": "Suffolk",
+      "lat": 52.104,
+      "lng": 1.375,
+      "keeper": "M0AWS",
+      "group": "Independent",
+      "groupUrl": null,
+      "frequencies": [
+        { "label": "Frequency", "value": "145.2625 MHz" },
+        { "label": "CTCSS",     "value": "94.8 Hz" },
+        { "label": "Network",   "value": "AllStarLink" }
+      ],
+      "note": "Simplex AllStarLink gateway — transmit and receive on 145.2625 MHz with CTCSS 94.8 Hz.",
+      "noteType": "info"
+    },
+    {
       "callsign": "GB3EF",
       "status": "offair",
       "statusLabel": "Off Air",
