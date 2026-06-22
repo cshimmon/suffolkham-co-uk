@@ -1,6 +1,6 @@
 {
-  "updated": "2026-06-22 16:43 UTC",
-  "sfi": "128",
+  "updated": "2026-06-22 21:57 UTC",
+  "sfi": "122",
   "sunspots": "78",
   "bands": [
     {
@@ -15,8 +15,8 @@
     },
     {
       "name": "17m-15m",
-      "day": "Good",
-      "night": "Good"
+      "day": "Fair",
+      "night": "Fair"
     },
     {
       "name": "12m-10m",
