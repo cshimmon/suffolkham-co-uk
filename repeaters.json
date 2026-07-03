@@ -1,5 +1,5 @@
 {
-  "alert": null,
+  "alert": { "message": "Planned electrical works at Heath Road Hospital on 3–4 July 2026 may take GB3PO, GB3IH and GB7MK off air for up to an hour. Keepers are aware and liaising with hospital engineering. If these repeaters are off air on those days, no fault with your equipment — they will return automatically." },
   "repeaters": [
     {
       "callsign": "GB3PO",
