@@ -84,6 +84,8 @@
     'locator':         [{ label: 'Home', href: '/' }, { label: 'QTH Locator' }],
     'glossary':        [{ label: 'Home', href: '/' }, { label: 'Glossary' }],
     'meshcore':        [{ label: 'Home', href: '/' }, { label: 'MeshCore' }],
+    'bandplan':        [{ label: 'Home', href: '/' }, { label: 'Band Plan' }],
+    'raynet':          [{ label: 'Home', href: '/' }, { label: 'RAYNET' }],
     'about':           [{ label: 'Home', href: '/' }, { label: 'About' }],
   };
 

@@ -13,6 +13,8 @@
     { "label": "Calculators",     "href": "calculators" },
     { "label": "QTH Locator",     "href": "locator" },
     { "label": "Glossary",        "href": "glossary" },
-    { "label": "MeshCore",        "href": "meshcore" }
+    { "label": "MeshCore",        "href": "meshcore" },
+    { "label": "Band Plan",       "href": "bandplan" },
+    { "label": "RAYNET",          "href": "raynet" }
   ]
 }

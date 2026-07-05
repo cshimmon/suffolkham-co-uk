@@ -1,0 +1,563 @@
+<!DOCTYPE html>
+<!-- Site by M9XCN -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>UK Amateur Radio Band Plan – VHF/UHF/HF | SuffolkHam</title>
+<meta name="description" content="UK amateur radio band plan for 2m, 70cm, 4m and 6m. Repeater offsets, calling frequencies, CTCSS tones and common channels for Suffolk operators.">
+<meta name="keywords" content="UK band plan, amateur radio frequencies, 2m band plan, 70cm band plan, repeater offset UK, calling frequency 2m, CTCSS 110.9, amateur radio Suffolk">
+<meta property="og:title" content="UK Amateur Radio Band Plan | SuffolkHam">
+<meta property="og:description" content="UK band plan for 2m, 70cm, 4m and 6m — repeater offsets, calling frequencies and common channels.">
+<meta property="og:image" content="https://suffolkham.co.uk/social-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="https://suffolkham.co.uk/bandplan">
+<link rel="stylesheet" href="style.css">
+<style>
+  .band-tabs { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:2rem; }
+  .band-tab { font-family:var(--mono); font-size:12px; font-weight:500; padding:6px 16px; border-radius:20px; border:1px solid var(--border2); background:var(--bg2); color:var(--muted); cursor:pointer; transition:all 0.15s; }
+  .band-tab:hover { background:var(--bg3); color:var(--text); }
+  .band-tab.active { background:var(--cyan-dim); color:var(--cyan); border-color:var(--cyan-bd); }
+  .band-panel { display:none; }
+  .band-panel.active { display:block; }
+  .freq-table { width:100%; border-collapse:collapse; margin-bottom:1.5rem; font-size:14px; }
+  .freq-table th { font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:0.1em; color:var(--muted); font-weight:500; text-align:left; padding:8px 10px; border-bottom:2px solid var(--border); }
+  .freq-table td { padding:9px 10px; border-bottom:1px solid var(--border); vertical-align:top; }
+  .freq-table tr:last-child td { border-bottom:none; }
+  .freq-table .freq-val { font-family:var(--mono); font-size:13px; color:var(--text); white-space:nowrap; }
+  .freq-table .freq-note { color:var(--muted); font-size:13px; }
+  .freq-tag { display:inline-block; font-family:var(--mono); font-size:10px; padding:2px 7px; border-radius:10px; font-weight:500; vertical-align:middle; margin-left:4px; white-space:nowrap; }
+  .tag-call  { background:var(--cyan-dim); color:var(--cyan); border:1px solid var(--cyan-bd); }
+  .tag-aprs  { background:rgba(161,89,247,0.12); color:#a159f7; border:1px solid rgba(161,89,247,0.3); }
+  .tag-data  { background:rgba(248,168,69,0.12); color:#f8a845; border:1px solid rgba(248,168,69,0.3); }
+  .tag-sat   { background:rgba(96,165,250,0.12); color:#60a5fa; border:1px solid rgba(96,165,250,0.3); }
+  .tag-ssb   { background:rgba(52,211,153,0.12); color:#34d399; border:1px solid rgba(52,211,153,0.3); }
+  .offset-box { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:1.2rem 1.4rem; margin-bottom:1.5rem; display:flex; flex-wrap:wrap; gap:1rem 2.5rem; }
+  .offset-item { display:flex; flex-direction:column; gap:3px; }
+  .offset-label { font-family:var(--mono); font-size:10px; text-transform:uppercase; letter-spacing:0.12em; color:var(--muted); }
+  .offset-val { font-family:var(--mono); font-size:1rem; font-weight:500; color:var(--text); }
+  .callout { background:var(--bg2); border:1px solid var(--border); border-left:3px solid var(--cyan); border-radius:8px; padding:1rem 1.2rem; font-size:14px; color:var(--muted); line-height:1.65; margin-bottom:1.5rem; }
+  .callout strong { color:var(--text); }
+  @media (max-width:540px) {
+    .freq-table th:nth-child(3), .freq-table td:nth-child(3) { display:none; }
+  }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+
+<nav aria-label="Site navigation" id="site-nav"></nav>
+
+<div class="page-header" id="main">
+  <div class="page-tag">Frequency reference</div>
+  <h1>UK Band Plan</h1>
+  <p>A quick reference to the UK amateur radio band plan for the bands most commonly used in Suffolk. Includes repeater offsets, calling frequencies, and CTCSS tones. Based on the RSGB band plan.</p>
+</div>
+
+<main>
+
+  <div class="band-tabs" id="band-tabs" role="tablist" aria-label="Band selector">
+    <button class="band-tab active" role="tab" aria-selected="true"  data-panel="m2"  >2m (144 MHz)</button>
+    <button class="band-tab"        role="tab" aria-selected="false" data-panel="cm70">70cm (430 MHz)</button>
+    <button class="band-tab"        role="tab" aria-selected="false" data-panel="m4"  >4m (70 MHz)</button>
+    <button class="band-tab"        role="tab" aria-selected="false" data-panel="m6"  >6m (50 MHz)</button>
+    <button class="band-tab"        role="tab" aria-selected="false" data-panel="hf"  >HF highlights</button>
+  </div>
+
+  <!-- 2m -->
+  <div class="band-panel active" id="panel-m2" role="tabpanel">
+    <div style="margin-bottom:2.5rem;">
+      <div class="section-label">144–146 MHz</div>
+      <h2 class="section-title">2m Band</h2>
+      <p class="section-lead">The most popular VHF band for local FM operation in the UK. Home to numerous repeaters, the national FM calling channel, APRS and SSB activity.</p>
+
+      <div class="offset-box">
+        <div class="offset-item"><span class="offset-label">FM Repeater Offset</span><span class="offset-val">−600 kHz</span></div>
+        <div class="offset-item"><span class="offset-label">Standard CTCSS</span><span class="offset-val">110.9 Hz</span></div>
+        <div class="offset-item"><span class="offset-label">Channel Spacing</span><span class="offset-val">12.5 kHz</span></div>
+        <div class="offset-item"><span class="offset-label">FM Calling</span><span class="offset-val">145.500 MHz</span></div>
+      </div>
+
+      <table class="freq-table" aria-label="2m key frequencies">
+        <thead>
+          <tr>
+            <th>Frequency</th>
+            <th>Use</th>
+            <th>Notes</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="freq-val">144.300 MHz</td>
+            <td><span class="freq-tag tag-ssb">SSB</span> SSB Calling</td>
+            <td class="freq-note">National SSB calling frequency — QSY after contact</td>
+          </tr>
+          <tr>
+            <td class="freq-val">144.800 MHz</td>
+            <td><span class="freq-tag tag-aprs">APRS</span> APRS</td>
+            <td class="freq-note">UK/EU automatic packet reporting — no voice</td>
+          </tr>
+          <tr>
+            <td class="freq-val">145.200–145.575 MHz</td>
+            <td>FM Simplex</td>
+            <td class="freq-note">V16–V43 simplex channels (12.5 kHz spacing)</td>
+          </tr>
+          <tr>
+            <td class="freq-val">145.500 MHz</td>
+            <td><span class="freq-tag tag-call">Calling</span> FM Calling (V40)</td>
+            <td class="freq-note">National FM calling — QSY after making contact</td>
+          </tr>
+          <tr>
+            <td class="freq-val">145.525 MHz</td>
+            <td>FM Simplex</td>
+            <td class="freq-note">V42 — often used for local chat after calling on 145.500</td>
+          </tr>
+          <tr>
+            <td class="freq-val">145.600–145.775 MHz</td>
+            <td>FM Repeater Outputs</td>
+            <td class="freq-note">RV48–RV63; inputs are 600 kHz lower (145.000–145.175 MHz)</td>
+          </tr>
+          <tr>
+            <td class="freq-val">145.650 MHz</td>
+            <td>FM Repeater Output</td>
+            <td class="freq-note">RV52 — <a href="repeaters#GB3PO" style="color:var(--cyan)">GB3PO</a> Ipswich (input 145.050 MHz, CTCSS 110.9 Hz)</td>
+          </tr>
+          <tr>
+            <td class="freq-val">145.687.5 MHz</td>
+            <td>FM Repeater Output</td>
+            <td class="freq-note">RV55 — <a href="repeaters#GB3EA" style="color:var(--cyan)">GB3EA</a> Bury St Edmunds (input 145.087.5 MHz, CTCSS 110.9 Hz)</td>
+          </tr>
+          <tr>
+            <td class="freq-val">145.800–146.000 MHz</td>
+            <td><span class="freq-tag tag-sat">Satellite</span> Satellite</td>
+            <td class="freq-note">Amateur satellite segment — no terrestrial FM operation</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <strong>New to 2m?</strong> Start by monitoring 145.500 MHz (no CTCSS needed for simplex). To access local repeater <a href="repeaters#GB3PO" style="color:var(--cyan)">GB3PO</a>, set your radio to 145.650 MHz receive, 145.050 MHz transmit, with CTCSS tone 110.9 Hz. Most modern radios handle this automatically if you enter the output frequency and set the offset to −600 kHz.
+      </div>
+    </div>
+
+    <hr class="divider">
+
+    <div style="margin-bottom:2.5rem;">
+      <div class="section-label">2m simplex channels</div>
+      <h2 class="section-title">Common simplex channels</h2>
+      <table class="freq-table" aria-label="2m simplex channels">
+        <thead>
+          <tr><th>Channel</th><th>Frequency</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr><td class="freq-val">V16</td><td class="freq-val">145.200 MHz</td><td class="freq-note">FM simplex</td></tr>
+          <tr><td class="freq-val">V20</td><td class="freq-val">145.250 MHz</td><td class="freq-note">FM simplex</td></tr>
+          <tr><td class="freq-val">V24</td><td class="freq-val">145.300 MHz</td><td class="freq-note">FM simplex</td></tr>
+          <tr><td class="freq-val">V28</td><td class="freq-val">145.350 MHz</td><td class="freq-note">FM simplex</td></tr>
+          <tr><td class="freq-val">V32</td><td class="freq-val">145.400 MHz</td><td class="freq-note">FM simplex</td></tr>
+          <tr><td class="freq-val">V36</td><td class="freq-val">145.450 MHz</td><td class="freq-note">FM simplex</td></tr>
+          <tr><td class="freq-val">V40</td><td class="freq-val">145.500 MHz</td><td class="freq-note"><strong>FM calling channel</strong></td></tr>
+          <tr><td class="freq-val">V42</td><td class="freq-val">145.525 MHz</td><td class="freq-note">FM simplex — common QSY from calling</td></tr>
+          <tr><td class="freq-val">V43</td><td class="freq-val">145.537.5 MHz</td><td class="freq-note">FM simplex</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 70cm -->
+  <div class="band-panel" id="panel-cm70" role="tabpanel">
+    <div style="margin-bottom:2.5rem;">
+      <div class="section-label">430–440 MHz</div>
+      <h2 class="section-title">70cm Band</h2>
+      <p class="section-lead">The main UHF band for amateur use in the UK. Supports FM, DMR, D-STAR, SSB and data. Two different repeater channel plans operate here — RB (traditional FM) and RU (wide-area/digital).</p>
+
+      <div class="offset-box">
+        <div class="offset-item"><span class="offset-label">RB Repeater Offset</span><span class="offset-val">+1.6 MHz</span></div>
+        <div class="offset-item"><span class="offset-label">RU Repeater Offset</span><span class="offset-val">−9 MHz</span></div>
+        <div class="offset-item"><span class="offset-label">Standard CTCSS</span><span class="offset-val">110.9 Hz</span></div>
+        <div class="offset-item"><span class="offset-label">Channel Spacing</span><span class="offset-val">25 kHz (RB)</span></div>
+        <div class="offset-item"><span class="offset-label">FM Calling</span><span class="offset-val">433.500 MHz</span></div>
+      </div>
+
+      <div class="callout">
+        <strong>Two repeater types on 70cm.</strong> <strong>RB repeaters</strong> have outputs in the 433 MHz region — input is 1.6 MHz <em>above</em> the output (e.g. output 433.350, input 434.950). <strong>RU repeaters</strong> (often digital/wide-area) have outputs around 439 MHz — input is 9 MHz <em>below</em> the output (e.g. output 439.400, input 430.400). Always check the <a href="repeaters" style="color:var(--cyan)">repeaters page</a> for local frequencies.
+      </div>
+
+      <table class="freq-table" aria-label="70cm key frequencies">
+        <thead>
+          <tr><th>Frequency</th><th>Use</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="freq-val">432.200 MHz</td>
+            <td><span class="freq-tag tag-ssb">SSB</span> SSB Calling</td>
+            <td class="freq-note">National 70cm SSB calling frequency</td>
+          </tr>
+          <tr>
+            <td class="freq-val">433.000–433.375 MHz</td>
+            <td>RB Repeater Outputs</td>
+            <td class="freq-note">RB0–RB15 (25 kHz spacing); inputs at 434.600–434.975 MHz</td>
+          </tr>
+          <tr>
+            <td class="freq-val">433.175 MHz</td>
+            <td>RB Repeater Output</td>
+            <td class="freq-note"><a href="repeaters#GB3DE" style="color:var(--cyan)">GB3DE</a> Ipswich (input 434.775 MHz, CTCSS 110.9 Hz)</td>
+          </tr>
+          <tr>
+            <td class="freq-val">433.225 MHz</td>
+            <td>RB Repeater Output</td>
+            <td class="freq-note"><a href="repeaters#GB3CL" style="color:var(--cyan)">GB3CL</a> Clacton-on-Sea (input 434.825 MHz, CTCSS 67.0 Hz)</td>
+          </tr>
+          <tr>
+            <td class="freq-val">433.350 MHz</td>
+            <td>RB Repeater Output</td>
+            <td class="freq-note"><a href="repeaters#GB3CE" style="color:var(--cyan)">GB3CE</a> Colchester (input 434.950 MHz, CTCSS 67.0 Hz)</td>
+          </tr>
+          <tr>
+            <td class="freq-val">433.400–433.475 MHz</td>
+            <td>FM Simplex</td>
+            <td class="freq-note">SU channels — simplex operation</td>
+          </tr>
+          <tr>
+            <td class="freq-val">433.500 MHz</td>
+            <td><span class="freq-tag tag-call">Calling</span> FM Calling (SU20)</td>
+            <td class="freq-note">National 70cm FM calling — QSY after contact</td>
+          </tr>
+          <tr>
+            <td class="freq-val">433.525–433.775 MHz</td>
+            <td>FM Simplex</td>
+            <td class="freq-note">SU21–SU31 simplex channels</td>
+          </tr>
+          <tr>
+            <td class="freq-val">434.000–434.975 MHz</td>
+            <td><span class="freq-tag tag-data">Data</span> Data / Digital</td>
+            <td class="freq-note">Data, ATV, digital voice; also RB repeater inputs (434.600–434.975)</td>
+          </tr>
+          <tr>
+            <td class="freq-val">439.000–439.975 MHz</td>
+            <td>RU Repeater Outputs</td>
+            <td class="freq-note">RU (wide-area) repeater outputs; inputs 9 MHz lower (430.000–430.975 MHz)</td>
+          </tr>
+          <tr>
+            <td class="freq-val">439.400 MHz</td>
+            <td>RU Repeater Output</td>
+            <td class="freq-note"><a href="repeaters#GB7AL" style="color:var(--cyan)">GB7AL</a> Tunstall — DMR, CC2, Phoenix (input 430.400 MHz)</td>
+          </tr>
+          <tr>
+            <td class="freq-val">439.4625 MHz</td>
+            <td>RU Repeater Output</td>
+            <td class="freq-note"><a href="repeaters#GB7DI" style="color:var(--cyan)">GB7DI</a> Ipswich — FM / D-STAR (input 430.4625 MHz, CTCSS 110.9 Hz)</td>
+          </tr>
+          <tr>
+            <td class="freq-val">439.600 MHz</td>
+            <td>RU Repeater Output</td>
+            <td class="freq-note"><a href="repeaters#GB7MK" style="color:var(--cyan)">GB7MK</a> Ipswich — DMR, CC13, Phoenix (input 430.600 MHz)</td>
+          </tr>
+          <tr>
+            <td class="freq-val">439.725 MHz</td>
+            <td>RU Repeater Output</td>
+            <td class="freq-note"><a href="repeaters#GB3IH" style="color:var(--cyan)">GB3IH</a> Ipswich — FM (input 430.725 MHz, CTCSS 110.9 Hz)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- 4m -->
+  <div class="band-panel" id="panel-m4" role="tabpanel">
+    <div style="margin-bottom:2.5rem;">
+      <div class="section-label">70–70.5 MHz</div>
+      <h2 class="section-title">4m Band</h2>
+      <p class="section-lead">A narrow 500 kHz allocation unique to a handful of countries. Good for sporadic-E propagation in summer and local simplex use. The band is less crowded than 2m and can give surprising range.</p>
+
+      <div class="offset-box">
+        <div class="offset-item"><span class="offset-label">FM Calling</span><span class="offset-val">70.450 MHz</span></div>
+        <div class="offset-item"><span class="offset-label">Band Width</span><span class="offset-val">500 kHz</span></div>
+        <div class="offset-item"><span class="offset-label">CW Calling</span><span class="offset-val">70.200 MHz</span></div>
+      </div>
+
+      <table class="freq-table" aria-label="4m key frequencies">
+        <thead>
+          <tr><th>Frequency</th><th>Use</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="freq-val">70.000 MHz</td>
+            <td>Beacon / CW</td>
+            <td class="freq-note">CW beacons and propagation reference</td>
+          </tr>
+          <tr>
+            <td class="freq-val">70.200 MHz</td>
+            <td><span class="freq-tag tag-ssb">SSB</span> SSB Calling</td>
+            <td class="freq-note">4m SSB calling frequency</td>
+          </tr>
+          <tr>
+            <td class="freq-val">70.450 MHz</td>
+            <td><span class="freq-tag tag-call">Calling</span> FM Calling</td>
+            <td class="freq-note">National 4m FM calling channel — QSY after contact</td>
+          </tr>
+          <tr>
+            <td class="freq-val">70.4625 MHz</td>
+            <td>FM Simplex</td>
+            <td class="freq-note">Common QSY channel</td>
+          </tr>
+          <tr>
+            <td class="freq-val">70.475–70.500 MHz</td>
+            <td>FM Simplex</td>
+            <td class="freq-note">Additional simplex channels</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="callout">
+        <strong>Sporadic-E (Es).</strong> The 4m band can produce dramatic long-distance contacts via sporadic-E propagation, typically May–August. When Es opens, signals from mainland Europe can boom in at S9+. Check DX cluster spots for 4m Es openings. The FDARS Sunday net includes a 4m leg — see the <a href="nets" style="color:var(--cyan)">nets page</a>.
+      </div>
+    </div>
+  </div>
+
+  <!-- 6m -->
+  <div class="band-panel" id="panel-m6" role="tabpanel">
+    <div style="margin-bottom:2.5rem;">
+      <div class="section-label">50–52 MHz</div>
+      <h2 class="section-title">6m Band</h2>
+      <p class="section-lead">Known as the "magic band" for its ability to produce unexpected long-distance propagation via sporadic-E, meteor scatter and auroral reflection. The 6m allocation in the UK is 50–52 MHz.</p>
+
+      <div class="offset-box">
+        <div class="offset-item"><span class="offset-label">FM Repeater Offset</span><span class="offset-val">+500 kHz</span></div>
+        <div class="offset-item"><span class="offset-label">FM Calling</span><span class="offset-val">51.500 MHz</span></div>
+        <div class="offset-item"><span class="offset-label">SSB Calling</span><span class="offset-val">50.150 MHz</span></div>
+      </div>
+
+      <div class="callout">
+        <strong>Note on the 6m repeater offset.</strong> Unlike 2m where the input is below the output, 6m UK repeaters have their input <em>above</em> the output by 500 kHz. So your radio transmits 500 kHz higher than it receives — the opposite of 2m. This catches many beginners out. Example: GB3EF outputs on 51.720 MHz, input on 51.220 MHz (your radio transmits on 51.220, receives on 51.720 — set your offset to +500 kHz from input perspective, or simply set TX = 51.220, RX = 51.720).
+      </div>
+
+      <table class="freq-table" aria-label="6m key frequencies">
+        <thead>
+          <tr><th>Frequency</th><th>Use</th><th>Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="freq-val">50.000–50.100 MHz</td>
+            <td>CW / Beacons</td>
+            <td class="freq-note">CW only segment and propagation beacons</td>
+          </tr>
+          <tr>
+            <td class="freq-val">50.100–50.200 MHz</td>
+            <td><span class="freq-tag tag-ssb">SSB</span> SSB / CW</td>
+            <td class="freq-note">SSB DX calling around 50.110 MHz</td>
+          </tr>
+          <tr>
+            <td class="freq-val">50.150 MHz</td>
+            <td><span class="freq-tag tag-ssb">SSB</span> SSB Calling</td>
+            <td class="freq-note">National 6m SSB calling frequency</td>
+          </tr>
+          <tr>
+            <td class="freq-val">51.210–51.390 MHz</td>
+            <td>FM Repeater Inputs</td>
+            <td class="freq-note">Inputs for 6m repeaters (outputs 500 kHz higher)</td>
+          </tr>
+          <tr>
+            <td class="freq-val">51.220 MHz</td>
+            <td>FM Repeater Input</td>
+            <td class="freq-note"><a href="repeaters#GB3EF" style="color:var(--cyan)">GB3EF</a> Mendlesham — currently off air for refurbishment</td>
+          </tr>
+          <tr>
+            <td class="freq-val">51.500 MHz</td>
+            <td><span class="freq-tag tag-call">Calling</span> FM Calling</td>
+            <td class="freq-note">National 6m FM calling channel</td>
+          </tr>
+          <tr>
+            <td class="freq-val">51.510–51.590 MHz</td>
+            <td>FM Simplex</td>
+            <td class="freq-note">Additional 6m FM simplex channels</td>
+          </tr>
+          <tr>
+            <td class="freq-val">51.710–51.890 MHz</td>
+            <td>FM Repeater Outputs</td>
+            <td class="freq-note">6m repeater outputs (inputs 500 kHz lower)</td>
+          </tr>
+          <tr>
+            <td class="freq-val">51.720 MHz</td>
+            <td>FM Repeater Output</td>
+            <td class="freq-note"><a href="repeaters#GB3EF" style="color:var(--cyan)">GB3EF</a> Mendlesham — currently off air (input 51.220 MHz, CTCSS 110.9 Hz)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- HF -->
+  <div class="band-panel" id="panel-hf" role="tabpanel">
+    <div style="margin-bottom:2.5rem;">
+      <div class="section-label">3.5–30 MHz</div>
+      <h2 class="section-title">HF Highlights</h2>
+      <p class="section-lead">HF (High Frequency) bands support long-distance ionospheric propagation. This is a quick reference to the most commonly used phone (voice) frequencies. For the full UK HF band plan see the <a href="https://rsgb.org/main/operating/band-plans/" target="_blank" rel="noopener">RSGB website</a>.</p>
+
+      <div class="callout">
+        <strong>Licence requirements.</strong> HF access requires a Full licence in the UK. Foundation and Intermediate licensees are permitted on some HF frequencies under specific conditions — check your licence terms. If you're working towards Full, the <a href="getting-started" style="color:var(--cyan)">getting started page</a> covers UK licence levels.
+      </div>
+
+      <table class="freq-table" aria-label="HF key frequencies">
+        <thead>
+          <tr><th>Band</th><th>Phone Segment</th><th>Calling / Notes</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="freq-val">160m (1.8 MHz)</td>
+            <td class="freq-val">1.840–2.000 MHz</td>
+            <td class="freq-note">Short-range night-time band; SSB from 1.840 MHz</td>
+          </tr>
+          <tr>
+            <td class="freq-val">80m (3.5 MHz)</td>
+            <td class="freq-val">3.600–3.800 MHz</td>
+            <td class="freq-note">UK SSB calling ~3.760 MHz; good for regional/European contacts. IARU emergency: 3.760 MHz</td>
+          </tr>
+          <tr>
+            <td class="freq-val">60m (5 MHz)</td>
+            <td class="freq-val">5 channels</td>
+            <td class="freq-note">UK has specific permitted channels: 5.2585, 5.2785, 5.2885, 5.3685, 5.3985 MHz (USB only, 100 W max)</td>
+          </tr>
+          <tr>
+            <td class="freq-val">40m (7 MHz)</td>
+            <td class="freq-val">7.060–7.200 MHz</td>
+            <td class="freq-note">Excellent regional band; UK calling ~7.090 MHz. IARU emergency: 7.110 MHz</td>
+          </tr>
+          <tr>
+            <td class="freq-val">30m (10 MHz)</td>
+            <td class="freq-val">CW/data only</td>
+            <td class="freq-note">No phone/SSB permitted on 30m in the UK</td>
+          </tr>
+          <tr>
+            <td class="freq-val">20m (14 MHz)</td>
+            <td class="freq-val">14.100–14.350 MHz</td>
+            <td class="freq-note">Premier DX band; SSB calling 14.225 MHz. IUAR emergency: 14.300 MHz</td>
+          </tr>
+          <tr>
+            <td class="freq-val">17m (18 MHz)</td>
+            <td class="freq-val">18.110–18.168 MHz</td>
+            <td class="freq-note">No contests permitted; good for long-haul DX</td>
+          </tr>
+          <tr>
+            <td class="freq-val">15m (21 MHz)</td>
+            <td class="freq-val">21.150–21.450 MHz</td>
+            <td class="freq-note">Excellent DX when solar activity is high; SSB calling 21.285 MHz</td>
+          </tr>
+          <tr>
+            <td class="freq-val">12m (24 MHz)</td>
+            <td class="freq-val">24.930–24.990 MHz</td>
+            <td class="freq-note">No contests; opens well during solar maximum</td>
+          </tr>
+          <tr>
+            <td class="freq-val">10m (28 MHz)</td>
+            <td class="freq-val">28.300–29.700 MHz</td>
+            <td class="freq-note">FM calling 29.600 MHz; SSB calling 28.500 MHz; spectacular DX at solar max</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="grid-2">
+        <div class="card">
+          <h3>IUAR Emergency Frequencies</h3>
+          <p>These frequencies are monitored during emergencies and are kept clear of general QSOs during normal operation:</p>
+          <ul style="margin:0.75rem 0 0; padding-left:1.1rem; font-size:14px; color:var(--muted); line-height:2;">
+            <li>3.760 MHz — 80m (European)</li>
+            <li>7.110 MHz — 40m (Region 1)</li>
+            <li>14.300 MHz — 20m (worldwide)</li>
+            <li>18.160 MHz — 17m</li>
+            <li>21.360 MHz — 15m</li>
+          </ul>
+        </div>
+        <div class="card">
+          <h3>Getting on HF</h3>
+          <p>HF requires a Full licence in the UK. If you're not there yet, you can still listen — all of the HF bands are fascinating to receive. A simple wire antenna (even a random length fed via an ATU) can produce excellent results on 80m and 40m. Check out the <a href="getting-started">getting started page</a> for UK licensing steps.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div style="margin-bottom:3rem;">
+    <div class="section-label">Reference</div>
+    <h2 class="section-title">UK CTCSS tones</h2>
+    <p class="section-lead">CTCSS (Continuous Tone-Coded Squelch System) sub-audible tones are used by most UK FM repeaters to prevent interference from distant stations opening the squelch. You must transmit the correct tone for the repeater to activate.</p>
+    <div class="grid-2">
+      <div class="card">
+        <h3>110.9 Hz — most common in the UK</h3>
+        <p>The majority of UK amateur FM repeaters use 110.9 Hz as their access tone. This includes all the SARG repeaters in Suffolk. If in doubt, try 110.9 Hz first.</p>
+      </div>
+      <div class="card">
+        <h3>Other tones in use locally</h3>
+        <p>Some repeaters in the region use different tones: GB3CE (Colchester) and GB3CL (Clacton) both use 67.0 Hz. MB7IBW uses 94.8 Hz. Always check the <a href="repeaters">repeaters page</a> for the correct tone.</p>
+      </div>
+      <div class="card">
+        <h3>Setting CTCSS on your radio</h3>
+        <p>Look for CTCSS, TONE, or T-CTSS in your radio's channel settings. Some radios call it a "subtone" or "PL tone". Set it to the transmit tone only — you generally don't need to decode CTCSS on receive for repeater use.</p>
+      </div>
+      <div class="card">
+        <h3>No CTCSS for simplex</h3>
+        <p>On simplex frequencies like 145.500 MHz, CTCSS is not normally used — just transmit without a tone. Enabling CTCSS on simplex can prevent you hearing stations who aren't using a tone.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <div style="margin-bottom:2rem;">
+    <div class="section-label">Further reading</div>
+    <h2 class="section-title">Official band plan resources</h2>
+    <div class="grid-2">
+      <div class="link-card" onclick="window.open('https://rsgb.org/main/operating/band-plans/','_blank')" style="cursor:pointer;">
+        <div class="link-title">RSGB Band Plans <span class="arrow">↗</span></div>
+        <div class="link-desc">The full UK band plans published by the Radio Society of Great Britain — authoritative reference for all amateur bands.</div>
+      </div>
+      <div class="link-card" onclick="window.open('https://www.ofcom.org.uk/manage-your-licence/radiocommunication-licences/amateur-radio','_blank')" style="cursor:pointer;">
+        <div class="link-title">Ofcom Amateur Radio Licensing <span class="arrow">↗</span></div>
+        <div class="link-desc">Ofcom administers UK amateur radio licences. The amateur radio licence terms and privileges are defined in the UK licence documents.</div>
+      </div>
+      <div class="link-card" onclick="window.location.href='repeaters'" style="cursor:pointer;">
+        <div class="link-title">Suffolk Repeaters</div>
+        <div class="link-desc">Full list of repeaters covering Suffolk and East Anglia including frequencies, CTCSS tones and current status.</div>
+      </div>
+      <div class="link-card" onclick="window.location.href='calculators'" style="cursor:pointer;">
+        <div class="link-title">Calculators</div>
+        <div class="link-desc">Useful amateur radio calculators including antenna length, QTH locator, decibel conversion and more.</div>
+      </div>
+    </div>
+  </div>
+
+</main>
+
+<footer></footer>
+
+<script>
+(function () {
+  var tabs = document.querySelectorAll('.band-tab');
+  var panels = document.querySelectorAll('.band-panel');
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener('click', function () {
+      var target = tab.dataset.panel;
+      tabs.forEach(function (t) {
+        t.classList.toggle('active', t === tab);
+        t.setAttribute('aria-selected', t === tab ? 'true' : 'false');
+      });
+      panels.forEach(function (p) {
+        p.classList.toggle('active', p.id === 'panel-' + target);
+      });
+    });
+  });
+})();
+</script>
+
+<script src="nav.js"></script>
+</body>
+</html>

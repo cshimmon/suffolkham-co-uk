@@ -345,6 +345,157 @@ fetch('repeaters.json')
   });
 </script>
 
+<script>
+function haversineKm(lat1, lon1, lat2, lon2) {
+  var R = 6371, d2r = Math.PI / 180;
+  var dLat = (lat2 - lat1) * d2r, dLon = (lon2 - lon1) * d2r;
+  var a = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(lat1*d2r)*Math.cos(lat2*d2r)*Math.sin(dLon/2)*Math.sin(dLon/2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function bearingDeg(lat1, lon1, lat2, lon2) {
+  var d2r = Math.PI / 180;
+  var y = Math.sin((lon2-lon1)*d2r) * Math.cos(lat2*d2r);
+  var x = Math.cos(lat1*d2r)*Math.sin(lat2*d2r) - Math.sin(lat1*d2r)*Math.cos(lat2*d2r)*Math.cos((lon2-lon1)*d2r);
+  return (Math.atan2(y, x) * 180/Math.PI + 360) % 360;
+}
+
+function bearingCardinal(deg) {
+  var dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+  return dirs[Math.round(deg / 22.5) % 16];
+}
+
+function lookupPostcode() {
+  var raw = (document.getElementById('postcode-input').value || '').trim().replace(/\s+/g,'').toUpperCase();
+  var out = document.getElementById('postcode-results');
+  if (!raw) { out.innerHTML = '<p style="font-size:13px;color:var(--muted)">Enter a postcode first.</p>'; return; }
+  out.innerHTML = '<p style="font-size:13px;color:var(--muted)">Looking up…</p>';
+  fetch('https://api.postcodes.io/postcodes/' + encodeURIComponent(raw))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.status !== 200 || !data.result) {
+        out.innerHTML = '<p style="font-size:13px;color:var(--red)">Postcode not found. Try a full UK postcode, e.g. IP1 1AA.</p>';
+        return;
+      }
+      var lat = data.result.latitude, lng = data.result.longitude;
+      var ranked = allRepeaterData
+        .filter(function(r) { return r.lat && r.lng; })
+        .map(function(r) { var km = haversineKm(lat, lng, r.lat, r.lng); return Object.assign({}, r, { km: km, brg: bearingDeg(lat, lng, r.lat, r.lng) }); })
+        .sort(function(a,b) { return a.km - b.km; });
+      if (!ranked.length) { out.innerHTML = '<p style="font-size:13px;color:var(--muted)">No data available.</p>'; return; }
+      var html = '<div style="font-size:11px;color:var(--faint);font-family:var(--mono);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em;">Nearest to ' + raw + '</div>';
+      ranked.slice(0, 10).forEach(function(r) {
+        var dist = (r.km < 1 ? '< 1' : Math.round(r.km)) + ' km · ' + Math.round(r.brg) + '° ' + bearingCardinal(r.brg);
+        var freqF = r.frequencies.find(function(f) { return f.label === 'Output' || f.label === 'Frequency'; });
+        var badge, cls;
+        if (r.status === 'offair') { badge = 'Off air'; cls = 'far'; }
+        else if (r.km < 25)  { badge = 'Good coverage'; cls = 'good'; }
+        else if (r.km < 50)  { badge = 'Possible';      cls = 'maybe'; }
+        else                 { badge = 'Unlikely';       cls = 'far'; }
+        html += '<div class="pc-result-row">' +
+          '<div>' +
+            '<a href="#' + r.callsign + '" class="pc-callsign" onclick="setView(\'cards\')">' + r.callsign + '</a>' +
+            '<span style="font-size:12px;color:var(--muted);margin-left:8px;">' + r.mode + '</span>' +
+            (freqF ? '<div style="font-family:var(--mono);font-size:11px;color:var(--faint);">' + freqF.value + '</div>' : '') +
+          '</div>' +
+          '<div style="text-align:right;flex-shrink:0;">' +
+            '<div class="pc-dist">' + dist + '</div>' +
+            '<span class="pc-badge ' + cls + '">' + badge + '</span>' +
+          '</div>' +
+        '</div>';
+      });
+      out.innerHTML = html;
+    })
+    .catch(function() { out.innerHTML = '<p style="font-size:13px;color:var(--red)">Unable to look up postcode. Check your connection.</p>'; });
+}
+
+function dlFile(name, content) {
+  var a = document.createElement('a');
+  a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(content);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function downloadCHIRP() {
+  var cols = 'Location,Name,Frequency,Duplex,Offset,Tone,rToneFreq,cToneFreq,DtcsCode,DtcsPolarity,Mode,TStep,Skip,Comment,URCALL,RPT1CALL,RPT2CALL,DVCODE';
+  var rows = [cols];
+  var loc = 0;
+  allRepeaterData
+    .filter(function(r) { return r.band === '2m' || r.band === '70cm'; })
+    .forEach(function(r) {
+      var outF  = r.frequencies.find(function(f) { return f.label === 'Output' || f.label === 'Frequency'; });
+      var inF   = r.frequencies.find(function(f) { return f.label === 'Input'; });
+      var ctcss = r.frequencies.find(function(f) { return f.label === 'CTCSS'; });
+      var ccF   = r.frequencies.find(function(f) { return f.label === 'CC'; });
+      var netF  = r.frequencies.find(function(f) { return f.label === 'Network'; });
+      if (!outF) return;
+      var freqOut = parseFloat(outF.value);
+      var freqIn  = inF ? parseFloat(inF.value) : freqOut;
+      var diff    = freqIn - freqOut;
+      var duplex  = Math.abs(diff) > 0.001 ? (diff > 0 ? '+' : '-') : '';
+      var offset  = Math.abs(diff);
+      var ctcssHz = ctcss ? parseFloat(ctcss.value) : null;
+      var tone    = ctcssHz ? 'Tone' : '';
+      var rTone   = (ctcssHz || 88.5).toFixed(1);
+      var isDMR   = r.type === 'DMR';
+      var isDStar = r.type === 'D-STAR';
+      var mode    = isDStar ? 'DV' : 'FM';
+      var comment = r.location;
+      if (isDMR && ccF) comment += ' · DMR CC' + ccF.value + (netF ? ' · ' + netF.value : '');
+      if (isDStar) comment += ' · D-STAR';
+      rows.push([
+        loc++,
+        r.callsign,
+        freqOut.toFixed(6),
+        duplex,
+        offset.toFixed(6),
+        tone, rTone, rTone,
+        '023', 'NN',
+        mode, '5.00', '',
+        comment,
+        '', '', '', ''
+      ].join(','));
+    });
+  dlFile('suffolkham-chirp.csv', rows.join('\r\n'));
+}
+
+function downloadDMR() {
+  var rows = ['"Name","Callsign","Output MHz","Input MHz","Colour Code","Network","Location","Status"'];
+  allRepeaterData
+    .filter(function(r) { return r.type === 'DMR'; })
+    .forEach(function(r) {
+      var outF = r.frequencies.find(function(f) { return f.label === 'Output'; });
+      var inF  = r.frequencies.find(function(f) { return f.label === 'Input'; });
+      var ccF  = r.frequencies.find(function(f) { return f.label === 'CC'; });
+      var netF = r.frequencies.find(function(f) { return f.label === 'Network'; });
+      rows.push([r.callsign, r.callsign,
+        outF ? outF.value.split(' ')[0] : '',
+        inF  ? inF.value.split(' ')[0]  : '',
+        ccF  ? ccF.value  : '',
+        netF ? netF.value : '',
+        r.location, r.statusLabel
+      ].map(function(v) { return '"' + String(v).replace(/"/g,'""') + '"'; }).join(','));
+    });
+  dlFile('suffolkham-dmr.csv', rows.join('\r\n'));
+}
+</script>
+
+<div id="guide-overlay" class="guide-overlay" style="display:none;" onclick="if(event.target===this)closeGuide()" role="dialog" aria-modal="true" aria-labelledby="guide-dialog-title">
+  <div class="guide-dialog">
+    <div style="display:flex;justify-content:space-between;align-items:flex-start;gap:1rem;margin-bottom:1.25rem;">
+      <div>
+        <div class="section-label" id="guide-dialog-callsign"></div>
+        <h2 class="section-title" id="guide-dialog-title" style="font-size:1.1rem;margin-bottom:0;">Controller Guide</h2>
+      </div>
+      <button onclick="closeGuide()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1.4rem;line-height:1;padding:0;flex-shrink:0;" aria-label="Close guide">×</button>
+    </div>
+    <div id="guide-dialog-body" style="font-size:13px;color:var(--muted);line-height:1.75;"></div>
+    <div id="guide-dialog-meta" style="margin-top:1rem;padding-top:0.75rem;border-top:1px solid var(--border);font-family:var(--mono);font-size:10px;color:var(--faint);"></div>
+  </div>
+</div>
+
 <script src="nav.js"></script>
 <script>
 function copyVal(btn, val) {
