@@ -61,6 +61,16 @@
     @keyframes splash-fade { to { opacity:0; pointer-events:none; } }
   }
   @media (min-width:769px) { #splash { display:none; } }
+
+  .qr-row { display:flex; align-items:baseline; gap:10px 16px; padding:7px 0; border-bottom:1px solid var(--border); flex-wrap:wrap; }
+  .qr-row:last-child { border-bottom:none; }
+  .qr-call { font-family:var(--mono); font-weight:600; color:var(--text); text-decoration:none; white-space:nowrap; flex-shrink:0; }
+  .qr-call:hover { color:var(--cyan); }
+  .qr-freq { font-family:var(--mono); font-size:13px; color:var(--cyan); white-space:nowrap; flex-shrink:0; }
+  .qr-ctcss { font-size:12px; color:var(--muted); white-space:nowrap; }
+  .qr-band { font-size:12px; color:var(--muted); white-space:nowrap; }
+  .qr-loc  { font-size:12px; color:var(--faint); }
+  @media (max-width:500px) { .qr-band { display:none; } .qr-loc { display:none; } }
 </style>
 <script type="application/ld+json">
 {
@@ -278,22 +288,20 @@ fetch('repeaters.json').then(function(r){return r.json();}).then(function(data){
   var el = document.getElementById('quick-repeaters');
   if (!el) return;
   var rows = live.map(function(r) {
-    var outF = r.frequencies.find(function(f){return f.label==='Output'||f.label==='Frequency';});
+    var outF   = r.frequencies.find(function(f){return f.label==='Output'||f.label==='Frequency';});
     var ctcssF = r.frequencies.find(function(f){return f.label==='CTCSS';});
-    var dot = r.status==='live' ? 'var(--green)' : 'var(--amber)';
-    return '<tr>' +
-      '<td style="padding:7px 16px 7px 0;white-space:nowrap;">' +
-        '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:'+dot+';margin-right:7px;vertical-align:middle;" aria-hidden="true"></span>' +
-        '<a href="repeaters#'+r.callsign+'" style="font-family:var(--mono);font-weight:600;color:var(--text);text-decoration:none;">'+r.callsign+'</a>' +
-      '</td>' +
-      '<td style="font-family:var(--mono);font-size:13px;padding:7px 16px;color:var(--cyan);white-space:nowrap;">'+(outF?outF.value:'')+'</td>' +
-      '<td style="font-size:12px;padding:7px 16px;color:var(--muted);white-space:nowrap;">'+r.band+' · FM</td>' +
-      '<td style="font-size:12px;padding:7px 16px;color:var(--muted);white-space:nowrap;">'+(ctcssF?'CTCSS '+ctcssF.value:'')+'</td>' +
-      '<td style="font-size:12px;padding:7px 0;color:var(--faint);">'+r.location+'</td>' +
-    '</tr>';
+    var dot    = r.status==='live' ? 'var(--green)' : 'var(--amber)';
+    return '<div class="qr-row">' +
+      '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:'+dot+';flex-shrink:0;margin-top:3px;" aria-hidden="true"></span>' +
+      '<a href="repeaters#'+r.callsign+'" class="qr-call">'+r.callsign+'</a>' +
+      '<span class="qr-freq">'+(outF?outF.value:'')+'</span>' +
+      '<span class="qr-band">'+r.band+' · FM</span>' +
+      (ctcssF?'<span class="qr-ctcss">CTCSS '+ctcssF.value+'</span>':'') +
+      '<span class="qr-loc">'+r.location+'</span>' +
+    '</div>';
   }).join('');
-  el.innerHTML = '<table style="border-collapse:collapse;width:100%;min-width:360px;"><tbody>'+rows+'</tbody></table>' +
-    '<p style="font-size:12px;color:var(--faint);margin-top:0.5rem;">Transmit on the input (output ± offset), listen on the output. <a href="repeaters" style="color:var(--cyan);">Full list with DMR, CHIRP download and postcode lookup →</a></p>';
+  el.innerHTML = '<div>'+rows+'</div>' +
+    '<p style="font-size:12px;color:var(--faint);margin-top:0.6rem;">Transmit on the input, listen on the output. <a href="repeaters" style="color:var(--cyan);">Full list with CHIRP download and postcode lookup →</a></p>';
 }).catch(function(){});
 
 function qrzSearch(e) {
