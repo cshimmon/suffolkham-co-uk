@@ -134,11 +134,54 @@
     <button class="print-btn" onclick="window.print()" title="Print frequency reference">Print</button>
   </div>
 
+  <div id="search-wrap" style="margin-bottom:1rem;display:none;">
+    <input type="search" id="repeater-search" class="repeater-search" placeholder="Search — callsign, location, mode…" autocomplete="off" aria-label="Search repeaters">
+    <div class="no-results-msg" id="search-no-results">No repeaters match your search.</div>
+  </div>
+
   <div class="band-picker" id="band-picker"></div>
 
   <div id="repeater-map"></div>
 
   <div class="repeater-grid" id="repeater-grid" style="margin-bottom:2rem;"></div>
+
+  <!-- Postcode lookup -->
+  <div id="postcode-wrap" style="margin-bottom:2rem;">
+    <div class="postcode-section">
+      <div class="section-label">Find nearest</div>
+      <p style="font-size:13px;font-weight:600;color:var(--text);margin:0 0 0.3rem;">Repeaters near you</p>
+      <p style="font-size:13px;color:var(--muted);margin:0 0 0.75rem;">Enter a postcode to find the nearest repeaters with distances and bearings — no location permission needed.</p>
+      <div class="postcode-form">
+        <input id="postcode-input" class="postcode-input" type="text" placeholder="e.g. IP1 1AA" maxlength="8" autocomplete="off" autocapitalize="characters" onkeydown="if(event.key==='Enter')lookupPostcode()">
+        <button class="postcode-btn" onclick="lookupPostcode()">Find nearest →</button>
+      </div>
+      <div id="postcode-results" style="margin-top:0.75rem;"></div>
+    </div>
+  </div>
+
+  <!-- Downloads -->
+  <div style="margin-bottom:2rem;">
+    <div class="section-label">Export</div>
+    <p style="font-size:13px;font-weight:600;color:var(--text);margin:0 0 0.75rem;">Download repeater data</p>
+    <div class="download-cards">
+      <div class="download-card">
+        <h3>CHIRP CSV</h3>
+        <p>2m and 70cm FM repeaters in CHIRP-compatible CSV format. Import directly into CHIRP to program your radio channels.</p>
+        <button class="dl-btn" onclick="downloadCHIRP()">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download CHIRP CSV
+        </button>
+      </div>
+      <div class="download-card">
+        <h3>DMR CSV</h3>
+        <p>DMR repeaters exported as CSV — callsign, output, input, colour code and network. For reference or import into DMR tools.</p>
+        <button class="dl-btn" onclick="downloadDMR()">
+          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download DMR CSV
+        </button>
+      </div>
+    </div>
+  </div>
 
   <p style="font-size:13px;color:var(--muted);margin-bottom:3rem;">Use of repeaters is for licensed amateurs only. Always give priority to mobile users and emergency traffic. Repeaters operated by <a href="https://sargroup.co.uk" style="color:var(--cyan);">SARG</a>, the <a href="https://martellotowergroup.com" style="color:var(--cyan);">Martello Tower Group</a>, and the <a href="http://www.essexrepeatergroup.org.uk/" style="color:var(--cyan);">Essex Repeater Group</a>.</p>
 
@@ -332,6 +375,32 @@ fetch('repeaters.json')
       btn.addEventListener('click', () => filterBand(band));
       picker.appendChild(btn);
     });
+
+    // Search
+    var searchWrap = document.getElementById('search-wrap');
+    var searchInput = document.getElementById('repeater-search');
+    if (searchWrap) searchWrap.style.display = '';
+    if (searchInput) {
+      var currentBand = 'all';
+      function applyFilters() {
+        var term = (searchInput.value || '').trim().toLowerCase();
+        var cards = document.querySelectorAll('#repeater-grid .repeater-card');
+        var visible = 0;
+        cards.forEach(function(card) {
+          var bandOk = currentBand === 'all' || card.dataset.band === currentBand;
+          var searchOk = !term || card.textContent.toLowerCase().includes(term);
+          card.style.display = (bandOk && searchOk) ? '' : 'none';
+          if (bandOk && searchOk) visible++;
+        });
+        var noRes = document.getElementById('search-no-results');
+        if (noRes) noRes.style.display = (visible === 0 && term) ? 'block' : 'none';
+      }
+      searchInput.addEventListener('input', applyFilters);
+      // Patch filterBand to respect search
+      picker.querySelectorAll('.band-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() { currentBand = btn.dataset.band; applyFilters(); });
+      });
+    }
 
     // Anchor scroll after render
     if (location.hash) {
