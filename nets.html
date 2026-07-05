@@ -57,7 +57,13 @@
 
 <main>
 
-  <div class="day-picker" id="day-picker"></div>
+  <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.75rem; margin-bottom:1rem;">
+    <div class="day-picker" id="day-picker" style="margin-bottom:0;"></div>
+    <button id="ics-btn" onclick="downloadICS()" style="display:none; font-family:var(--mono); font-size:12px; padding:6px 14px; border-radius:20px; border:1px solid var(--border2); background:var(--bg2); color:var(--muted); cursor:pointer; white-space:nowrap; transition:all 0.15s;" onmouseover="this.style.borderColor='var(--cyan-bd)';this.style.color='var(--cyan)'" onmouseout="this.style.borderColor='var(--border2)';this.style.color='var(--muted)'">
+      <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true" style="vertical-align:middle;margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      Add to calendar (.ics)
+    </button>
+  </div>
   <div class="net-grid" id="net-grid" style="margin-bottom:3rem;"></div>
 
   <hr class="divider">
@@ -114,10 +120,71 @@
 
 <script>
 const DAY_ORDER = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+var netsData = [];
+
+function downloadICS() {
+  var BYDAY = {Sunday:'SU',Monday:'MO',Tuesday:'TU',Wednesday:'WE',Thursday:'TH',Friday:'FR',Saturday:'SA'};
+  // DTSTART bases: week of 2026-01-04 (first full week of year, starts Sunday)
+  var dayBase = {Sunday:'20260104',Monday:'20260105',Tuesday:'20260106',Wednesday:'20260107',Thursday:'20260108',Friday:'20260109',Saturday:'20260110'};
+  // Special monthly bases
+  var monthlyBase = {'1st, 3rd and 5th Fridays':'20260102','2nd and 4th Fridays':'20260109'};
+  var lines = [
+    'BEGIN:VCALENDAR','VERSION:2.0',
+    'PRODID:-//SuffolkHam//Suffolk Amateur Radio Nets//EN',
+    'X-WR-CALNAME:Suffolk Amateur Radio Nets',
+    'X-WR-CALDESC:Regular amateur radio nets in Suffolk and East Anglia — suffolkham.co.uk',
+    'CALSCALE:GREGORIAN','METHOD:PUBLISH'
+  ];
+  netsData.filter(function(n) { return n.type !== 'broadcast' && n.day; }).forEach(function(n) {
+    var times = n.time.match(/\d{2}:\d{2}/g) || ['19:00'];
+    times.forEach(function(t) {
+      var hh = t.split(':')[0], mm = t.split(':')[1];
+      var hEnd = String((parseInt(hh,10)+1) % 24).padStart(2,'0');
+      var sched = n.schedule || '';
+      var byday = BYDAY[n.day] || 'SU';
+      var base = monthlyBase[sched] || dayBase[n.day] || '20260104';
+      var dtstart = base + 'T' + hh + mm + '00';
+      var dtend   = base + 'T' + hEnd + mm + '00';
+      var rrule;
+      if (/every/i.test(sched)) {
+        rrule = 'RRULE:FREQ=WEEKLY;BYDAY=' + byday;
+      } else if (/1st.*3rd.*5th/i.test(sched)) {
+        rrule = 'RRULE:FREQ=MONTHLY;BYDAY=1' + byday + ',3' + byday + ',5' + byday;
+      } else if (/2nd.*4th/i.test(sched)) {
+        rrule = 'RRULE:FREQ=MONTHLY;BYDAY=2' + byday + ',4' + byday;
+      } else {
+        rrule = 'RRULE:FREQ=WEEKLY;BYDAY=' + byday;
+      }
+      var via = n.repeater || n.frequency || 'Simplex';
+      var desc = (n.mode || '') + ' · ' + via + (n.schedule ? ' · ' + n.schedule : '');
+      if (n.notes) desc += '\\n' + n.notes.replace(/<[^>]+>/g,'');
+      lines.push(
+        'BEGIN:VEVENT',
+        'UID:' + n.id + '-' + t.replace(':','') + '@suffolkham.co.uk',
+        'DTSTART:' + dtstart,
+        'DTEND:' + dtend,
+        rrule,
+        'SUMMARY:' + n.name.replace(/,/g,'\\,'),
+        'DESCRIPTION:' + desc.replace(/\n/g,'\\n'),
+        'LOCATION:' + via,
+        'URL:https://suffolkham.co.uk/nets',
+        'END:VEVENT'
+      );
+    });
+  });
+  lines.push('END:VCALENDAR');
+  var a = document.createElement('a');
+  a.href = 'data:text/calendar;charset=utf-8,' + encodeURIComponent(lines.join('\r\n'));
+  a.download = 'suffolkham-nets.ics';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
 
 fetch('nets.json')
   .then(r => r.json())
   .then(data => {
+    netsData = data.nets;
+    var icsBtn = document.getElementById('ics-btn');
+    if (icsBtn) icsBtn.style.display = '';
     const grid = document.getElementById('net-grid');
     const picker = document.getElementById('day-picker');
 

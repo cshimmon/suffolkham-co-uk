@@ -33,6 +33,33 @@
   @keyframes loc-pulse { 0%{box-shadow:0 0 0 0 rgba(56,189,248,0.4)} 70%{box-shadow:0 0 0 8px rgba(56,189,248,0)} 100%{box-shadow:0 0 0 0 rgba(56,189,248,0)} }
   .loc-btn { background:#fff; border:2px solid rgba(0,0,0,0.2); border-radius:4px; cursor:pointer; width:30px; height:30px; display:flex; align-items:center; justify-content:center; padding:0; }
   .loc-btn:hover { background:#f4f4f4; }
+  /* Search */
+  .repeater-search { width:100%; font-family:var(--mono); font-size:14px; padding:10px 14px 10px 40px; border-radius:8px; border:1px solid var(--border2); background:var(--bg2); color:var(--text); outline:none; transition:border-color 0.15s; box-sizing:border-box; background-image:url("data:image/svg+xml,%3Csvg width='16' height='16' fill='none' stroke='%236b7280' stroke-width='2' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:12px center; }
+  .repeater-search:focus { border-color:var(--cyan-bd); }
+  .no-results-msg { text-align:center; padding:3rem 1rem; color:var(--muted); font-size:14px; display:none; }
+  /* Postcode lookup */
+  .postcode-section { margin-bottom:1.5rem; padding:1.25rem 1.5rem; background:var(--bg2); border:1px solid var(--border); border-radius:10px; }
+  .postcode-form { display:flex; gap:8px; flex-wrap:wrap; margin-top:0.5rem; }
+  .postcode-input { font-family:var(--mono); font-size:14px; padding:8px 12px; border-radius:6px; border:1px solid var(--border2); background:var(--bg); color:var(--text); outline:none; transition:border-color 0.15s; flex:1; min-width:120px; max-width:180px; text-transform:uppercase; }
+  .postcode-input:focus { border-color:var(--cyan-bd); }
+  .postcode-btn { font-family:var(--mono); font-size:12px; font-weight:500; padding:8px 16px; border-radius:6px; border:1px solid var(--cyan-bd); background:var(--cyan-dim); color:var(--cyan); cursor:pointer; white-space:nowrap; transition:all 0.15s; }
+  .postcode-btn:hover { background:var(--cyan-bd); }
+  .pc-result-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid var(--border); gap:1rem; }
+  .pc-result-row:last-child { border-bottom:none; }
+  .pc-callsign { font-family:var(--mono); font-weight:600; color:var(--text); text-decoration:none; }
+  .pc-callsign:hover { color:var(--cyan); }
+  .pc-dist { font-family:var(--mono); font-size:12px; color:var(--muted); }
+  .pc-badge { font-size:11px; font-family:var(--mono); padding:2px 8px; border-radius:10px; white-space:nowrap; }
+  .pc-badge.good { background:var(--green-dim); color:var(--green); }
+  .pc-badge.maybe { background:var(--amber-dim); color:var(--amber); }
+  .pc-badge.far { background:var(--bg3); color:var(--faint); }
+  /* Downloads */
+  .download-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin-top:1.25rem; }
+  .download-card { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:1.5rem; }
+  .download-card h3 { font-size:0.9rem; font-weight:600; margin-bottom:0.4rem; }
+  .download-card p { font-size:13px; color:var(--muted); margin-bottom:1rem; line-height:1.6; }
+  .dl-btn { display:inline-flex; align-items:center; gap:6px; font-family:var(--mono); font-size:12px; padding:8px 14px; border-radius:6px; border:1px solid var(--border2); background:var(--bg3); color:var(--text); cursor:pointer; transition:all 0.15s; }
+  .dl-btn:hover { border-color:var(--cyan-bd); color:var(--cyan); }
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
 <script type="application/ld+json">
@@ -130,6 +157,11 @@
   <!-- Alert ribbon if set in JSON -->
   <div id="alert-ribbon" style="display:none; margin-bottom:1.5rem; padding:12px 16px; border-radius:8px; font-size:14px; border-left:3px solid;"></div>
 
+  <!-- Search (shown after data loads) -->
+  <div id="search-wrap" style="display:none; margin-bottom:1rem;">
+    <input type="search" id="repeater-search" class="repeater-search" placeholder="Search callsign, frequency, location…" aria-label="Search repeaters" autocomplete="off" spellcheck="false">
+  </div>
+
   <div class="legend" aria-label="Status key">
     <span style="color:var(--faint);">Status:</span>
     <span class="legend-item"><span class="legend-dot" style="background:var(--green);" aria-hidden="true"></span>On air</span>
@@ -145,12 +177,54 @@
 
   <div class="band-picker" id="band-picker"></div>
 
+  <!-- Postcode lookup -->
+  <div class="postcode-section" id="postcode-wrap">
+    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;">
+      <div>
+        <div style="font-size:0.9rem; font-weight:600; color:var(--text);">Find repeaters near you</div>
+        <div style="font-size:13px; color:var(--muted); margin-top:2px;">Enter a UK postcode — no GPS permission needed.</div>
+      </div>
+    </div>
+    <div class="postcode-form">
+      <input type="text" id="postcode-input" class="postcode-input" placeholder="e.g. IP1 1AA" maxlength="8" autocomplete="postal-code" spellcheck="false" aria-label="Enter postcode">
+      <button class="postcode-btn" onclick="lookupPostcode()">Find nearest</button>
+    </div>
+    <div id="postcode-results" style="margin-top:0.75rem;"></div>
+  </div>
+
   <div id="repeater-map"></div>
   <button class="map-back-btn" style="display:none" onclick="setView('cards')" aria-label="Back to list">← Back to list</button>
 
   <div class="repeater-grid" id="repeater-grid" style="margin-bottom:2rem;"></div>
+  <div class="no-results-msg" id="no-results-msg">No repeaters match your search.</div>
 
-  <p style="font-size:13px;color:var(--muted);margin-bottom:3rem;">Use of repeaters is for licensed amateurs only. Always give priority to mobile users and emergency traffic. Repeaters operated by <a href="https://sargroup.co.uk" style="color:var(--cyan);">SARG</a>, the <a href="https://martellotowergroup.com" style="color:var(--cyan);">Martello Tower Group</a>, and the <a href="http://www.essexrepeatergroup.org.uk/" style="color:var(--cyan);">Essex Repeater Group</a>.</p>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:1.5rem;">Use of repeaters is for licensed amateurs only. Always give priority to mobile users and emergency traffic. Repeaters operated by <a href="https://sargroup.co.uk" style="color:var(--cyan);">SARG</a>, the <a href="https://martellotowergroup.com" style="color:var(--cyan);">Martello Tower Group</a>, and the <a href="http://www.essexrepeatergroup.org.uk/" style="color:var(--cyan);">Essex Repeater Group</a>.</p>
+
+  <hr class="divider">
+
+  <div style="margin-bottom:3rem;">
+    <div class="section-label">Radio programming</div>
+    <h2 class="section-title">Downloads</h2>
+    <p class="section-lead">Pre-built channel data generated from live repeater info — ready to import into your radio programming software.</p>
+    <div class="download-cards">
+      <div class="download-card">
+        <h3>CHIRP CSV – 2m &amp; 70cm</h3>
+        <p>All 2m and 70cm repeaters formatted for <a href="https://chirpmyradio.com" target="_blank" rel="noopener" style="color:var(--cyan);">CHIRP Radio Programming Software</a>. Includes output frequency, duplex offset, CTCSS tone and mode. Works with most amateur handheld and mobile radios.</p>
+        <button class="dl-btn" onclick="downloadCHIRP()">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download CHIRP CSV
+        </button>
+      </div>
+      <div class="download-card">
+        <h3>DMR Codeplug CSV</h3>
+        <p>Channel data for <a href="#GB7AL" style="color:var(--cyan);">GB7AL</a> and <a href="#GB7MK" style="color:var(--cyan);">GB7MK</a> — the two local DMR repeaters. Includes input/output frequencies, colour code and network. Use as a reference when building your codeplug in your DMR radio software.</p>
+        <button class="dl-btn" onclick="downloadDMR()">
+          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download DMR CSV
+        </button>
+      </div>
+    </div>
+  </div>
 
   <hr class="divider">
 
@@ -212,6 +286,10 @@ function setView(view) {
   document.getElementById('btn-map').classList.toggle('active', view === 'map');
   document.getElementById('repeater-grid').style.display = view === 'cards' ? '' : 'none';
   document.getElementById('band-picker').style.display = view === 'cards' ? '' : 'none';
+  var sw = document.getElementById('search-wrap');
+  if (sw) sw.style.display = view === 'cards' ? '' : 'none';
+  var pw = document.getElementById('postcode-wrap');
+  if (pw) pw.style.display = view === 'cards' ? '' : 'none';
   const mapEl = document.getElementById('repeater-map');
   mapEl.style.display = view === 'map' ? 'block' : 'none';
   document.body.classList.toggle('map-active', view === 'map');
@@ -316,6 +394,23 @@ function initMap(repeaters) {
 }
 
 var guideMap = {};
+var currentBandFilter = 'all';
+var currentSearchTerm = '';
+
+function applyFilters() {
+  var cards = document.querySelectorAll('#repeater-grid .repeater-card');
+  var anyVisible = false;
+  cards.forEach(function(card) {
+    var bandMatch = currentBandFilter === 'all' ||
+      card.dataset[currentBandFilter.split(':')[0]] === currentBandFilter.split(':')[1];
+    var searchMatch = !currentSearchTerm || card.textContent.toLowerCase().includes(currentSearchTerm);
+    var show = bandMatch && searchMatch;
+    card.style.display = show ? '' : 'none';
+    if (show) anyVisible = true;
+  });
+  var nm = document.getElementById('no-results-msg');
+  if (nm) nm.style.display = anyVisible ? 'none' : '';
+}
 
 fetch('repeaters.json')
   .then(r => r.json())
@@ -390,12 +485,9 @@ fetch('repeaters.json')
     const picker = document.getElementById('band-picker');
 
     function filterBand(filter) {
+      currentBandFilter = filter;
       document.querySelectorAll('.band-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === filter));
-      document.querySelectorAll('#repeater-grid .repeater-card').forEach(card => {
-        if (filter === 'all') { card.style.display = ''; return; }
-        const [key, val] = filter.split(':');
-        card.style.display = card.dataset[key] === val ? '' : 'none';
-      });
+      applyFilters();
     }
 
     const allBtn = document.createElement('button');
@@ -425,6 +517,18 @@ fetch('repeaters.json')
         picker.appendChild(btn);
       });
 
+    // Reveal search and wire it up
+    var sw = document.getElementById('search-wrap');
+    if (sw) sw.style.display = '';
+    var si = document.getElementById('repeater-search');
+    if (si) si.addEventListener('input', function() {
+      currentSearchTerm = this.value.trim().toLowerCase();
+      applyFilters();
+    });
+    // Enter key on postcode
+    var pi = document.getElementById('postcode-input');
+    if (pi) pi.addEventListener('keydown', function(e) { if (e.key === 'Enter') lookupPostcode(); });
+
     // Anchor scroll after render
     if (location.hash) {
       const el = document.querySelector(location.hash);
@@ -435,6 +539,131 @@ fetch('repeaters.json')
     document.getElementById('repeater-grid').innerHTML =
       '<p style="color:var(--muted);padding:2rem;font-size:14px;">Unable to load repeater data. Please try again.</p>';
   });
+</script>
+
+<script>
+function haversineKm(lat1, lon1, lat2, lon2) {
+  var R = 6371, d2r = Math.PI / 180;
+  var dLat = (lat2 - lat1) * d2r, dLon = (lon2 - lon1) * d2r;
+  var a = Math.sin(dLat/2)*Math.sin(dLat/2) + Math.cos(lat1*d2r)*Math.cos(lat2*d2r)*Math.sin(dLon/2)*Math.sin(dLon/2);
+  return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+}
+
+function lookupPostcode() {
+  var raw = (document.getElementById('postcode-input').value || '').trim().replace(/\s+/g,'').toUpperCase();
+  var out = document.getElementById('postcode-results');
+  if (!raw) { out.innerHTML = '<p style="font-size:13px;color:var(--muted)">Enter a postcode first.</p>'; return; }
+  out.innerHTML = '<p style="font-size:13px;color:var(--muted)">Looking up…</p>';
+  fetch('https://api.postcodes.io/postcodes/' + encodeURIComponent(raw))
+    .then(function(r) { return r.json(); })
+    .then(function(data) {
+      if (data.status !== 200 || !data.result) {
+        out.innerHTML = '<p style="font-size:13px;color:var(--red)">Postcode not found. Try a full UK postcode, e.g. IP1 1AA.</p>';
+        return;
+      }
+      var lat = data.result.latitude, lng = data.result.longitude;
+      var ranked = allRepeaterData
+        .filter(function(r) { return r.lat && r.lng; })
+        .map(function(r) { return Object.assign({}, r, { km: haversineKm(lat, lng, r.lat, r.lng) }); })
+        .sort(function(a,b) { return a.km - b.km; });
+      if (!ranked.length) { out.innerHTML = '<p style="font-size:13px;color:var(--muted)">No data available.</p>'; return; }
+      var html = '<div style="font-size:11px;color:var(--faint);font-family:var(--mono);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em;">Nearest to ' + raw + '</div>';
+      ranked.slice(0, 10).forEach(function(r) {
+        var dist = r.km < 1 ? '< 1 km' : Math.round(r.km) + ' km';
+        var freqF = r.frequencies.find(function(f) { return f.label === 'Output' || f.label === 'Frequency'; });
+        var badge, cls;
+        if (r.status === 'offair') { badge = 'Off air'; cls = 'far'; }
+        else if (r.km < 25)  { badge = 'Good coverage'; cls = 'good'; }
+        else if (r.km < 50)  { badge = 'Possible';      cls = 'maybe'; }
+        else                 { badge = 'Unlikely';       cls = 'far'; }
+        html += '<div class="pc-result-row">' +
+          '<div>' +
+            '<a href="#' + r.callsign + '" class="pc-callsign" onclick="setView(\'cards\')">' + r.callsign + '</a>' +
+            '<span style="font-size:12px;color:var(--muted);margin-left:8px;">' + r.mode + '</span>' +
+            (freqF ? '<div style="font-family:var(--mono);font-size:11px;color:var(--faint);">' + freqF.value + '</div>' : '') +
+          '</div>' +
+          '<div style="text-align:right;flex-shrink:0;">' +
+            '<div class="pc-dist">' + dist + '</div>' +
+            '<span class="pc-badge ' + cls + '">' + badge + '</span>' +
+          '</div>' +
+        '</div>';
+      });
+      out.innerHTML = html;
+    })
+    .catch(function() { out.innerHTML = '<p style="font-size:13px;color:var(--red)">Unable to look up postcode. Check your connection.</p>'; });
+}
+
+function dlFile(name, content) {
+  var a = document.createElement('a');
+  a.href = 'data:text/plain;charset=utf-8,' + encodeURIComponent(content);
+  a.download = name;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function downloadCHIRP() {
+  var cols = 'Location,Name,Frequency,Duplex,Offset,Tone,rToneFreq,cToneFreq,DtcsCode,DtcsPolarity,Mode,TStep,Skip,Comment,URCALL,RPT1CALL,RPT2CALL,DVCODE';
+  var rows = [cols];
+  var loc = 0;
+  allRepeaterData
+    .filter(function(r) { return r.band === '2m' || r.band === '70cm'; })
+    .forEach(function(r) {
+      var outF  = r.frequencies.find(function(f) { return f.label === 'Output' || f.label === 'Frequency'; });
+      var inF   = r.frequencies.find(function(f) { return f.label === 'Input'; });
+      var ctcss = r.frequencies.find(function(f) { return f.label === 'CTCSS'; });
+      var ccF   = r.frequencies.find(function(f) { return f.label === 'CC'; });
+      var netF  = r.frequencies.find(function(f) { return f.label === 'Network'; });
+      if (!outF) return;
+      var freqOut = parseFloat(outF.value);
+      var freqIn  = inF ? parseFloat(inF.value) : freqOut;
+      var diff    = freqIn - freqOut;
+      var duplex  = Math.abs(diff) > 0.001 ? (diff > 0 ? '+' : '-') : '';
+      var offset  = Math.abs(diff);
+      var ctcssHz = ctcss ? parseFloat(ctcss.value) : null;
+      var tone    = ctcssHz ? 'Tone' : '';
+      var rTone   = (ctcssHz || 88.5).toFixed(1);
+      var isDMR   = r.type === 'DMR';
+      var isDStar = r.type === 'D-STAR';
+      var mode    = isDStar ? 'DV' : 'FM';
+      var comment = r.location;
+      if (isDMR && ccF) comment += ' · DMR CC' + ccF.value + (netF ? ' · ' + netF.value : '');
+      if (isDStar) comment += ' · D-STAR';
+      rows.push([
+        loc++,
+        r.callsign,
+        freqOut.toFixed(6),
+        duplex,
+        offset.toFixed(6),
+        tone, rTone, rTone,
+        '023', 'NN',
+        mode, '5.00', '',
+        comment,
+        '', '', '', ''
+      ].join(','));
+    });
+  dlFile('suffolkham-chirp.csv', rows.join('\r\n'));
+}
+
+function downloadDMR() {
+  var rows = ['"Name","Callsign","Output MHz","Input MHz","Colour Code","Network","Location","Status"'];
+  allRepeaterData
+    .filter(function(r) { return r.type === 'DMR'; })
+    .forEach(function(r) {
+      var outF = r.frequencies.find(function(f) { return f.label === 'Output'; });
+      var inF  = r.frequencies.find(function(f) { return f.label === 'Input'; });
+      var ccF  = r.frequencies.find(function(f) { return f.label === 'CC'; });
+      var netF = r.frequencies.find(function(f) { return f.label === 'Network'; });
+      rows.push([r.callsign, r.callsign,
+        outF ? outF.value.split(' ')[0] : '',
+        inF  ? inF.value.split(' ')[0]  : '',
+        ccF  ? ccF.value  : '',
+        netF ? netF.value : '',
+        r.location, r.statusLabel
+      ].map(function(v) { return '"' + String(v).replace(/"/g,'""') + '"'; }).join(','));
+    });
+  dlFile('suffolkham-dmr.csv', rows.join('\r\n'));
+}
 </script>
 
 <div id="guide-overlay" class="guide-overlay" style="display:none;" onclick="if(event.target===this)closeGuide()" role="dialog" aria-modal="true" aria-labelledby="guide-dialog-title">

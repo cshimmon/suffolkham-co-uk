@@ -135,6 +135,22 @@
 
 <main>
 
+  <!-- QUICK REPEATER REFERENCE -->
+  <div style="margin-bottom:3rem; padding-top:3rem;">
+    <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+      <div>
+        <div class="section-label">FM repeaters</div>
+        <h2 class="section-title">Quick Reference</h2>
+      </div>
+      <a href="repeaters" style="font-family:var(--mono);font-size:12px;color:var(--muted);text-decoration:none;white-space:nowrap;">Search &amp; more →</a>
+    </div>
+    <div id="quick-repeaters" style="overflow-x:auto;">
+      <div style="color:var(--muted);font-size:14px;">Loading…</div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
   <!-- RSGB NEWS -->
   <div style="margin-bottom:3rem; padding-top:3rem;">
     <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
@@ -201,7 +217,7 @@
           <svg width="18" height="18" fill="none" stroke="#38bdf8" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
         </div>
         <h3>Local Nets</h3>
-        <p>Regular nets in Suffolk including the FDARS Wednesday net on GB3PO, the Sunday simplex net and the Friday D-STAR net on REF079C.</p>
+        <p>Regular nets in Suffolk including the FDARS Wednesday net on GB3PO, Sunday simplex nets, and the East Suffolk 4m net — something on air nearly every day.</p>
         <span class="go">View nets →</span>
       </div>
 
@@ -254,6 +270,32 @@
 </footer>
 
 <script>
+// Quick repeater reference
+fetch('repeaters.json').then(function(r){return r.json();}).then(function(data){
+  var live = data.repeaters.filter(function(r){
+    return (r.band==='2m'||r.band==='70cm') && r.type==='FM' && r.status!=='offair';
+  });
+  var el = document.getElementById('quick-repeaters');
+  if (!el) return;
+  var rows = live.map(function(r) {
+    var outF = r.frequencies.find(function(f){return f.label==='Output'||f.label==='Frequency';});
+    var ctcssF = r.frequencies.find(function(f){return f.label==='CTCSS';});
+    var dot = r.status==='live' ? 'var(--green)' : 'var(--amber)';
+    return '<tr>' +
+      '<td style="padding:7px 16px 7px 0;white-space:nowrap;">' +
+        '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:'+dot+';margin-right:7px;vertical-align:middle;" aria-hidden="true"></span>' +
+        '<a href="repeaters#'+r.callsign+'" style="font-family:var(--mono);font-weight:600;color:var(--text);text-decoration:none;">'+r.callsign+'</a>' +
+      '</td>' +
+      '<td style="font-family:var(--mono);font-size:13px;padding:7px 16px;color:var(--cyan);white-space:nowrap;">'+(outF?outF.value:'')+'</td>' +
+      '<td style="font-size:12px;padding:7px 16px;color:var(--muted);white-space:nowrap;">'+r.band+' · FM</td>' +
+      '<td style="font-size:12px;padding:7px 16px;color:var(--muted);white-space:nowrap;">'+(ctcssF?'CTCSS '+ctcssF.value:'')+'</td>' +
+      '<td style="font-size:12px;padding:7px 0;color:var(--faint);">'+r.location+'</td>' +
+    '</tr>';
+  }).join('');
+  el.innerHTML = '<table style="border-collapse:collapse;width:100%;min-width:360px;"><tbody>'+rows+'</tbody></table>' +
+    '<p style="font-size:12px;color:var(--faint);margin-top:0.5rem;">Transmit on the input (output ± offset), listen on the output. <a href="repeaters" style="color:var(--cyan);">Full list with DMR, CHIRP download and postcode lookup →</a></p>';
+}).catch(function(){});
+
 function qrzSearch(e) {
   e.preventDefault();
   var call = document.getElementById('qrz-input').value.trim().toUpperCase();
