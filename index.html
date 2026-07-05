@@ -4,11 +4,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SuffolkHam – Suffolk's free amateur radio resource</title>
-<meta name="description" content="Suffolk's free amateur radio resource — repeaters, nets, events, DMR guides and tools for amateur radio operators in Ipswich, Suffolk and East Anglia.">
+<title>SuffolkHam – Amateur Radio in Suffolk</title>
+<meta name="description" content="SuffolkHam is a beginner-friendly amateur radio resource for Suffolk and East Anglia. Find local repeaters, clubs, training, DMR guides and events.">
 <meta name="keywords" content="amateur radio Suffolk, ham radio Suffolk, amateur radio Ipswich, FDARS, SARG, beginner ham radio UK, GB3PO, GB3IH, GB7MK, Suffolk repeaters">
-<meta property="og:title" content="SuffolkHam – Suffolk's free amateur radio resource">
-<meta property="og:description" content="Suffolk's free amateur radio resource. Local repeaters, clubs, DMR guide, events and tools.">
+<meta property="og:title" content="SuffolkHam – Amateur Radio in Suffolk">
+<meta property="og:description" content="Beginner-friendly amateur radio resource for Suffolk. Local repeaters, clubs, DMR guide and events.">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://suffolkham.co.uk/social-card.png">
 <meta property="og:image:width" content="1200">
@@ -61,16 +61,6 @@
     @keyframes splash-fade { to { opacity:0; pointer-events:none; } }
   }
   @media (min-width:769px) { #splash { display:none; } }
-
-  .qr-row { display:flex; align-items:baseline; gap:10px 16px; padding:7px 0; border-bottom:1px solid var(--border); flex-wrap:wrap; }
-  .qr-row:last-child { border-bottom:none; }
-  .qr-call { font-family:var(--mono); font-weight:600; color:var(--text); text-decoration:none; white-space:nowrap; flex-shrink:0; }
-  .qr-call:hover { color:var(--cyan); }
-  .qr-freq { font-family:var(--mono); font-size:13px; color:var(--cyan); white-space:nowrap; flex-shrink:0; }
-  .qr-ctcss { font-size:12px; color:var(--muted); white-space:nowrap; }
-  .qr-band { font-size:12px; color:var(--muted); white-space:nowrap; }
-  .qr-loc  { font-size:12px; color:var(--faint); }
-  @media (max-width:500px) { .qr-band { display:none; } .qr-loc { display:none; } }
 </style>
 <script type="application/ld+json">
 {
@@ -119,9 +109,8 @@
 
 <nav aria-label="Site navigation" id="site-nav"></nav>
 
-
 <header class="hero" id="main">
-  <div class="page-tag">Suffolk's free amateur radio resource</div>
+  <div class="page-tag">Suffolk · East Anglia</div>
   <h1>Amateur radio<br><em>in Suffolk</em></h1>
   <p class="hero-sub">Your local guide to amateur radio in Suffolk and East Anglia — repeaters, nets, events, DMR, MeshCore and more.</p>
   <div class="hero-actions">
@@ -136,8 +125,8 @@
     <button type="submit" class="btn btn-ghost">Look up ↗</button>
   </form>
   <div class="stat-row" aria-label="At a glance">
-    <a href="repeaters" class="stat-cell"><span class="stat-val" data-count="12">12</span><span class="stat-lbl">Repeaters</span></a>
-    <a href="nets"      class="stat-cell"><span class="stat-val" data-count="16">16</span><span class="stat-lbl">Local nets</span></a>
+    <a href="repeaters" class="stat-cell"><span class="stat-val" data-count="11">11</span><span class="stat-lbl">Repeaters</span></a>
+    <a href="nets"      class="stat-cell"><span class="stat-val" data-count="17">17</span><span class="stat-lbl">Local nets</span></a>
   </div>
 </header>
 
@@ -155,6 +144,20 @@
       <a href="repeaters" style="font-family:var(--mono);font-size:12px;color:var(--muted);text-decoration:none;white-space:nowrap;">Search &amp; more →</a>
     </div>
     <div id="quick-repeaters" style="overflow-x:auto;">
+      <div style="color:var(--muted);font-size:14px;">Loading…</div>
+    </div>
+  </div>
+
+  <!-- ON AIR TODAY -->
+  <div style="margin-bottom:3rem;">
+    <div style="display:flex; align-items:baseline; justify-content:space-between; margin-bottom:1rem; flex-wrap:wrap; gap:0.5rem;">
+      <div>
+        <div class="section-label" id="on-air-day-label">Today</div>
+        <h2 class="section-title">On air today</h2>
+      </div>
+      <a href="nets" style="font-family:var(--mono);font-size:12px;color:var(--muted);text-decoration:none;white-space:nowrap;">Full schedule →</a>
+    </div>
+    <div id="on-air-today" aria-live="polite">
       <div style="color:var(--muted);font-size:14px;">Loading…</div>
     </div>
   </div>
@@ -227,7 +230,7 @@
           <svg width="18" height="18" fill="none" stroke="#38bdf8" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 8v4l3 3"/></svg>
         </div>
         <h3>Local Nets</h3>
-        <p>Regular nets in Suffolk including the FDARS Wednesday net on GB3PO, Sunday simplex nets, and the East Suffolk 4m net — something on air nearly every day.</p>
+        <p>Regular nets in Suffolk including the FDARS Wednesday net on GB3PO, the Sunday simplex net and the Friday D-STAR net on REF079C.</p>
         <span class="go">View nets →</span>
       </div>
 
@@ -274,12 +277,58 @@
 
 <footer>
   <div class="brand">SuffolkHam.co.uk</div>
-  <p style="font-size:12px;color:var(--faint);margin:0.15rem 0 0.35rem;">Suffolk&#39;s free amateur radio resource</p>
   <p>A beginner-friendly amateur radio resource for Suffolk and East Anglia.<br>
   Site by <a href="https://www.qrz.com/db/M9XCN" target="_blank" rel="noopener">M9XCN</a> &nbsp;&middot;&nbsp; <a href="about">About</a></p>
 </footer>
 
 <script>
+// On air today
+(function() {
+  var DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  function weekOcc(d) { return Math.ceil(d.getDate() / 7); }
+  function isToday(n, today) {
+    if (!n.day || DAYS[today.getDay()] !== n.day) return false;
+    var s = (n.schedule || '').toLowerCase();
+    if (/every/.test(s)) return true;
+    var o = weekOcc(today);
+    if (/1st.*3rd.*5th/.test(s)) return o===1||o===3||o===5;
+    if (/2nd.*4th/.test(s)) return o===2||o===4;
+    return true;
+  }
+  var today = new Date();
+  var lbl = document.getElementById('on-air-day-label');
+  if (lbl) lbl.textContent = DAYS[today.getDay()];
+  fetch('nets.json').then(function(r){return r.json();}).then(function(data){
+    var nets = data.nets.filter(function(n){return isToday(n,today);});
+    nets.sort(function(a,b){
+      var ta=(a.time||'').match(/^\d{2}:\d{2}/); var tb=(b.time||'').match(/^\d{2}:\d{2}/);
+      ta=ta?ta[0]:'99:99'; tb=tb?tb[0]:'99:99';
+      return ta<tb?-1:ta>tb?1:0;
+    });
+    var el = document.getElementById('on-air-today');
+    if (!el) return;
+    if (!nets.length) {
+      el.innerHTML = '<p style="font-size:14px;color:var(--muted);">No regular nets today — check the <a href="nets" style="color:var(--cyan);">full schedule</a> for the week.</p>';
+      return;
+    }
+    var rows = nets.map(function(n) {
+      var via = n.repeater
+        ? '<a href="repeaters#'+n.repeater+'" style="color:var(--cyan);text-decoration:none;">'+n.repeater+'</a>'
+        : (n.frequency||'Simplex');
+      return '<div style="display:flex;align-items:baseline;gap:8px 16px;padding:7px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;">' +
+        '<span style="font-family:var(--mono);font-size:13px;color:var(--cyan);flex-shrink:0;min-width:56px;">'+n.time+'</span>' +
+        '<span style="font-weight:'+(n.type==='broadcast'?'400':'500')+';color:var(--text);">'+n.name+'</span>' +
+        '<span style="font-size:12px;color:var(--muted);white-space:nowrap;">'+n.mode+'</span>' +
+        '<span style="font-size:12px;white-space:nowrap;">'+via+'</span>' +
+      '</div>';
+    }).join('');
+    el.innerHTML = '<div style="border-top:1px solid var(--border);">'+rows+'</div>';
+  }).catch(function(){
+    var el=document.getElementById('on-air-today');
+    if(el) el.innerHTML='';
+  });
+}());
+
 // Quick repeater reference
 fetch('repeaters.json').then(function(r){return r.json();}).then(function(data){
   var live = data.repeaters.filter(function(r){

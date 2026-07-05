@@ -4,11 +4,11 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ipswich &amp; East Anglian Repeaters | SuffolkHam</title>
-<meta name="description" content="Amateur radio repeaters serving Ipswich and East Anglia — GB3PO, GB3IH, GB7MK, GB7AL, GB3DA, GB3CE and more. Frequencies, CTCSS tones and current status.">
-<meta name="keywords" content="GB3PO, GB3IH, GB7MK, GB7AL, GB7DI, GB3DE, GB3EA, GB3CE, GB3CL, GB3DA, GB3EF, Ipswich repeater, East Anglia repeaters, Suffolk repeaters, Essex repeaters, amateur radio Ipswich, amateur radio East Anglia, SARG repeater, Martello Tower Group, Essex Repeater Group">
-<meta property="og:title" content="Ipswich &amp; East Anglian Repeaters | SuffolkHam">
-<meta property="og:description" content="All repeaters serving Ipswich and East Anglia with frequencies, CTCSS, colour codes and status.">
+<title>East Anglian Repeaters | SuffolkHam</title>
+<meta name="description" content="Amateur radio repeaters serving East Anglia and Essex — GB3PO Ipswich, GB3IH, GB7MK, GB7AL, GB3DA, GB3CE and more. Frequencies, CTCSS tones and current status.">
+<meta name="keywords" content="GB3PO, GB3IH, GB7MK, GB7AL, GB7DI, GB3DE, GB3EA, GB3CE, GB3CL, GB3DA, GB3EF, East Anglia repeaters, Suffolk repeaters, Essex repeaters, Ipswich repeater, amateur radio East Anglia, SARG repeater, Martello Tower Group, Essex Repeater Group">
+<meta property="og:title" content="East Anglian Repeaters | SuffolkHam">
+<meta property="og:description" content="All repeaters serving East Anglia and Essex with frequencies, CTCSS, colour codes and status.">
 <meta property="og:image" content="https://suffolkham.co.uk/social-card.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="600">
@@ -24,42 +24,6 @@
   .band-btn { font-family:var(--mono); font-size:12px; font-weight:500; padding:6px 14px; border-radius:20px; border:1px solid var(--border2); background:var(--bg2); color:var(--muted); cursor:pointer; transition:all 0.15s; }
   .band-btn:hover { background:var(--bg3); color:var(--text); }
   .band-btn.active { background:var(--cyan-dim); color:var(--cyan); border-color:var(--cyan-bd); }
-  .card-guide-btn { display:flex; align-items:center; gap:5px; font-family:var(--mono); font-size:11px; color:var(--muted); background:none; border:none; border-top:1px solid var(--border); cursor:pointer; padding:0.75rem 0 0; margin-top:0.85rem; width:100%; text-align:left; transition:color 0.15s; }
-  .card-guide-btn:hover { color:var(--cyan); }
-  .guide-overlay { position:fixed; inset:0; z-index:500; background:rgba(0,0,0,0.55); display:flex; align-items:center; justify-content:center; padding:1rem; }
-  .guide-dialog { background:var(--bg2); border:1px solid var(--border2); border-radius:12px; padding:1.75rem; max-width:560px; width:100%; max-height:85vh; overflow-y:auto; }
-  .map-cluster-badge { width:26px; height:26px; background:#38bdf8; border:2px solid #fff; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700; color:#07384d; box-shadow:0 1px 6px rgba(0,0,0,0.35); cursor:pointer; font-family:monospace; }
-  .user-loc-dot { width:14px; height:14px; background:#38bdf8; border:2px solid #fff; border-radius:50%; box-shadow:0 0 0 0 rgba(56,189,248,0.4); animation:loc-pulse 2s infinite; }
-  @keyframes loc-pulse { 0%{box-shadow:0 0 0 0 rgba(56,189,248,0.4)} 70%{box-shadow:0 0 0 8px rgba(56,189,248,0)} 100%{box-shadow:0 0 0 0 rgba(56,189,248,0)} }
-  .loc-btn { background:#fff; border:2px solid rgba(0,0,0,0.2); border-radius:4px; cursor:pointer; width:30px; height:30px; display:flex; align-items:center; justify-content:center; padding:0; }
-  .loc-btn:hover { background:#f4f4f4; }
-  /* Search */
-  .repeater-search { width:100%; font-family:var(--mono); font-size:14px; padding:10px 14px 10px 40px; border-radius:8px; border:1px solid var(--border2); background:var(--bg2); color:var(--text); outline:none; transition:border-color 0.15s; box-sizing:border-box; background-image:url("data:image/svg+xml,%3Csvg width='16' height='16' fill='none' stroke='%236b7280' stroke-width='2' viewBox='0 0 24 24' xmlns='http://www.w3.org/2000/svg'%3E%3Ccircle cx='11' cy='11' r='8'/%3E%3Cpath d='m21 21-4.35-4.35'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:12px center; }
-  .repeater-search:focus { border-color:var(--cyan-bd); }
-  .no-results-msg { text-align:center; padding:3rem 1rem; color:var(--muted); font-size:14px; display:none; }
-  /* Postcode lookup */
-  .postcode-section { margin-bottom:1.5rem; padding:1.25rem 1.5rem; background:var(--bg2); border:1px solid var(--border); border-radius:10px; }
-  .postcode-form { display:flex; gap:8px; flex-wrap:wrap; margin-top:0.5rem; }
-  .postcode-input { font-family:var(--mono); font-size:14px; padding:8px 12px; border-radius:6px; border:1px solid var(--border2); background:var(--bg); color:var(--text); outline:none; transition:border-color 0.15s; flex:1; min-width:120px; max-width:180px; text-transform:uppercase; }
-  .postcode-input:focus { border-color:var(--cyan-bd); }
-  .postcode-btn { font-family:var(--mono); font-size:12px; font-weight:500; padding:8px 16px; border-radius:6px; border:1px solid var(--cyan-bd); background:var(--cyan-dim); color:var(--cyan); cursor:pointer; white-space:nowrap; transition:all 0.15s; }
-  .postcode-btn:hover { background:var(--cyan-bd); }
-  .pc-result-row { display:flex; justify-content:space-between; align-items:center; padding:7px 0; border-bottom:1px solid var(--border); gap:1rem; }
-  .pc-result-row:last-child { border-bottom:none; }
-  .pc-callsign { font-family:var(--mono); font-weight:600; color:var(--text); text-decoration:none; }
-  .pc-callsign:hover { color:var(--cyan); }
-  .pc-dist { font-family:var(--mono); font-size:12px; color:var(--muted); }
-  .pc-badge { font-size:11px; font-family:var(--mono); padding:2px 8px; border-radius:10px; white-space:nowrap; }
-  .pc-badge.good { background:var(--green-dim); color:var(--green); }
-  .pc-badge.maybe { background:var(--amber-dim); color:var(--amber); }
-  .pc-badge.far { background:var(--bg3); color:var(--faint); }
-  /* Downloads */
-  .download-cards { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:12px; margin-top:1.25rem; }
-  .download-card { background:var(--bg2); border:1px solid var(--border); border-radius:10px; padding:1.5rem; }
-  .download-card h3 { font-size:0.9rem; font-weight:600; margin-bottom:0.4rem; }
-  .download-card p { font-size:13px; color:var(--muted); margin-bottom:1rem; line-height:1.6; }
-  .dl-btn { display:inline-flex; align-items:center; gap:6px; font-family:var(--mono); font-size:12px; padding:8px 14px; border-radius:6px; border:1px solid var(--border2); background:var(--bg3); color:var(--text); cursor:pointer; transition:all 0.15s; }
-  .dl-btn:hover { border-color:var(--cyan-bd); color:var(--cyan); }
 </style>
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
 <script type="application/ld+json">
@@ -67,7 +31,7 @@
   "@context": "https://schema.org",
   "@type": "ItemList",
   "name": "East Anglian Amateur Radio Repeaters",
-  "description": "Amateur radio repeaters serving East Anglia",
+  "description": "Amateur radio repeaters serving East Anglia and Essex",
   "url": "https://suffolkham.co.uk/repeaters",
   "itemListElement": [
     {
@@ -149,18 +113,13 @@
 <div class="page-header" id="main">
   <div class="page-tag">Local infrastructure</div>
   <h1>East Anglian Repeaters</h1>
-  <p>All amateur radio repeaters serving East Anglia — FM, DMR and D-Star. Covering Suffolk and beyond, these repeaters are your gateway to local communication across the region. Data is maintained to the best of our knowledge; always verify with the relevant repeater group for the latest status.</p>
+  <p>All amateur radio repeaters serving East Anglia and Essex — FM, DMR and D-Star. Covering Suffolk, Essex, and beyond, these repeaters are your gateway to local communication across the region. Data is maintained to the best of our knowledge; always verify with the relevant repeater group for the latest status.</p>
 </div>
 
 <main id="repeater-grid-root">
 
   <!-- Alert ribbon if set in JSON -->
   <div id="alert-ribbon" style="display:none; margin-bottom:1.5rem; padding:12px 16px; border-radius:8px; font-size:14px; border-left:3px solid;"></div>
-
-  <!-- Search (shown after data loads) -->
-  <div id="search-wrap" style="display:none; margin-bottom:1rem;">
-    <input type="search" id="repeater-search" class="repeater-search" placeholder="Search callsign, frequency, location…" aria-label="Search repeaters" autocomplete="off" spellcheck="false">
-  </div>
 
   <div class="legend" aria-label="Status key">
     <span style="color:var(--faint);">Status:</span>
@@ -177,54 +136,11 @@
 
   <div class="band-picker" id="band-picker"></div>
 
-  <!-- Postcode lookup -->
-  <div class="postcode-section" id="postcode-wrap">
-    <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:0.5rem;">
-      <div>
-        <div style="font-size:0.9rem; font-weight:600; color:var(--text);">Find repeaters near you</div>
-        <div style="font-size:13px; color:var(--muted); margin-top:2px;">Enter a UK postcode — no GPS permission needed.</div>
-      </div>
-    </div>
-    <div class="postcode-form">
-      <input type="text" id="postcode-input" class="postcode-input" placeholder="e.g. IP1 1AA" maxlength="8" autocomplete="postal-code" spellcheck="false" aria-label="Enter postcode">
-      <button class="postcode-btn" onclick="lookupPostcode()">Find nearest</button>
-    </div>
-    <div id="postcode-results" style="margin-top:0.75rem;"></div>
-  </div>
-
   <div id="repeater-map"></div>
-  <button class="map-back-btn" style="display:none" onclick="setView('cards')" aria-label="Back to list">← Back to list</button>
 
   <div class="repeater-grid" id="repeater-grid" style="margin-bottom:2rem;"></div>
-  <div class="no-results-msg" id="no-results-msg">No repeaters match your search.</div>
 
-  <p style="font-size:13px;color:var(--muted);margin-bottom:1.5rem;">Use of repeaters is for licensed amateurs only. Always give priority to mobile users and emergency traffic. Repeaters operated by <a href="https://sargroup.co.uk" style="color:var(--cyan);">SARG</a>, the <a href="https://martellotowergroup.com" style="color:var(--cyan);">Martello Tower Group</a>, and the <a href="http://www.essexrepeatergroup.org.uk/" style="color:var(--cyan);">Essex Repeater Group</a>.</p>
-
-  <hr class="divider">
-
-  <div style="margin-bottom:3rem;">
-    <div class="section-label">Radio programming</div>
-    <h2 class="section-title">Downloads</h2>
-    <p class="section-lead">Pre-built channel data generated from live repeater info — ready to import into your radio programming software.</p>
-    <div class="download-cards">
-      <div class="download-card">
-        <h3>CHIRP CSV – 2m &amp; 70cm</h3>
-        <p>All 2m and 70cm repeaters formatted for <a href="https://chirpmyradio.com" target="_blank" rel="noopener" style="color:var(--cyan);">CHIRP Radio Programming Software</a>. Includes output frequency, duplex offset, CTCSS tone and mode. Works with most amateur handheld and mobile radios.</p>
-        <button class="dl-btn" onclick="downloadCHIRP()">
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download CHIRP CSV
-        </button>
-      </div>
-      <div class="download-card">
-        <h3>DMR Codeplug CSV</h3>
-        <p>Channel data for <a href="#GB7AL" style="color:var(--cyan);">GB7AL</a> and <a href="#GB7MK" style="color:var(--cyan);">GB7MK</a> — the two local DMR repeaters. Includes input/output frequencies, colour code and network. Use as a reference when building your codeplug in your DMR radio software.</p>
-        <button class="dl-btn" onclick="downloadDMR()">
-          <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-          Download DMR CSV
-        </button>
-      </div>
-    </div>
-  </div>
+  <p style="font-size:13px;color:var(--muted);margin-bottom:3rem;">Use of repeaters is for licensed amateurs only. Always give priority to mobile users and emergency traffic. Repeaters operated by <a href="https://sargroup.co.uk" style="color:var(--cyan);">SARG</a>, the <a href="https://martellotowergroup.com" style="color:var(--cyan);">Martello Tower Group</a>, and the <a href="http://www.essexrepeatergroup.org.uk/" style="color:var(--cyan);">Essex Repeater Group</a>.</p>
 
   <hr class="divider">
 
@@ -256,7 +172,6 @@
 
 <footer>
   <div class="brand">SuffolkHam.co.uk</div>
-  <p style="font-size:12px;color:var(--faint);margin:0.15rem 0 0.35rem;">Suffolk&#39;s free amateur radio resource</p>
   <p>Site by <a href="https://www.qrz.com/db/M9XCN" target="_blank" rel="noopener">M9XCN</a> &nbsp;&middot;&nbsp; <a href="about">About</a></p>
 </footer>
 
@@ -286,19 +201,12 @@ function setView(view) {
   document.getElementById('btn-map').classList.toggle('active', view === 'map');
   document.getElementById('repeater-grid').style.display = view === 'cards' ? '' : 'none';
   document.getElementById('band-picker').style.display = view === 'cards' ? '' : 'none';
-  var sw = document.getElementById('search-wrap');
-  if (sw) sw.style.display = view === 'cards' ? '' : 'none';
-  var pw = document.getElementById('postcode-wrap');
-  if (pw) pw.style.display = view === 'cards' ? '' : 'none';
   const mapEl = document.getElementById('repeater-map');
   mapEl.style.display = view === 'map' ? 'block' : 'none';
-  document.body.classList.toggle('map-active', view === 'map');
-  const backBtn = document.querySelector('.map-back-btn');
-  if (backBtn) backBtn.style.display = view === 'map' ? '' : 'none';
   if (view === 'map' && !leafletMap && allRepeaterData.length) {
     initMap(allRepeaterData);
   } else if (view === 'map' && leafletMap) {
-    setTimeout(() => leafletMap.invalidateSize(), 50);
+    leafletMap.invalidateSize();
   }
 }
 
@@ -314,102 +222,27 @@ function initMap(repeaters) {
     }).addTo(leafletMap);
 
     const statusColour = { live: '#4ade80', warn: '#fbbf24', offair: '#f87171' };
-
-    // Group repeaters within ~100m of each other (0.001°) to avoid stacked markers
-    const groups = [], used = new Set();
-    repeaters.forEach((r, i) => {
-      if (!r.lat || !r.lng || used.has(i)) return;
-      const group = [r]; used.add(i);
-      repeaters.forEach((r2, j) => {
-        if (i === j || used.has(j) || !r2.lat || !r2.lng) return;
-        if (Math.abs(r.lat - r2.lat) < 0.001 && Math.abs(r.lng - r2.lng) < 0.001) { group.push(r2); used.add(j); }
-      });
-      groups.push(group);
+    repeaters.forEach(r => {
+      if (!r.lat || !r.lng) return;
+      const col = statusColour[r.status] || '#9da4bc';
+      const marker = L.circleMarker([r.lat, r.lng], {
+        radius: 10,
+        fillColor: col,
+        color: '#00000033',
+        weight: 1,
+        fillOpacity: 0.85
+      }).addTo(leafletMap);
+      const freqLine = r.frequencies.find(f => f.label === 'Output');
+      marker.bindPopup(
+        '<strong style="font-family:monospace">' + r.callsign + '</strong>' +
+        '<div style="font-size:12px;color:#666;margin:2px 0">' + r.mode + '</div>' +
+        (freqLine ? '<div style="font-family:monospace;font-size:13px">' + freqLine.value + '</div>' : '') +
+        '<div style="font-size:12px;margin-top:4px">' + r.location + '</div>' +
+        '<div style="margin-top:6px"><a href="repeaters#' + r.callsign + '" style="font-size:12px;color:#0369a1">View card →</a></div>'
+      );
     });
-
-    groups.forEach(group => {
-      const r0 = group[0];
-      const lat = group.reduce((s, r) => s + r.lat, 0) / group.length;
-      const lng = group.reduce((s, r) => s + r.lng, 0) / group.length;
-
-      if (group.length === 1) {
-        const col = statusColour[r0.status] || '#9da4bc';
-        const marker = L.circleMarker([lat, lng], { radius: 10, fillColor: col, color: '#00000033', weight: 1, fillOpacity: 0.85 }).addTo(leafletMap);
-        const freqLine = r0.frequencies.find(f => f.label === 'Output' || f.label === 'Frequency');
-        marker.bindPopup(
-          '<strong style="font-family:monospace">' + r0.callsign + '</strong>' +
-          '<div style="font-size:12px;color:#666;margin:2px 0">' + r0.mode + '</div>' +
-          (freqLine ? '<div style="font-family:monospace;font-size:13px">' + freqLine.value + '</div>' : '') +
-          '<div style="font-size:12px;margin-top:4px">' + r0.location + '</div>' +
-          '<div style="margin-top:6px"><a href="#' + r0.callsign + '" onclick="setView(\'cards\')" style="font-size:12px;color:#0369a1">View card →</a></div>'
-        );
-      } else {
-        const icon = L.divIcon({ className: '', html: '<div class="map-cluster-badge">' + group.length + '</div>', iconSize: [26, 26], iconAnchor: [13, 13], popupAnchor: [0, -13] });
-        const marker = L.marker([lat, lng], { icon: icon }).addTo(leafletMap);
-        const rows = group.map(r => {
-          const freqLine = r.frequencies.find(f => f.label === 'Output' || f.label === 'Frequency');
-          const dot = '<span style="display:inline-block;width:8px;height:8px;border-radius:50%;background:' + (statusColour[r.status] || '#9da4bc') + ';margin-right:5px;vertical-align:middle;"></span>';
-          return '<div style="padding:5px 0">' +
-            dot + '<strong style="font-family:monospace;font-size:13px">' + r.callsign + '</strong>' +
-            '<span style="font-size:11px;color:#888;margin-left:5px">' + r.mode + '</span>' +
-            (freqLine ? '<div style="font-family:monospace;font-size:12px;color:#555;margin-left:13px">' + freqLine.value + '</div>' : '') +
-            '<div style="margin-left:13px;margin-top:3px"><a href="#' + r.callsign + '" onclick="setView(\'cards\')" style="font-size:12px;color:#0369a1">View card →</a></div>' +
-          '</div>';
-        }).join('<div style="border-top:1px solid #e5e7eb;"></div>');
-        marker.bindPopup('<div style="min-width:180px"><div style="font-size:10px;color:#888;text-transform:uppercase;letter-spacing:0.08em;margin-bottom:5px">' + group.length + ' repeaters at this site</div>' + rows + '</div>');
-      }
-    });
-
-    // My location control
-    let userLocMarker = null, userAccCircle = null;
-    function locateUser() {
-      if (!navigator.geolocation) { alert('Geolocation is not supported by your browser.'); return; }
-      navigator.geolocation.getCurrentPosition(function(pos) {
-        const lat = pos.coords.latitude, lng = pos.coords.longitude, acc = pos.coords.accuracy;
-        if (userLocMarker) leafletMap.removeLayer(userLocMarker);
-        if (userAccCircle) leafletMap.removeLayer(userAccCircle);
-        userAccCircle = L.circle([lat, lng], { radius: acc, color: '#38bdf8', fillColor: '#38bdf8', fillOpacity: 0.1, weight: 1 }).addTo(leafletMap);
-        const icon = L.divIcon({ className: '', html: '<div class="user-loc-dot"></div>', iconSize: [14, 14], iconAnchor: [7, 7] });
-        userLocMarker = L.marker([lat, lng], { icon: icon }).addTo(leafletMap);
-        userLocMarker.bindPopup('<strong>Your location</strong><div style="font-size:11px;color:#666;margin-top:2px;">±' + Math.round(acc) + ' m accuracy</div>').openPopup();
-        leafletMap.setView([lat, lng], 11);
-      }, function(err) {
-        alert('Unable to get your location. Please check your browser permissions.');
-      });
-    }
-    const LocCtrl = L.Control.extend({
-      options: { position: 'topright' },
-      onAdd: function() {
-        const btn = L.DomUtil.create('button', 'loc-btn');
-        btn.title = 'Show my location';
-        btn.setAttribute('aria-label', 'Show my location');
-        btn.innerHTML = '<svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3"/></svg>';
-        L.DomEvent.on(btn, 'click', function(e) { L.DomEvent.stopPropagation(e); locateUser(); });
-        return btn;
-      }
-    });
-    new LocCtrl().addTo(leafletMap);
   };
   document.body.appendChild(script);
-}
-
-var guideMap = {};
-var currentBandFilter = 'all';
-var currentSearchTerm = '';
-
-function applyFilters() {
-  var cards = document.querySelectorAll('#repeater-grid .repeater-card');
-  var anyVisible = false;
-  cards.forEach(function(card) {
-    var bandMatch = currentBandFilter === 'all' ||
-      card.dataset[currentBandFilter.split(':')[0]] === currentBandFilter.split(':')[1];
-    var searchMatch = !currentSearchTerm || card.textContent.toLowerCase().includes(currentSearchTerm);
-    var show = bandMatch && searchMatch;
-    card.style.display = show ? '' : 'none';
-    if (show) anyVisible = true;
-  });
-  var nm = document.getElementById('no-results-msg');
-  if (nm) nm.style.display = anyVisible ? 'none' : '';
 }
 
 fetch('repeaters.json')
@@ -457,14 +290,8 @@ fetch('repeaters.json')
       const keeperHtml = r.keeper
         ? `<div class="keeper">Keeper: <a href="https://www.qrz.com/db/${r.keeper}" target="_blank" rel="noopener">${r.keeper}</a></div>`
         : '';
-      if (r.guide) guideMap[r.callsign] = r.guide;
-      const guideHtml = r.guide ? `
-        <button class="card-guide-btn" onclick="openGuide('${r.callsign}')">
-          <svg width="12" height="12" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-          Controller guide
-        </button>` : '';
       grid.insertAdjacentHTML('beforeend', `
-        <article class="repeater-card ${r.status}" id="${r.callsign}" data-band="${r.band || ''}" data-type="${r.type || ''}" aria-label="${r.callsign} repeater">
+        <article class="repeater-card ${r.status}" id="${r.callsign}" data-band="${r.band || ''}" aria-label="${r.callsign} repeater">
           <div class="card-header">
             <div class="card-call-wrap">${antennaIcon(r.status)}<div class="callsign">${r.callsign}</div></div>
             <span class="status-badge badge-${r.status}">${r.statusLabel}</span>
@@ -475,7 +302,6 @@ fetch('repeaters.json')
           <div class="card-location" ${locMt}>${PIN} ${r.location}</div>
           ${groupHtml}
           ${keeperHtml}
-          ${guideHtml}
         </article>
       `);
     });
@@ -484,16 +310,17 @@ fetch('repeaters.json')
     const presentBands = BAND_ORDER.filter(b => data.repeaters.some(r => r.band === b));
     const picker = document.getElementById('band-picker');
 
-    function filterBand(filter) {
-      currentBandFilter = filter;
-      document.querySelectorAll('.band-btn').forEach(b => b.classList.toggle('active', b.dataset.filter === filter));
-      applyFilters();
+    function filterBand(band) {
+      document.querySelectorAll('.band-btn').forEach(b => b.classList.toggle('active', b.dataset.band === band));
+      document.querySelectorAll('#repeater-grid .repeater-card').forEach(card => {
+        card.style.display = (band === 'all' || card.dataset.band === band) ? '' : 'none';
+      });
     }
 
     const allBtn = document.createElement('button');
     allBtn.className = 'band-btn active';
-    allBtn.textContent = 'All';
-    allBtn.dataset.filter = 'all';
+    allBtn.textContent = 'All bands';
+    allBtn.dataset.band = 'all';
     allBtn.addEventListener('click', () => filterBand('all'));
     picker.appendChild(allBtn);
 
@@ -501,33 +328,10 @@ fetch('repeaters.json')
       const btn = document.createElement('button');
       btn.className = 'band-btn';
       btn.textContent = band;
-      btn.dataset.filter = 'band:' + band;
-      btn.addEventListener('click', () => filterBand('band:' + band));
+      btn.dataset.band = band;
+      btn.addEventListener('click', () => filterBand(band));
       picker.appendChild(btn);
     });
-
-    [{ label: 'DMR', type: 'DMR' }, { label: 'D-Star', type: 'D-STAR' }]
-      .filter(m => data.repeaters.some(r => r.type === m.type))
-      .forEach(m => {
-        const btn = document.createElement('button');
-        btn.className = 'band-btn';
-        btn.textContent = m.label;
-        btn.dataset.filter = 'type:' + m.type;
-        btn.addEventListener('click', () => filterBand('type:' + m.type));
-        picker.appendChild(btn);
-      });
-
-    // Reveal search and wire it up
-    var sw = document.getElementById('search-wrap');
-    if (sw) sw.style.display = '';
-    var si = document.getElementById('repeater-search');
-    if (si) si.addEventListener('input', function() {
-      currentSearchTerm = this.value.trim().toLowerCase();
-      applyFilters();
-    });
-    // Enter key on postcode
-    var pi = document.getElementById('postcode-input');
-    if (pi) pi.addEventListener('keydown', function(e) { if (e.key === 'Enter') lookupPostcode(); });
 
     // Anchor scroll after render
     if (location.hash) {
@@ -549,6 +353,18 @@ function haversineKm(lat1, lon1, lat2, lon2) {
   return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
 }
 
+function bearingDeg(lat1, lon1, lat2, lon2) {
+  var d2r = Math.PI / 180;
+  var y = Math.sin((lon2-lon1)*d2r) * Math.cos(lat2*d2r);
+  var x = Math.cos(lat1*d2r)*Math.sin(lat2*d2r) - Math.sin(lat1*d2r)*Math.cos(lat2*d2r)*Math.cos((lon2-lon1)*d2r);
+  return (Math.atan2(y, x) * 180/Math.PI + 360) % 360;
+}
+
+function bearingCardinal(deg) {
+  var dirs = ['N','NNE','NE','ENE','E','ESE','SE','SSE','S','SSW','SW','WSW','W','WNW','NW','NNW'];
+  return dirs[Math.round(deg / 22.5) % 16];
+}
+
 function lookupPostcode() {
   var raw = (document.getElementById('postcode-input').value || '').trim().replace(/\s+/g,'').toUpperCase();
   var out = document.getElementById('postcode-results');
@@ -564,12 +380,12 @@ function lookupPostcode() {
       var lat = data.result.latitude, lng = data.result.longitude;
       var ranked = allRepeaterData
         .filter(function(r) { return r.lat && r.lng; })
-        .map(function(r) { return Object.assign({}, r, { km: haversineKm(lat, lng, r.lat, r.lng) }); })
+        .map(function(r) { var km = haversineKm(lat, lng, r.lat, r.lng); return Object.assign({}, r, { km: km, brg: bearingDeg(lat, lng, r.lat, r.lng) }); })
         .sort(function(a,b) { return a.km - b.km; });
       if (!ranked.length) { out.innerHTML = '<p style="font-size:13px;color:var(--muted)">No data available.</p>'; return; }
       var html = '<div style="font-size:11px;color:var(--faint);font-family:var(--mono);margin-bottom:6px;text-transform:uppercase;letter-spacing:.07em;">Nearest to ' + raw + '</div>';
       ranked.slice(0, 10).forEach(function(r) {
-        var dist = r.km < 1 ? '< 1 km' : Math.round(r.km) + ' km';
+        var dist = (r.km < 1 ? '< 1' : Math.round(r.km)) + ' km · ' + Math.round(r.brg) + '° ' + bearingCardinal(r.brg);
         var freqF = r.frequencies.find(function(f) { return f.label === 'Output' || f.label === 'Frequency'; });
         var badge, cls;
         if (r.status === 'offair') { badge = 'Off air'; cls = 'far'; }
@@ -681,22 +497,6 @@ function downloadDMR() {
 </div>
 
 <script src="nav.js"></script>
-<script>
-function openGuide(callsign) {
-  const g = guideMap[callsign];
-  if (!g) return;
-  document.getElementById('guide-dialog-callsign').textContent = callsign;
-  document.getElementById('guide-dialog-body').innerHTML = g.body.map(p => `<p style="margin-bottom:0.6rem">${p}</p>`).join('');
-  document.getElementById('guide-dialog-meta').textContent = g.author + ' · ' + g.date;
-  document.getElementById('guide-overlay').style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-}
-function closeGuide() {
-  document.getElementById('guide-overlay').style.display = 'none';
-  document.body.style.overflow = '';
-}
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeGuide(); });
-</script>
 <script>
 function copyVal(btn, val) {
   navigator.clipboard.writeText(val).then(function () {

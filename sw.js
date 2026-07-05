@@ -1,8 +1,9 @@
-var CACHE = 'suffolkham-v2';
+var CACHE = 'suffolkham-v3';
 
 var PRECACHE = [
   '/',
   '/about',
+  '/bandplan',
   '/calculators',
   '/dmr',
   '/equipment',
@@ -12,6 +13,7 @@ var PRECACHE = [
   '/locator',
   '/meshcore',
   '/nets',
+  '/raynet',
   '/repeaters',
   '/404.html',
   '/style.css',

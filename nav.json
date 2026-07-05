@@ -10,7 +10,11 @@
     { "label": "Nets",            "href": "nets" },
     { "label": "DMR",             "href": "dmr" },
     { "label": "Events",          "href": "events" },
-    { "label": "Tools",           "href": "tools" },
-    { "label": "MeshCore",        "href": "meshcore" }
+    { "label": "Calculators",     "href": "calculators" },
+    { "label": "QTH Locator",     "href": "locator" },
+    { "label": "Glossary",        "href": "glossary" },
+    { "label": "MeshCore",        "href": "meshcore" },
+    { "label": "Band Plan",       "href": "bandplan" },
+    { "label": "RAYNET",          "href": "raynet" }
   ]
 }
