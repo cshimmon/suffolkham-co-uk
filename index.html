@@ -61,6 +61,22 @@
     @keyframes splash-fade { to { opacity:0; pointer-events:none; } }
   }
   @media (min-width:769px) { #splash { display:none; } }
+
+  /* Quick repeater reference */
+  .qr-row { display:flex; align-items:center; gap:16px; padding:8px 0; border-bottom:1px solid var(--border); }
+  .qr-row:last-child { border-bottom:none; }
+  .qr-dot { width:6px; height:6px; border-radius:50%; flex-shrink:0; }
+  .qr-call { font-family:var(--mono); font-size:13px; font-weight:600; color:var(--text); text-decoration:none; white-space:nowrap; min-width:72px; }
+  .qr-call:hover { color:var(--cyan); }
+  .qr-freq { font-family:var(--mono); font-size:13px; color:var(--cyan); flex:1; }
+  .qr-ctcss { font-family:var(--mono); font-size:11px; color:var(--muted); white-space:nowrap; }
+
+  /* On air today */
+  .oat-row { display:grid; grid-template-columns:80px 1fr auto; align-items:baseline; gap:4px 16px; padding:9px 0; border-bottom:1px solid var(--border); }
+  .oat-time { font-family:var(--mono); font-size:13px; color:var(--cyan); }
+  .oat-name { font-size:14px; color:var(--text); line-height:1.4; }
+  .oat-via  { font-size:12px; color:var(--muted); white-space:nowrap; text-align:right; }
+  @media (max-width:480px) { .oat-row { grid-template-columns:72px 1fr; } .oat-via { display:none; } }
 </style>
 <script type="application/ld+json">
 {
@@ -295,14 +311,31 @@
     if (/2nd.*4th/.test(s)) return o===2||o===4;
     return true;
   }
+  function sortKey(n, all) {
+    var m = (n.time||'').match(/^\d{2}:\d{2}/);
+    if (m) return m[0];
+    // "After GB2RS" — sort just after GB2RS (09:30 → 09:31)
+    var after = (n.time||'').match(/after\s+(.+)/i);
+    if (after) {
+      var ref = all.find(function(x){ return x.id.toLowerCase() === after[1].trim().toLowerCase() || x.name.toLowerCase().includes(after[1].trim().toLowerCase()); });
+      if (ref) {
+        var rm = (ref.time||'').match(/^(\d{2}):(\d{2})/);
+        if (rm) { var mins = parseInt(rm[1])*60+parseInt(rm[2])+1; return String(Math.floor(mins/60)).padStart(2,'0')+':'+String(mins%60).padStart(2,'0'); }
+      }
+    }
+    return '99:99';
+  }
+  function dispTime(t) {
+    if (/after/i.test(t||'')) return 'after news';
+    return ((t||'').match(/^\d{2}:\d{2}/)||[''])[0];
+  }
   var today = new Date();
   var lbl = document.getElementById('on-air-day-label');
   if (lbl) lbl.textContent = DAYS[today.getDay()];
   fetch('nets.json').then(function(r){return r.json();}).then(function(data){
     var nets = data.nets.filter(function(n){return isToday(n,today);});
     nets.sort(function(a,b){
-      var ta=(a.time||'').match(/^\d{2}:\d{2}/); var tb=(b.time||'').match(/^\d{2}:\d{2}/);
-      ta=ta?ta[0]:'99:99'; tb=tb?tb[0]:'99:99';
+      var ta=sortKey(a,data.nets), tb=sortKey(b,data.nets);
       return ta<tb?-1:ta>tb?1:0;
     });
     var el = document.getElementById('on-air-today');
@@ -315,11 +348,10 @@
       var via = n.repeater
         ? '<a href="repeaters#'+n.repeater+'" style="color:var(--cyan);text-decoration:none;">'+n.repeater+'</a>'
         : (n.frequency||'Simplex');
-      return '<div style="display:flex;align-items:baseline;gap:8px 16px;padding:7px 0;border-bottom:1px solid var(--border);flex-wrap:wrap;">' +
-        '<span style="font-family:var(--mono);font-size:13px;color:var(--cyan);flex-shrink:0;min-width:56px;">'+n.time+'</span>' +
-        '<span style="font-weight:'+(n.type==='broadcast'?'400':'500')+';color:var(--text);">'+n.name+'</span>' +
-        '<span style="font-size:12px;color:var(--muted);white-space:nowrap;">'+n.mode+'</span>' +
-        '<span style="font-size:12px;white-space:nowrap;">'+via+'</span>' +
+      return '<div class="oat-row">' +
+        '<span class="oat-time">'+dispTime(n.time)+'</span>' +
+        '<span class="oat-name">'+n.name+'</span>' +
+        '<span class="oat-via">'+via+'</span>' +
       '</div>';
     }).join('');
     el.innerHTML = '<div style="border-top:1px solid var(--border);">'+rows+'</div>';
@@ -341,12 +373,10 @@ fetch('repeaters.json').then(function(r){return r.json();}).then(function(data){
     var ctcssF = r.frequencies.find(function(f){return f.label==='CTCSS';});
     var dot    = r.status==='live' ? 'var(--green)' : 'var(--amber)';
     return '<div class="qr-row">' +
-      '<span style="display:inline-block;width:7px;height:7px;border-radius:50%;background:'+dot+';flex-shrink:0;margin-top:3px;" aria-hidden="true"></span>' +
+      '<span class="qr-dot" style="background:'+dot+';" aria-hidden="true"></span>' +
       '<a href="repeaters#'+r.callsign+'" class="qr-call">'+r.callsign+'</a>' +
       '<span class="qr-freq">'+(outF?outF.value:'')+'</span>' +
-      '<span class="qr-band">'+r.band+' · FM</span>' +
       (ctcssF?'<span class="qr-ctcss">CTCSS '+ctcssF.value+'</span>':'') +
-      '<span class="qr-loc">'+r.location+'</span>' +
     '</div>';
   }).join('');
   el.innerHTML = '<div>'+rows+'</div>' +
