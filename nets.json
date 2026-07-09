@@ -1,6 +1,21 @@
 {
   "nets": [
     {
+      "id": "145-alive",
+      "name": "145 Alive",
+      "type": "activity",
+      "group": "Independent",
+      "groupUrl": null,
+      "day": null,
+      "schedule": "Daily",
+      "time": "12:00–14:00",
+      "mode": "FM Simplex",
+      "via": "simplex",
+      "repeater": null,
+      "frequency": "145.375 MHz",
+      "notes": "Daily lunchtime monitoring period on 145.375 MHz — tune in and call CQ to keep the band alive. No net control, just get on air."
+    },
+    {
       "id": "gb2rs",
       "name": "GB2RS News Broadcast",
       "type": "broadcast",

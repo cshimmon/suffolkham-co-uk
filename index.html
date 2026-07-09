@@ -303,7 +303,8 @@
   var DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   function weekOcc(d) { return Math.ceil(d.getDate() / 7); }
   function isToday(n, today) {
-    if (!n.day || DAYS[today.getDay()] !== n.day) return false;
+    if (!n.day) return true; // daily / no specific day
+    if (DAYS[today.getDay()] !== n.day) return false;
     var s = (n.schedule || '').toLowerCase();
     if (/every/.test(s)) return true;
     var o = weekOcc(today);
