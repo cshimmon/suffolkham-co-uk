@@ -1,11 +1,11 @@
 {
-  "updated": "2026-07-17 06:10 UTC",
+  "updated": "2026-07-17 09:51 UTC",
   "sfi": "101",
-  "sunspots": "47",
+  "sunspots": "51",
   "bands": [
     {
       "name": "80m-40m",
-      "day": "Fair",
+      "day": "Good",
       "night": "Good"
     },
     {
