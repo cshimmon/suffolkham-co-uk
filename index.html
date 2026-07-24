@@ -141,8 +141,8 @@
     <button type="submit" class="btn btn-ghost">Look up ↗</button>
   </form>
   <div class="stat-row" aria-label="At a glance">
-    <a href="repeaters" class="stat-cell"><span class="stat-val" data-count="11">11</span><span class="stat-lbl">Repeaters</span></a>
-    <a href="nets"      class="stat-cell"><span class="stat-val" data-count="17">17</span><span class="stat-lbl">Local nets</span></a>
+    <a href="repeaters" class="stat-cell"><span class="stat-val" id="stat-repeaters" data-count="0">—</span><span class="stat-lbl">Repeaters</span></a>
+    <a href="nets"      class="stat-cell"><span class="stat-val" id="stat-nets"      data-count="0">—</span><span class="stat-lbl">Local nets</span></a>
   </div>
 </header>
 
@@ -429,6 +429,18 @@ function qrzSearch(e) {
       }
     }
   }).catch(function(){}).finally(setupCountup);
+
+  fetch('repeaters.json').then(function(r){return r.json();}).then(function(data){
+    var n = (data.repeaters||[]).length;
+    var el = document.getElementById('stat-repeaters');
+    if (el) { el.dataset.count = n; el.textContent = n; }
+  }).catch(function(){});
+
+  fetch('nets.json').then(function(r){return r.json();}).then(function(data){
+    var n = (data.nets||[]).filter(function(x){return x.type !== 'broadcast';}).length;
+    var el = document.getElementById('stat-nets');
+    if (el) { el.dataset.count = n; el.textContent = n; }
+  }).catch(function(){});
 }());
 
 (function () {
