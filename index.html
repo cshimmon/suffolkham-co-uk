@@ -414,9 +414,16 @@ function qrzSearch(e) {
     els.forEach(function(el) { obs.observe(el); });
   }
 
-  fetch('events.json').then(function(r){return r.json();}).then(function(data){
+  Promise.all([
+    fetch('events.json').then(function(r){return r.json();}).catch(function(){return {events:[]};}),
+    fetch('repeaters.json').then(function(r){return r.json();}).catch(function(){return {repeaters:[]};}),
+    fetch('nets.json').then(function(r){return r.json();}).catch(function(){return {nets:[]};})
+  ]).then(function(results) {
+    var eData = results[0], rData = results[1], nData = results[2];
+
+    // Events cell
     var today = new Date(); today.setHours(0,0,0,0);
-    var upcoming = (data.events||[]).filter(function(e){ return new Date(e.date) >= today; });
+    var upcoming = (eData.events||[]).filter(function(e){ return new Date(e.date) >= today; });
     if (upcoming.length) {
       var row = document.querySelector('.stat-row');
       if (row) {
@@ -428,19 +435,18 @@ function qrzSearch(e) {
         row.style.gridTemplateColumns = 'repeat(' + row.querySelectorAll('.stat-cell').length + ',1fr)';
       }
     }
-  }).catch(function(){}).finally(setupCountup);
 
-  fetch('repeaters.json').then(function(r){return r.json();}).then(function(data){
-    var n = (data.repeaters||[]).length;
-    var el = document.getElementById('stat-repeaters');
-    if (el) { el.dataset.count = n; el.textContent = n; }
-  }).catch(function(){});
+    // Repeater count
+    var repCount = (rData.repeaters||[]).length;
+    var repEl = document.getElementById('stat-repeaters');
+    if (repEl) { repEl.dataset.count = repCount; repEl.textContent = repCount; }
 
-  fetch('nets.json').then(function(r){return r.json();}).then(function(data){
-    var n = (data.nets||[]).filter(function(x){return x.type !== 'broadcast';}).length;
-    var el = document.getElementById('stat-nets');
-    if (el) { el.dataset.count = n; el.textContent = n; }
-  }).catch(function(){});
+    // Net count (exclude broadcasts)
+    var netCount = (nData.nets||[]).filter(function(x){return x.type !== 'broadcast';}).length;
+    var netEl = document.getElementById('stat-nets');
+    if (netEl) { netEl.dataset.count = netCount; netEl.textContent = netCount; }
+
+  }).finally(setupCountup);
 }());
 
 (function () {
