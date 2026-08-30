@@ -198,18 +198,18 @@
       "notes": "Weekly net via the MB7IBW AllStarLink gateway (145.2625 MHz, CTCSS 94.8 Hz). Part of M0AWS's Matrix group — all licensed operators welcome, no membership required."
     },
     {
-      "id": "fdars-4m",
-      "name": "East Suffolk 4m Net",
-      "group": "FDARS",
-      "groupUrl": "https://www.fdars.co.uk",
+      "id": "east-coast-4m",
+      "name": "East Coast Friendly Net",
+      "group": "Independent",
+      "groupUrl": null,
       "day": "Friday",
       "schedule": "2nd and 4th Fridays",
       "time": "19:30",
-      "mode": "FM Analogue",
+      "mode": "FM Simplex",
       "via": "simplex",
       "repeater": null,
       "frequency": "70.450 MHz",
-      "notes": "Open to all licensed operators. A great way to use the 4m band."
+      "notes": "4m simplex net. Not affiliated with any club — all licensed operators welcome."
     },
     {
       "id": "ref079c-dstar",
