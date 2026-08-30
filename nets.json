@@ -184,6 +184,20 @@
       "notes": "Usually connected to Allstar *47141 and Echolink GB3DE-R. Please disconnect from any other groups before connecting."
     },
     {
+      "id": "m0aws-matrix-thursday",
+      "name": "MB7IBW Matrix Group Net",
+      "group": "M0AWS",
+      "groupUrl": "https://www.qrz.com/db/M0AWS",
+      "day": "Thursday",
+      "schedule": "Every Thursday",
+      "time": "20:00",
+      "mode": "FM Simplex",
+      "via": "repeater",
+      "repeater": "MB7IBW",
+      "frequency": null,
+      "notes": "Weekly net via the MB7IBW AllStarLink gateway (145.2625 MHz, CTCSS 94.8 Hz). Part of M0AWS's Matrix group — all licensed operators welcome, no membership required."
+    },
+    {
       "id": "east-coast-4m",
       "name": "East Coast Friendly Net",
       "group": "Independent",
@@ -196,6 +210,20 @@
       "repeater": null,
       "frequency": "70.450 MHz",
       "notes": "4m simplex net. Not affiliated with any club — all licensed operators welcome."
+    },
+    {
+      "id": "ref079c-dstar",
+      "name": "REF079C D-STAR Net",
+      "group": "2E0UCB",
+      "groupUrl": "https://www.qrz.com/db/2E0UCB",
+      "day": "Friday",
+      "schedule": "Every Friday",
+      "time": "20:00",
+      "mode": "D-STAR",
+      "via": "repeater",
+      "repeater": "GB7DI",
+      "frequency": "REF079C",
+      "notes": "Regular D-STAR net used by operators across Suffolk and surrounding areas. Newcomers welcome — listening in first is perfectly fine before joining the conversation."
     },
     {
       "id": "2e0diq-friday",
