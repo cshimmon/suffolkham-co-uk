@@ -1,0 +1,998 @@
+<!DOCTYPE html>
+<!-- Site by M9XCN -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Amateur Radio Tools – QTH Locator &amp; Calculators | SuffolkHam</title>
+<meta name="description" content="Amateur radio tools — Maidenhead QTH locator, frequency and wavelength calculators, SWR, antenna calculators and more. All run locally in your browser.">
+<meta property="og:title" content="Amateur Radio Tools | SuffolkHam">
+<meta property="og:description" content="QTH locator and radio calculators for amateur radio operators. All run in your browser.">
+<meta property="og:image" content="https://suffolkham.co.uk/social-card.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="600">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/png" href="favicon.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="https://suffolkham.co.uk/tools">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.css">
+<style>
+  /* ── QTH Locator ─────────────────────────────────────────────── */
+  #map {
+    height: 480px;
+    border-radius: 12px;
+    border: 1px solid var(--border);
+    cursor: crosshair;
+  }
+  @media (max-width:640px) { #map { height: 320px; border-radius: 8px; } }
+  .leaflet-bar a { background: var(--bg2) !important; color: var(--text) !important; border-color: var(--border2) !important; }
+  .leaflet-bar a:hover { background: var(--bg3) !important; }
+  .leaflet-control-attribution { background: var(--bg2) !important; color: var(--faint) !important; font-size: 11px !important; }
+  .leaflet-control-attribution a { color: var(--cyan) !important; }
+  .leaflet-popup-content-wrapper { background: var(--bg2) !important; color: var(--text) !important; border: 1px solid var(--border2) !important; border-radius: 8px !important; box-shadow: none !important; }
+  .leaflet-popup-tip { background: var(--bg2) !important; }
+  .leaflet-popup-close-button { color: var(--muted) !important; }
+  .loc-display { font-family: var(--mono); font-size: 2.8rem; font-weight: 500; color: var(--cyan); letter-spacing: 0.06em; line-height: 1; word-break: break-all; }
+  .res-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap: 10px; }
+  .res-cell { background: var(--bg3); border-radius: 8px; padding: 0.8rem 1rem; }
+  .res-lbl  { font-family: var(--mono); font-size: 10px; color: var(--faint); letter-spacing: 0.08em; text-transform: uppercase; margin-bottom: 4px; display: block; }
+  .res-val  { font-family: var(--mono); font-size: 14px; font-weight: 500; color: var(--text); }
+  .lookup-row { display: flex; gap: 8px; }
+  .lookup-input { flex: 1; min-width: 0; background: var(--bg3); color: var(--text); border: 1px solid var(--border2); border-radius: 6px; padding: 9px 14px; font-family: var(--mono); font-size: 16px; letter-spacing: 0.12em; text-transform: uppercase; }
+  .lookup-input::placeholder { text-transform: none; letter-spacing: normal; font-size: 14px; }
+  .lookup-input:focus { outline: 2px solid var(--cyan); outline-offset: 2px; border-color: transparent; }
+
+  /* ── Calculators ─────────────────────────────────────────────── */
+  .calc-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(320px,1fr)); gap:16px; }
+  .calc-card { background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:1.5rem; }
+  .calc-field-label { font-family:var(--mono); font-size:10px; color:var(--faint); letter-spacing:0.08em; text-transform:uppercase; margin-bottom:5px; display:block; }
+  .calc-row { display:flex; gap:8px; margin-bottom:0.75rem; align-items:stretch; }
+  .calc-input { flex:1; min-width:0; background:var(--bg3); color:var(--text); border:1px solid var(--border2); border-radius:6px; padding:9px 12px; font-family:var(--mono); font-size:15px; }
+  .calc-input:focus { outline:2px solid var(--cyan); outline-offset:2px; border-color:transparent; }
+  .calc-select { background:var(--bg3); color:var(--text); border:1px solid var(--border2); border-radius:6px; padding:9px 12px; font-family:var(--mono); font-size:14px; cursor:pointer; flex-shrink:0; }
+  .calc-btn { width:100%; margin-top:0.25rem; background:var(--cyan); color:var(--bg); border:none; border-radius:6px; padding:10px 16px; font-family:var(--sans); font-size:14px; font-weight:600; cursor:pointer; transition:opacity 0.15s; }
+  .calc-btn:hover { opacity:0.85; }
+  .calc-result { display:none; margin-top:1rem; background:var(--bg3); border:1px solid var(--border); border-radius:8px; overflow:hidden; }
+  .calc-result.show { display:block; }
+  .calc-rrow { display:flex; justify-content:space-between; align-items:baseline; padding:8px 12px; border-bottom:1px solid var(--border); gap:1rem; }
+  .calc-rrow:last-child { border-bottom:none; }
+  .calc-rlbl { font-family:var(--mono); font-size:11px; color:var(--faint); letter-spacing:0.06em; text-transform:uppercase; white-space:nowrap; }
+  .calc-rval { font-family:var(--mono); font-size:14px; font-weight:500; color:var(--cyan); text-align:right; }
+  .calc-err { display:none; margin-top:0.6rem; padding:8px 12px; background:var(--red-dim); border:1px solid var(--red-bd); border-radius:6px; font-size:13px; color:var(--red); }
+  .calc-err.show { display:block; }
+  .calc-tabs { display:flex; gap:4px; margin-bottom:1rem; flex-wrap:wrap; }
+  .calc-tab { font-family:var(--mono); font-size:11px; padding:5px 12px; border-radius:4px; border:1px solid var(--border2); background:none; color:var(--muted); cursor:pointer; transition:all 0.15s; }
+  .calc-tab.active { background:var(--cyan-dim); color:var(--cyan); border-color:var(--cyan-bd); }
+  .offset-presets { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:0.5rem; }
+  .offset-preset { font-family:var(--mono); font-size:13px; font-weight:500; padding:8px 16px; border-radius:6px; border:1px solid var(--border2); background:var(--bg3); color:var(--muted); cursor:pointer; transition:all 0.15s; text-align:center; line-height:1.3; }
+  .offset-preset:hover { border-color:var(--cyan-bd); color:var(--cyan); }
+  .offset-preset.active { background:var(--cyan-dim); color:var(--cyan); border-color:var(--cyan-bd); }
+  .offset-preset span { display:block; font-size:10px; letter-spacing:0.06em; text-transform:uppercase; margin-top:2px; opacity:0.7; }
+  .offset-preset.active span { opacity:1; }
+  .offset-band-badge { display:inline-flex; align-items:center; font-family:var(--mono); font-size:11px; padding:5px 10px; border-radius:4px; margin-bottom:1rem; gap:6px; }
+  .offset-band-2m   { background:var(--cyan-dim);   color:var(--cyan);   border:1px solid var(--cyan-bd); }
+  .offset-band-70cm { background:var(--purple-dim); color:var(--purple); border:1px solid var(--purple-bd); }
+  .offset-band-warn { background:var(--amber-dim);  color:var(--amber);  border:1px solid var(--amber-bd); }
+  .offset-swap-btn { background:var(--bg3); color:var(--muted); border:1px solid var(--border2); border-radius:6px; padding:0 12px; cursor:pointer; display:flex; align-items:center; gap:5px; font-family:var(--mono); font-size:11px; transition:all 0.15s; flex-shrink:0; }
+  .offset-swap-btn:hover { color:var(--text); border-color:var(--border2); background:var(--bg4); }
+
+  /* ── Jump nav ────────────────────────────────────────────────── */
+  .tools-jump { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:2rem; }
+  .tools-jump a { font-family:var(--mono); font-size:12px; font-weight:500; padding:6px 14px; border-radius:20px; border:1px solid var(--border2); background:var(--bg2); color:var(--muted); text-decoration:none; transition:all 0.15s; }
+  .tools-jump a:hover { background:var(--bg3); color:var(--text); }
+</style>
+</head>
+<body>
+
+<a href="#main" class="skip-link">Skip to main content</a>
+<nav aria-label="Site navigation" id="site-nav"></nav>
+
+<div class="page-header" id="main">
+  <div class="page-tag">Tools</div>
+  <h1>Tools</h1>
+  <p>Handy tools for amateur radio operators. All run locally in your browser — nothing is sent anywhere.</p>
+</div>
+
+<main>
+
+  <div class="tools-jump">
+    <a href="#locator">QTH Locator</a>
+    <a href="#calculators">Calculators</a>
+    <a href="#offset">Repeater Offset</a>
+    <a href="#antenna">Antenna Calculators</a>
+  </div>
+
+  <!-- ══════════════════════════════════════════════════════════════
+       QTH LOCATOR
+  ══════════════════════════════════════════════════════════════════ -->
+  <div id="locator" style="margin-bottom:1.75rem;">
+    <div class="section-label">Navigation</div>
+    <h2 class="section-title">QTH Locator</h2>
+    <p class="section-lead">Find your Maidenhead grid square. Click anywhere on the map, or tap <strong>Use my location</strong> for an instant result. Returns 4, 6 and 8 character locators.</p>
+  </div>
+
+  <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin-bottom:1rem;">
+    <button id="locate-btn" class="btn btn-primary btn-sm" onclick="locateMe()">
+      <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="3"/><path d="M12 1v4M12 19v4M4.22 4.22l2.83 2.83M16.95 16.95l2.83 2.83M1 12h4M19 12h4M4.22 19.78l2.83-2.83M16.95 7.05l2.83-2.83"/></svg>
+      <span id="locate-txt">Use my location</span>
+    </button>
+    <span style="font-size:13px; color:var(--muted);">or click anywhere on the map</span>
+  </div>
+
+  <div id="map"></div>
+
+  <div id="results" style="display:none; margin-top:1.25rem;">
+    <div style="background:var(--bg2); border:1px solid var(--border); border-radius:12px; padding:1.5rem;">
+      <div style="display:flex; justify-content:space-between; align-items:flex-start; flex-wrap:wrap; gap:1rem; margin-bottom:1.25rem;">
+        <div>
+          <div style="font-family:var(--mono); font-size:10px; color:var(--faint); letter-spacing:0.1em; text-transform:uppercase; margin-bottom:8px;">QTH Locator</div>
+          <div class="loc-display" id="loc-display">——</div>
+        </div>
+        <div style="display:flex; gap:6px; flex-wrap:wrap; align-items:center; padding-top:2px;">
+          <span class="copy-chip" id="chip-4" onclick="copyLoc('chip-4',4)" title="Copy 4-character locator">4-char</span>
+          <span class="copy-chip" id="chip-6" onclick="copyLoc('chip-6',6)" title="Copy 6-character locator">6-char</span>
+          <span class="copy-chip" id="chip-8" onclick="copyLoc('chip-8',8)" title="Copy 8-character locator">8-char</span>
+        </div>
+      </div>
+      <div class="res-grid">
+        <div class="res-cell"><span class="res-lbl">4-char</span><span class="res-val" id="r4">—</span></div>
+        <div class="res-cell"><span class="res-lbl">6-char</span><span class="res-val" id="r6">—</span></div>
+        <div class="res-cell"><span class="res-lbl">8-char</span><span class="res-val" id="r8">—</span></div>
+        <div class="res-cell"><span class="res-lbl">Latitude</span><span class="res-val" id="rlat">—</span></div>
+        <div class="res-cell"><span class="res-lbl">Longitude</span><span class="res-val" id="rlon">—</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="margin-top:2rem;">
+    <div class="section-label">Reverse lookup</div>
+    <h3 class="section-title" style="font-size:1.1rem; margin-bottom:0.4rem;">Locator → Map</h3>
+    <p style="font-size:14px; color:var(--muted); margin-bottom:1rem; line-height:1.6;">Enter a Maidenhead locator to jump to it on the map. Accepts 4, 6 or 8 characters.</p>
+    <div class="lookup-row">
+      <input class="lookup-input" id="lookup-in" type="text" placeholder="e.g. JO02nb" maxlength="8" autocomplete="off" spellcheck="false">
+      <button class="btn btn-primary" onclick="lookupLocator()">Go</button>
+    </div>
+    <div id="lookup-err" style="display:none; margin-top:0.6rem; padding:8px 12px; background:var(--red-dim); border:1px solid var(--red-bd); border-radius:6px; font-size:13px; color:var(--red);">
+      Enter a valid 4, 6 or 8-character Maidenhead locator (e.g. IO92, JO02nb).
+    </div>
+  </div>
+
+  <div style="margin-top:2rem; margin-bottom:3rem; padding:1.25rem 1.5rem; background:var(--bg2); border:1px solid var(--border); border-radius:10px;">
+    <h3 style="font-size:0.95rem; font-weight:600; margin-bottom:0.4rem;">What is the Maidenhead Locator System?</h3>
+    <p style="font-size:13px; color:var(--muted); line-height:1.7; max-width:680px;">
+      The Maidenhead Locator System divides the world into a grid of squares identified by letter and number combinations. A 4-character locator (e.g. <span style="font-family:var(--mono); color:var(--cyan);">JO02</span>) covers a 2°×1° area; a 6-character locator (e.g. <span style="font-family:var(--mono); color:var(--cyan);">JO02nb</span>) narrows it to around 5×2.5 km; an 8-character locator to roughly 500×250 m. It's widely used in amateur radio to describe station locations — especially in VHF/UHF contests, meteor scatter, and satellite work.
+    </p>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════════════════════════════
+       BASIC CALCULATORS
+  ══════════════════════════════════════════════════════════════════ -->
+  <div id="calculators" style="margin-bottom:1.75rem;">
+    <div class="section-label">Calculations</div>
+    <h2 class="section-title">Radio Calculators</h2>
+    <p class="section-lead">Handy calculators for common amateur radio tasks.</p>
+  </div>
+
+  <div class="calc-grid">
+
+    <!-- FREQUENCY → WAVELENGTH -->
+    <div class="calc-card">
+      <div class="section-label">Antenna</div>
+      <h3 class="section-title" style="font-size:1.1rem;margin-bottom:1.1rem;">Frequency → Wavelength</h3>
+      <span class="calc-field-label">Frequency</span>
+      <div class="calc-row">
+        <input class="calc-input" type="number" id="ftw-freq" placeholder="e.g. 145.5" min="0" step="any">
+        <select class="calc-select" id="ftw-unit">
+          <option value="MHz" selected>MHz</option>
+          <option value="GHz">GHz</option>
+          <option value="kHz">kHz</option>
+          <option value="Hz">Hz</option>
+        </select>
+      </div>
+      <button class="calc-btn" onclick="calcFTW()">Calculate</button>
+      <div class="calc-err" id="ftw-err">Enter a valid frequency greater than zero.</div>
+      <div class="calc-result" id="ftw-res"></div>
+    </div>
+
+    <!-- WAVELENGTH → FREQUENCY -->
+    <div class="calc-card">
+      <div class="section-label">Antenna</div>
+      <h3 class="section-title" style="font-size:1.1rem;margin-bottom:1.1rem;">Wavelength → Frequency</h3>
+      <span class="calc-field-label">Wavelength</span>
+      <div class="calc-row">
+        <input class="calc-input" type="number" id="wtf-wave" placeholder="e.g. 2.06" min="0" step="any">
+        <select class="calc-select" id="wtf-unit">
+          <option value="m" selected>m</option>
+          <option value="cm">cm</option>
+          <option value="mm">mm</option>
+          <option value="ft">ft</option>
+        </select>
+      </div>
+      <button class="calc-btn" onclick="calcWTF()">Calculate</button>
+      <div class="calc-err" id="wtf-err">Enter a valid wavelength greater than zero.</div>
+      <div class="calc-result" id="wtf-res"></div>
+    </div>
+
+    <!-- SWR -->
+    <div class="calc-card">
+      <div class="section-label">Transmission line</div>
+      <h3 class="section-title" style="font-size:1.1rem;margin-bottom:1.1rem;">SWR Calculator</h3>
+      <span class="calc-field-label">Forward power (W)</span>
+      <div class="calc-row">
+        <input class="calc-input" type="number" id="swr-fwd" placeholder="e.g. 50" min="0" step="any">
+      </div>
+      <span class="calc-field-label">Reflected power (W)</span>
+      <div class="calc-row">
+        <input class="calc-input" type="number" id="swr-ref" placeholder="e.g. 2" min="0" step="any">
+      </div>
+      <button class="calc-btn" onclick="calcSWR()">Calculate</button>
+      <div class="calc-err" id="swr-err">Check your values — reflected power cannot exceed forward power.</div>
+      <div class="calc-result" id="swr-res"></div>
+    </div>
+
+    <!-- dB -->
+    <div class="calc-card">
+      <div class="section-label">Signal levels</div>
+      <h3 class="section-title" style="font-size:1.1rem;margin-bottom:1rem;">dB Calculator</h3>
+      <div class="calc-tabs">
+        <button class="calc-tab active" onclick="dbTab(this,'db-pwr')">Power ratio</button>
+        <button class="calc-tab"        onclick="dbTab(this,'db-vol')">Voltage ratio</button>
+        <button class="calc-tab"        onclick="dbTab(this,'db-rev')">dB → ratio</button>
+      </div>
+      <div id="db-pwr">
+        <span class="calc-field-label">P₂ / P₁ ratio</span>
+        <div class="calc-row"><input class="calc-input" type="number" id="db-pwr-in" placeholder="e.g. 2" min="0" step="any"></div>
+        <button class="calc-btn" onclick="calcDbPwr()">Calculate</button>
+        <div class="calc-err" id="db-pwr-err">Enter a positive ratio greater than zero.</div>
+        <div class="calc-result" id="db-pwr-res"></div>
+      </div>
+      <div id="db-vol" style="display:none">
+        <span class="calc-field-label">V₂ / V₁ ratio</span>
+        <div class="calc-row"><input class="calc-input" type="number" id="db-vol-in" placeholder="e.g. 1.414" min="0" step="any"></div>
+        <button class="calc-btn" onclick="calcDbVol()">Calculate</button>
+        <div class="calc-err" id="db-vol-err">Enter a positive ratio greater than zero.</div>
+        <div class="calc-result" id="db-vol-res"></div>
+      </div>
+      <div id="db-rev" style="display:none">
+        <span class="calc-field-label">Value in dB</span>
+        <div class="calc-row"><input class="calc-input" type="number" id="db-rev-in" placeholder="e.g. 3" step="any"></div>
+        <button class="calc-btn" onclick="calcDbRev()">Calculate</button>
+        <div class="calc-err" id="db-rev-err">Enter a dB value.</div>
+        <div class="calc-result" id="db-rev-res"></div>
+      </div>
+    </div>
+
+    <!-- CAPACITOR CODE -->
+    <div class="calc-card">
+      <div class="section-label">Components</div>
+      <h3 class="section-title" style="font-size:1.1rem;margin-bottom:0.5rem;">Capacitor Code</h3>
+      <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:1rem;">Decodes the 3-digit code printed on ceramic capacitors. Example: <code style="font-family:var(--mono);color:var(--cyan);">104</code> = 100 nF.</p>
+      <span class="calc-field-label">3-digit code</span>
+      <div class="calc-row">
+        <input class="calc-input" type="text" id="cap-in" placeholder="e.g. 104" maxlength="3"
+          style="text-align:center;letter-spacing:0.15em;font-size:1.3rem;">
+      </div>
+      <button class="calc-btn" onclick="calcCap()">Decode</button>
+      <div class="calc-err" id="cap-err">Enter a valid 3-digit code. Third digit must be 0–6.</div>
+      <div class="calc-result" id="cap-res"></div>
+    </div>
+
+  </div><!-- /.calc-grid -->
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════════════════════════════
+       REPEATER OFFSET
+  ══════════════════════════════════════════════════════════════════ -->
+  <div id="offset" style="margin-bottom:1.75rem;">
+    <div class="section-label">Repeaters</div>
+    <h2 class="section-title">Repeater Offset Calculator</h2>
+    <p class="section-lead">Enter an output or input frequency, pick the standard offset for the band, and the calculator works out the other frequency. All values shown to 4 decimal places.</p>
+  </div>
+
+  <div style="margin-bottom:1.5rem; max-width:620px;">
+    <div class="calc-card">
+
+      <div style="margin-bottom:1.1rem;">
+        <span class="calc-field-label" style="margin-bottom:6px;">I am entering the…</span>
+        <div class="calc-tabs" id="offset-know-tabs">
+          <button class="calc-tab active" onclick="setOffsetKnow(this,'output')">Output frequency</button>
+          <button class="calc-tab"        onclick="setOffsetKnow(this,'input')">Input frequency</button>
+        </div>
+      </div>
+
+      <span class="calc-field-label" id="offset-freq-label">Output frequency (MHz)</span>
+      <div class="calc-row">
+        <input class="calc-input" type="number" id="offset-freq" placeholder="e.g. 145.650" step="any" min="0" oninput="offsetBandDetect()">
+        <button class="offset-swap-btn" onclick="offsetSwap()" title="Swap input / output">
+          <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 16V4m0 0L3 8m4-4l4 4"/><path d="M17 8v12m0 0l4-4m-4 4l-4-4"/></svg>
+          Swap
+        </button>
+      </div>
+
+      <div id="offset-band-badge" style="display:none;"></div>
+
+      <span class="calc-field-label" style="margin-bottom:8px; display:block; margin-top:0.1rem;">Offset</span>
+      <div class="offset-presets" id="offset-presets">
+        <button class="offset-preset active" data-val="-0.6"  onclick="selectOffsetPreset(this)">−0.6 MHz<span>2m</span></button>
+        <button class="offset-preset"        data-val="0.6"   onclick="selectOffsetPreset(this)">+0.6 MHz<span>2m</span></button>
+        <button class="offset-preset"        data-val="1.6"   onclick="selectOffsetPreset(this)">+1.6 MHz<span>70cm</span></button>
+        <button class="offset-preset"        data-val="-1.6"  onclick="selectOffsetPreset(this)">−1.6 MHz<span>70cm</span></button>
+        <button class="offset-preset"        data-val="custom" onclick="selectOffsetPreset(this)">Custom</button>
+      </div>
+
+      <div id="offset-custom-row" style="display:none; margin-top:0.75rem;">
+        <span class="calc-field-label">Custom offset (MHz) — use − for negative</span>
+        <div class="calc-row" style="max-width:220px;">
+          <input class="calc-input" type="number" id="offset-custom-val" placeholder="e.g. −9.0" step="any">
+        </div>
+      </div>
+
+      <div class="calc-err" id="offset-err">Please enter a valid frequency in MHz greater than zero.</div>
+      <button class="calc-btn" style="margin-top:1rem;" onclick="calcOffset()">Calculate</button>
+      <div class="calc-result" id="offset-res"></div>
+
+    </div>
+  </div>
+
+  <div style="margin-bottom:3rem;">
+    <div class="grid-3">
+      <div class="card">
+        <h3>What is an offset?</h3>
+        <p>A repeater transmits and receives on two different frequencies at the same time. The gap between those frequencies is called the offset. A typical 2m repeater uses a 600 kHz offset; 70cm FM repeaters typically use 1.6 MHz.</p>
+      </div>
+      <div class="card">
+        <h3>Input vs output</h3>
+        <p>The <strong style="color:var(--text);">output</strong> is the frequency the repeater transmits on — what you tune to and listen on. The <strong style="color:var(--text);">input</strong> is the frequency you transmit on. Your radio needs both programmed, plus the correct CTCSS tone.</p>
+      </div>
+      <div class="card">
+        <h3>Why the offset?</h3>
+        <p>If the repeater used the same frequency for both transmit and receive, it would hear its own output and loop continuously. The offset keeps them separate so the repeater can listen and talk simultaneously without interfering with itself.</p>
+      </div>
+    </div>
+  </div>
+
+  <hr class="divider">
+
+  <!-- ══════════════════════════════════════════════════════════════
+       ANTENNA CALCULATORS
+  ══════════════════════════════════════════════════════════════════ -->
+  <div id="antenna" style="margin-bottom:1.75rem;">
+    <div class="section-label">Antenna design</div>
+    <h2 class="section-title">Antenna Calculators</h2>
+    <p class="section-lead">Element lengths and spacings for common antenna types. All dimensions apply a 0.95 velocity factor — the standard practical correction for wire antennas. Always verify final dimensions on the bench.</p>
+  </div>
+
+  <div class="calc-grid">
+
+    <!-- DIPOLE -->
+    <div class="calc-card">
+      <div class="section-label">Half-wave</div>
+      <h3 class="section-title" style="font-size:1.1rem;margin-bottom:0.5rem;">Dipole Antenna</h3>
+      <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:1rem;">Classic centre-fed half-wave dipole. Cut to resonance, feed with 50 Ω or 75 Ω coax.</p>
+      <span class="calc-field-label">Frequency</span>
+      <div class="calc-row">
+        <input class="calc-input" type="number" id="dip-freq" placeholder="e.g. 145.5" min="0" step="any">
+        <select class="calc-select" id="dip-unit">
+          <option value="MHz" selected>MHz</option>
+          <option value="GHz">GHz</option>
+          <option value="kHz">kHz</option>
+        </select>
+      </div>
+      <button class="calc-btn" onclick="calcDipole()">Calculate</button>
+      <div class="calc-err" id="dip-err">Enter a valid frequency greater than zero.</div>
+      <div class="calc-result" id="dip-res"></div>
+    </div>
+
+    <!-- VERTICAL -->
+    <div class="calc-card">
+      <div class="section-label">Quarter-wave</div>
+      <h3 class="section-title" style="font-size:1.1rem;margin-bottom:0.5rem;">Vertical Antenna</h3>
+      <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:1rem;">Quarter-wave ground-plane vertical. Radials should be the same length as the element.</p>
+      <span class="calc-field-label">Frequency</span>
+      <div class="calc-row">
+        <input class="calc-input" type="number" id="vert-freq" placeholder="e.g. 145.5" min="0" step="any">
+        <select class="calc-select" id="vert-unit">
+          <option value="MHz" selected>MHz</option>
+          <option value="GHz">GHz</option>
+          <option value="kHz">kHz</option>
+        </select>
+      </div>
+      <button class="calc-btn" onclick="calcVert()">Calculate</button>
+      <div class="calc-err" id="vert-err">Enter a valid frequency greater than zero.</div>
+      <div class="calc-result" id="vert-res"></div>
+    </div>
+
+    <!-- YAGI -->
+    <div class="calc-card">
+      <div class="section-label">Directional</div>
+      <h3 class="section-title" style="font-size:1.1rem;margin-bottom:0.5rem;">3-Element Yagi</h3>
+      <p style="font-size:14px;color:var(--muted);line-height:1.6;margin-bottom:1rem;">Standard 3-element Yagi — reflector, driven element and one director. These are starting dimensions; final tuning on the bench is always needed.</p>
+      <span class="calc-field-label">Frequency</span>
+      <div class="calc-row">
+        <input class="calc-input" type="number" id="yagi-freq" placeholder="e.g. 145.5" min="0" step="any">
+        <select class="calc-select" id="yagi-unit">
+          <option value="MHz" selected>MHz</option>
+          <option value="GHz">GHz</option>
+          <option value="kHz">kHz</option>
+        </select>
+      </div>
+      <button class="calc-btn" onclick="calcYagi()">Calculate</button>
+      <div class="calc-err" id="yagi-err">Enter a valid frequency greater than zero.</div>
+      <div class="calc-result" id="yagi-res"></div>
+    </div>
+
+    <!-- ANTENNA GAIN -->
+    <div class="calc-card" id="erp">
+      <div class="section-label">Gain</div>
+      <h3 class="section-title" style="font-size:1.1rem;margin-bottom:1rem;">Antenna Gain</h3>
+      <div class="calc-tabs" id="gain-tabs">
+        <button class="calc-tab active" onclick="gainTab(this,'gain-conv')">dBi ↔ dBd</button>
+        <button class="calc-tab"        onclick="gainTab(this,'gain-erp')">ERP / EIRP</button>
+      </div>
+      <div id="gain-conv">
+        <span class="calc-field-label">Value</span>
+        <div class="calc-row">
+          <input class="calc-input" type="number" id="gain-val" placeholder="e.g. 7.5" step="any">
+          <select class="calc-select" id="gain-from">
+            <option value="dBd">dBd</option>
+            <option value="dBi">dBi</option>
+          </select>
+        </div>
+        <button class="calc-btn" onclick="calcGainConv()">Convert</button>
+        <div class="calc-err" id="gain-conv-err">Enter a gain value.</div>
+        <div class="calc-result" id="gain-conv-res"></div>
+      </div>
+      <div id="gain-erp" style="display:none">
+        <span class="calc-field-label">TX power (W)</span>
+        <div class="calc-row"><input class="calc-input" type="number" id="erp-power" placeholder="e.g. 50" min="0" step="any"></div>
+        <span class="calc-field-label">Antenna gain (dBd)</span>
+        <div class="calc-row"><input class="calc-input" type="number" id="erp-gain" placeholder="e.g. 7.5" step="any"></div>
+        <button class="calc-btn" onclick="calcERP()">Calculate</button>
+        <div class="calc-err" id="erp-err">Enter a valid TX power greater than zero.</div>
+        <div class="calc-result" id="erp-res"></div>
+      </div>
+    </div>
+
+  </div><!-- /.calc-grid antenna -->
+
+  <p style="margin-top:2.5rem;margin-bottom:3rem;font-size:12px;color:var(--faint);text-align:center;">
+    Inspired by <a href="https://hamradiocalculator.com/" target="_blank" rel="noopener" style="color:var(--faint);">hamradiocalculator.com</a>
+  </p>
+
+</main>
+
+<footer>
+  <div class="brand">SuffolkHam.co.uk</div>
+  <p style="font-size:12px;color:var(--faint);margin:0.15rem 0 0.35rem;">Suffolk&#39;s free amateur radio resource</p>
+  <p>Site by <a href="https://www.qrz.com/db/M9XCN" target="_blank" rel="noopener">M9XCN</a> &nbsp;&middot;&nbsp; <a href="about">About</a></p>
+</footer>
+
+<script src="nav.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.4/dist/leaflet.min.js"></script>
+<script>
+// ── Maidenhead conversion ─────────────────────────────────────────────────────
+
+function toMaidenhead(lat, lon) {
+  var a = lon + 180, b = lat + 90;
+  var f1 = String.fromCharCode(65 + Math.floor(a / 20));
+  var f2 = String.fromCharCode(65 + Math.floor(b / 10));
+  var s1 = Math.floor((a % 20) / 2);
+  var s2 = Math.floor(b % 10);
+  var u1 = String.fromCharCode(97 + Math.floor((a % 2) * 12));
+  var u2 = String.fromCharCode(97 + Math.floor((b % 1) * 24));
+  var e1 = Math.floor(((a % 2) * 12) % 1 * 10);
+  var e2 = Math.floor(((b % 1) * 24) % 1 * 10);
+  return {
+    loc4: f1 + f2 + s1 + s2,
+    loc6: f1 + f2 + s1 + s2 + u1 + u2,
+    loc8: f1 + f2 + s1 + s2 + u1 + u2 + e1 + e2,
+  };
+}
+
+function fromMaidenhead(raw) {
+  var loc = raw.trim().toUpperCase();
+  if (!/^[A-R]{2}[0-9]{2}([A-X]{2}([0-9]{2})?)?$/.test(loc)) return null;
+  var lon = (loc.charCodeAt(0) - 65) * 20 - 180;
+  var lat = (loc.charCodeAt(1) - 65) * 10 - 90;
+  lon += parseInt(loc[2]) * 2;
+  lat += parseInt(loc[3]);
+  if (loc.length >= 6) {
+    lon += (loc.charCodeAt(4) - 65) * (2 / 24);
+    lat += (loc.charCodeAt(5) - 65) * (1 / 24);
+    lon += 1 / 24;
+    lat += 1 / 48;
+  } else {
+    lon += 1;
+    lat += 0.5;
+  }
+  if (loc.length >= 8) {
+    lon += parseInt(loc[6]) * (2 / 240);
+    lat += parseInt(loc[7]) * (1 / 240);
+  }
+  return { lat: lat, lon: lon };
+}
+
+function subsquareBounds(lat, lon) {
+  var sw_lon = Math.floor((lon + 180) * 12) / 12 - 180;
+  var sw_lat = Math.floor((lat + 90)  * 24) / 24 - 90;
+  return [[sw_lat, sw_lon], [sw_lat + 1/24, sw_lon + 1/12]];
+}
+
+function cssVar(name) {
+  return getComputedStyle(document.documentElement).getPropertyValue(name).trim();
+}
+
+// ── Map ───────────────────────────────────────────────────────────────────────
+
+var locMap = L.map('map', { center: [52.1, 1.1], zoom: 9 });
+
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '© <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
+  maxZoom: 19,
+}).addTo(locMap);
+
+var locMarker = null;
+var locRect   = null;
+var stored    = {};
+
+var pinIcon = L.divIcon({
+  className: '',
+  html: '<div style="width:14px;height:14px;border-radius:50%;background:var(--cyan);border:3px solid var(--bg2);box-shadow:0 0 0 2px var(--cyan);"></div>',
+  iconSize: [14, 14],
+  iconAnchor: [7, 7],
+});
+
+locMap.on('click', function (e) { setLocation(e.latlng.lat, e.latlng.lng); });
+
+function setLocation(lat, lon) {
+  var loc = toMaidenhead(lat, lon);
+  stored = { lat: lat, lon: lon, loc4: loc.loc4, loc6: loc.loc6, loc8: loc.loc8 };
+
+  if (locMarker) locMarker.setLatLng([lat, lon]);
+  else           locMarker = L.marker([lat, lon], { icon: pinIcon }).addTo(locMap);
+
+  var bounds = subsquareBounds(lat, lon);
+  var cyan   = cssVar('--cyan');
+  if (locRect) {
+    locRect.setBounds(bounds);
+    locRect.setStyle({ color: cyan, fillColor: cyan });
+  } else {
+    locRect = L.rectangle(bounds, {
+      color: cyan, weight: 1.5,
+      fill: true, fillColor: cyan, fillOpacity: 0.08,
+    }).addTo(locMap);
+  }
+
+  document.getElementById('loc-display').textContent = loc.loc6;
+  document.getElementById('r4').textContent   = loc.loc4;
+  document.getElementById('r6').textContent   = loc.loc6;
+  document.getElementById('r8').textContent   = loc.loc8;
+  document.getElementById('rlat').textContent = (lat >= 0 ? '+' : '') + lat.toFixed(5) + '°';
+  document.getElementById('rlon').textContent = (lon >= 0 ? '+' : '') + lon.toFixed(5) + '°';
+  document.getElementById('results').style.display = '';
+}
+
+// ── Geolocation ───────────────────────────────────────────────────────────────
+
+function locateMe() {
+  if (!navigator.geolocation) { alert('Geolocation is not supported by your browser.'); return; }
+  var txt = document.getElementById('locate-txt');
+  var btn = document.getElementById('locate-btn');
+  txt.textContent = 'Locating…';
+  btn.disabled = true;
+  navigator.geolocation.getCurrentPosition(
+    function (pos) {
+      var lat = pos.coords.latitude, lon = pos.coords.longitude;
+      locMap.setView([lat, lon], 13);
+      setLocation(lat, lon);
+      txt.textContent = 'Use my location';
+      btn.disabled = false;
+    },
+    function () {
+      alert('Could not get your location. Please check browser permissions and try again.');
+      txt.textContent = 'Use my location';
+      btn.disabled = false;
+    },
+    { timeout: 10000 }
+  );
+}
+
+// ── Copy locator ──────────────────────────────────────────────────────────────
+
+function copyLoc(chipId, chars) {
+  var val = stored['loc' + chars];
+  if (!val) return;
+  navigator.clipboard.writeText(val).then(function () {
+    var chip = document.getElementById(chipId);
+    var orig = chip.textContent;
+    chip.textContent = 'Copied!';
+    chip.classList.add('copied');
+    setTimeout(function () { chip.textContent = orig; chip.classList.remove('copied'); }, 1600);
+  });
+}
+
+// ── Reverse lookup ────────────────────────────────────────────────────────────
+
+function lookupLocator() {
+  var raw = document.getElementById('lookup-in').value;
+  var err = document.getElementById('lookup-err');
+  var pos = fromMaidenhead(raw);
+  if (!pos) {
+    err.style.display = '';
+    setTimeout(function () { err.style.display = 'none'; }, 3500);
+    return;
+  }
+  err.style.display = 'none';
+  locMap.setView([pos.lat, pos.lon], raw.trim().length >= 6 ? 12 : 8);
+  setLocation(pos.lat, pos.lon);
+  document.getElementById('lookup-in').value = '';
+  document.getElementById('map').scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.getElementById('lookup-in').addEventListener('keydown', function (e) {
+  if (e.key === 'Enter') lookupLocator();
+});
+
+// ── Repeater Offset Calculator ────────────────────────────────────────────────
+
+var offsetKnow = 'output';
+var offsetPresetVal = '-0.6';
+
+function setOffsetKnow(btn, know) {
+  offsetKnow = know;
+  document.querySelectorAll('#offset-know-tabs .calc-tab').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  var label = document.getElementById('offset-freq-label');
+  var inp   = document.getElementById('offset-freq');
+  label.textContent = know === 'output' ? 'Output frequency (MHz)' : 'Input frequency (MHz)';
+  inp.placeholder   = know === 'output' ? 'e.g. 145.650' : 'e.g. 145.050';
+  offsetBandDetect();
+}
+
+function selectOffsetPreset(btn) {
+  document.querySelectorAll('.offset-preset').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  offsetPresetVal = btn.dataset.val;
+  document.getElementById('offset-custom-row').style.display = offsetPresetVal === 'custom' ? '' : 'none';
+}
+
+function selectPresetByVal(val) {
+  document.querySelectorAll('.offset-preset').forEach(function(b) {
+    b.classList.toggle('active', b.dataset.val === val);
+  });
+  offsetPresetVal = val;
+  document.getElementById('offset-custom-row').style.display = 'none';
+}
+
+function offsetBandDetect() {
+  var f     = parseFloat(document.getElementById('offset-freq').value);
+  var badge = document.getElementById('offset-band-badge');
+  if (!f || f <= 0) { badge.style.display = 'none'; return; }
+
+  var text, cls, preset2m = offsetKnow === 'output' ? '-0.6' : '0.6';
+  var preset70 = offsetKnow === 'output' ? '1.6' : '-1.6';
+
+  if (f >= 144 && f <= 146) {
+    text = '2m band — standard offset is ' + (offsetKnow === 'output' ? '−0.6 MHz' : '+0.6 MHz');
+    cls  = 'offset-band-2m';
+    selectPresetByVal(preset2m);
+  } else if (f >= 430 && f <= 440) {
+    text = '70cm band — standard FM offset is ' + (offsetKnow === 'output' ? '+1.6 MHz' : '−1.6 MHz');
+    cls  = 'offset-band-70cm';
+    selectPresetByVal(preset70);
+  } else if (f >= 50 && f <= 52) {
+    text = '6m band — offset varies, check with repeater keeper';
+    cls  = 'offset-band-warn';
+  } else if (f > 0) {
+    text = 'Outside common UK amateur bands — check offset carefully';
+    cls  = 'offset-band-warn';
+  }
+
+  badge.className     = 'offset-band-badge ' + cls;
+  badge.textContent   = text;
+  badge.style.display = 'inline-flex';
+}
+
+function offsetSwap() {
+  var newKnow = offsetKnow === 'output' ? 'input' : 'output';
+  var tabs = document.querySelectorAll('#offset-know-tabs .calc-tab');
+  setOffsetKnow(tabs[newKnow === 'output' ? 0 : 1], newKnow);
+}
+
+function calcOffset() {
+  var f = parseFloat(document.getElementById('offset-freq').value);
+  if (!f || f <= 0) {
+    document.getElementById('offset-err').textContent = 'Enter a valid frequency in MHz greater than zero.';
+    showErr('offset-res', 'offset-err');
+    return;
+  }
+  var offset;
+  if (offsetPresetVal === 'custom') {
+    offset = parseFloat(document.getElementById('offset-custom-val').value);
+    if (isNaN(offset)) {
+      document.getElementById('offset-err').textContent = 'Enter a custom offset value in MHz (use − for negative).';
+      showErr('offset-res', 'offset-err');
+      return;
+    }
+  } else {
+    offset = parseFloat(offsetPresetVal);
+  }
+
+  var output = offsetKnow === 'output' ? f : f - offset;
+  var input  = offsetKnow === 'output' ? f + offset : f;
+
+  if (input <= 0 || output <= 0) {
+    document.getElementById('offset-err').textContent = 'Result would be a negative frequency — check the offset direction.';
+    showErr('offset-res', 'offset-err');
+    return;
+  }
+
+  var outStr = output.toFixed(4) + ' MHz';
+  var inStr  = input.toFixed(4)  + ' MHz';
+  var sign   = offset >= 0 ? '+' : '';
+  var offStr = sign + offset.toFixed(4) + ' MHz  (' + sign + (offset * 1000).toFixed(0) + ' kHz)';
+
+  var el = document.getElementById('offset-res');
+  el.innerHTML =
+    rrow('Output — listen on',   outStr, output.toFixed(4)) +
+    rrow('Input — transmit on',  inStr,  input.toFixed(4))  +
+    '<div class="calc-rrow"><span class="calc-rlbl">Offset</span><span class="calc-rval">' + offStr + '</span></div>';
+  el.classList.add('show');
+}
+
+function rrow(label, display, copyVal) {
+  return '<div class="calc-rrow"><span class="calc-rlbl">' + label + '</span>' +
+    '<span class="calc-rval" style="display:flex;align-items:center;gap:6px;">' +
+    '<span>' + display + '</span>' +
+    '<button class="copy-chip" onclick="copyOffsetFreq(this,\'' + copyVal + '\')">Copy</button>' +
+    '</span></div>';
+}
+
+function copyOffsetFreq(btn, val) {
+  navigator.clipboard.writeText(val).then(function() {
+    btn.textContent = '✓';
+    btn.style.color = 'var(--green)';
+    btn.style.borderColor = 'var(--green-bd)';
+    setTimeout(function() { btn.textContent = 'Copy'; btn.style.color = ''; btn.style.borderColor = ''; }, 1500);
+  });
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────────
+
+function showRes(id, rows) {
+  var el = document.getElementById(id);
+  el.innerHTML = rows.map(function(r) {
+    return '<div class="calc-rrow"><span class="calc-rlbl">' + r[0] +
+           '</span><span class="calc-rval">' + r[1] + '</span></div>';
+  }).join('');
+  el.classList.add('show');
+}
+
+function showErr(resId, errId) {
+  document.getElementById(resId).classList.remove('show');
+  var err = document.getElementById(errId);
+  err.classList.add('show');
+  setTimeout(function() { err.classList.remove('show'); }, 3500);
+}
+
+function fmtLen(m) {
+  if (m >= 1)     return m.toFixed(3) + ' m  (' + (m * 3.28084).toFixed(3) + ' ft)';
+  if (m >= 0.01)  return (m * 100).toFixed(3) + ' cm';
+  return (m * 1000).toFixed(3) + ' mm';
+}
+
+function fmtFreq(hz) {
+  if (hz >= 1e9) return (hz / 1e9).toPrecision(6) + ' GHz';
+  if (hz >= 1e6) return (hz / 1e6).toPrecision(6) + ' MHz';
+  if (hz >= 1e3) return (hz / 1e3).toPrecision(6) + ' kHz';
+  return hz.toPrecision(6) + ' Hz';
+}
+
+// ── Frequency → Wavelength ────────────────────────────────────────────────────
+
+function calcFTW() {
+  var f = parseFloat(document.getElementById('ftw-freq').value);
+  var u = document.getElementById('ftw-unit').value;
+  if (!f || f <= 0) { showErr('ftw-res', 'ftw-err'); return; }
+  var hz = u === 'Hz' ? f : u === 'kHz' ? f * 1e3 : u === 'MHz' ? f * 1e6 : f * 1e9;
+  var lam = 299792458 / hz;
+  showRes('ftw-res', [
+    ['Full wavelength (λ)',  fmtLen(lam)],
+    ['Half-wave (λ / 2)',    fmtLen(lam / 2)],
+    ['Quarter-wave (λ / 4)', fmtLen(lam / 4)],
+  ]);
+}
+
+// ── Wavelength → Frequency ────────────────────────────────────────────────────
+
+function calcWTF() {
+  var w = parseFloat(document.getElementById('wtf-wave').value);
+  var u = document.getElementById('wtf-unit').value;
+  if (!w || w <= 0) { showErr('wtf-res', 'wtf-err'); return; }
+  var m = u === 'm' ? w : u === 'cm' ? w / 100 : u === 'mm' ? w / 1000 : w / 3.28084;
+  var hz = 299792458 / m;
+  showRes('wtf-res', [
+    ['Frequency',                  fmtFreq(hz)],
+    ['Half-wave element length',   fmtLen(m / 2)],
+    ['Quarter-wave element length', fmtLen(m / 4)],
+  ]);
+}
+
+// ── SWR ───────────────────────────────────────────────────────────────────────
+
+function calcSWR() {
+  var fwd = parseFloat(document.getElementById('swr-fwd').value);
+  var ref = parseFloat(document.getElementById('swr-ref').value);
+  if (isNaN(fwd) || isNaN(ref) || fwd <= 0 || ref < 0 || ref > fwd) {
+    showErr('swr-res', 'swr-err'); return;
+  }
+  var gamma = Math.sqrt(ref / fwd);
+  if (gamma >= 1) {
+    showRes('swr-res', [
+      ['SWR', '∞  (open or short circuit)'],
+      ['Reflection coefficient (Γ)', '1.000'],
+      ['Return loss', '0.00 dB'],
+      ['Power reflected', '100.0 %'],
+      ['Power delivered', '0.0 %'],
+    ]); return;
+  }
+  var swr = (1 + gamma) / (1 - gamma);
+  var rl  = gamma > 0 ? (-20 * Math.log10(gamma)).toFixed(2) + ' dB' : '∞ dB';
+  var pRef = (ref / fwd * 100).toFixed(1);
+  showRes('swr-res', [
+    ['SWR',                          swr.toFixed(2) + ' : 1'],
+    ['Reflection coefficient (Γ)',   gamma.toFixed(4)],
+    ['Return loss',                  rl],
+    ['Power reflected',              pRef + ' %'],
+    ['Power delivered',              (100 - parseFloat(pRef)).toFixed(1) + ' %'],
+  ]);
+}
+
+// ── dB ────────────────────────────────────────────────────────────────────────
+
+function dbTab(btn, show) {
+  btn.closest('.calc-card').querySelectorAll('.calc-tab').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  ['db-pwr','db-vol','db-rev'].forEach(function(id) {
+    document.getElementById(id).style.display = id === show ? '' : 'none';
+  });
+}
+
+function calcDbPwr() {
+  var r = parseFloat(document.getElementById('db-pwr-in').value);
+  if (isNaN(r) || r <= 0) { showErr('db-pwr-res', 'db-pwr-err'); return; }
+  showRes('db-pwr-res', [
+    ['Power ratio (P₂/P₁)', r.toFixed(4)],
+    ['Result',               (10 * Math.log10(r)).toFixed(3) + ' dB'],
+  ]);
+}
+
+function calcDbVol() {
+  var r = parseFloat(document.getElementById('db-vol-in').value);
+  if (isNaN(r) || r <= 0) { showErr('db-vol-res', 'db-vol-err'); return; }
+  showRes('db-vol-res', [
+    ['Voltage ratio (V₂/V₁)', r.toFixed(4)],
+    ['Result',                 (20 * Math.log10(r)).toFixed(3) + ' dB'],
+  ]);
+}
+
+function calcDbRev() {
+  var db = parseFloat(document.getElementById('db-rev-in').value);
+  if (isNaN(db)) { showErr('db-rev-res', 'db-rev-err'); return; }
+  showRes('db-rev-res', [
+    ['Power ratio (P₂/P₁)',   Math.pow(10, db / 10).toFixed(4)],
+    ['Voltage ratio (V₂/V₁)', Math.pow(10, db / 20).toFixed(4)],
+  ]);
+}
+
+// ── Capacitor code ────────────────────────────────────────────────────────────
+
+function calcCap() {
+  var code = document.getElementById('cap-in').value.trim();
+  if (!/^\d{3}$/.test(code) || parseInt(code[2]) > 6) {
+    showErr('cap-res', 'cap-err'); return;
+  }
+  var pf = (parseInt(code[0]) * 10 + parseInt(code[1])) * Math.pow(10, parseInt(code[2]));
+  var nf = pf / 1000;
+  var uf = pf / 1e6;
+  showRes('cap-res', [
+    ['Picofarads (pF)',  pf.toLocaleString() + ' pF'],
+    ['Nanofarads (nF)',  nf >= 1    ? nf + ' nF'   : '< 1 nF'],
+    ['Microfarads (µF)', uf >= 0.001 ? uf + ' µF'  : '< 0.001 µF'],
+  ]);
+}
+
+// ── Antenna helpers ───────────────────────────────────────────────────────────
+
+function freqToHz(f, u) {
+  return u === 'kHz' ? f * 1e3 : u === 'GHz' ? f * 1e9 : f * 1e6;
+}
+
+// ── Dipole ────────────────────────────────────────────────────────────────────
+
+function calcDipole() {
+  var f = parseFloat(document.getElementById('dip-freq').value);
+  var u = document.getElementById('dip-unit').value;
+  if (!f || f <= 0) { showErr('dip-res', 'dip-err'); return; }
+  var lam = 299792458 / freqToHz(f, u);
+  var total = 0.95 * lam / 2;
+  showRes('dip-res', [
+    ['Total length',   fmtLen(total)],
+    ['Each leg (arm)', fmtLen(total / 2)],
+  ]);
+}
+
+// ── Vertical ──────────────────────────────────────────────────────────────────
+
+function calcVert() {
+  var f = parseFloat(document.getElementById('vert-freq').value);
+  var u = document.getElementById('vert-unit').value;
+  if (!f || f <= 0) { showErr('vert-res', 'vert-err'); return; }
+  var lam = 299792458 / freqToHz(f, u);
+  var len = 0.95 * lam / 4;
+  showRes('vert-res', [
+    ['Element length',      fmtLen(len)],
+    ['Radial length (each)', fmtLen(len)],
+    ['Recommended radials', '4 (minimum)'],
+  ]);
+}
+
+// ── 3-element Yagi ────────────────────────────────────────────────────────────
+
+function calcYagi() {
+  var f = parseFloat(document.getElementById('yagi-freq').value);
+  var u = document.getElementById('yagi-unit').value;
+  if (!f || f <= 0) { showErr('yagi-res', 'yagi-err'); return; }
+  var lam = 299792458 / freqToHz(f, u);
+  showRes('yagi-res', [
+    ['Reflector',              fmtLen(0.510 * lam)],
+    ['Driven element',         fmtLen(0.473 * lam)],
+    ['Director',               fmtLen(0.440 * lam)],
+    ['Refl → driven spacing',  fmtLen(0.125 * lam)],
+    ['Driven → dir spacing',   fmtLen(0.125 * lam)],
+    ['Approx. gain',           '~7.5 dBd  /  ~9.65 dBi'],
+  ]);
+}
+
+// ── Antenna gain ──────────────────────────────────────────────────────────────
+
+function gainTab(btn, show) {
+  btn.closest('.calc-card').querySelectorAll('.calc-tab').forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+  ['gain-conv','gain-erp'].forEach(function(id) {
+    document.getElementById(id).style.display = id === show ? '' : 'none';
+  });
+}
+
+function calcGainConv() {
+  var val  = parseFloat(document.getElementById('gain-val').value);
+  var from = document.getElementById('gain-from').value;
+  if (isNaN(val)) { showErr('gain-conv-res', 'gain-conv-err'); return; }
+  var dbd = from === 'dBd' ? val : val - 2.15;
+  var dbi = dbd + 2.15;
+  showRes('gain-conv-res', [
+    ['dBd', dbd.toFixed(2) + ' dBd'],
+    ['dBi', dbi.toFixed(2) + ' dBi'],
+  ]);
+}
+
+function calcERP() {
+  var pw   = parseFloat(document.getElementById('erp-power').value);
+  var gain = parseFloat(document.getElementById('erp-gain').value);
+  if (isNaN(pw) || pw <= 0 || isNaN(gain)) { showErr('erp-res', 'erp-err'); return; }
+  var erp  = pw * Math.pow(10, gain / 10);
+  var eirp = erp * Math.pow(10, 0.215);
+  showRes('erp-res', [
+    ['ERP',  erp.toFixed(2)  + ' W  (' + (10 * Math.log10(erp)).toFixed(2)  + ' dBW)'],
+    ['EIRP', eirp.toFixed(2) + ' W  (' + (10 * Math.log10(eirp)).toFixed(2) + ' dBW)'],
+  ]);
+}
+</script>
+</body>
+</html>
