@@ -184,6 +184,20 @@
       "notes": "Usually connected to Allstar *47141 and Echolink GB3DE-R. Please disconnect from any other groups before connecting."
     },
     {
+      "id": "m0aws-matrix-thursday",
+      "name": "MB7IBW Matrix Group Net",
+      "group": "M0AWS",
+      "groupUrl": "https://www.qrz.com/db/M0AWS",
+      "day": "Thursday",
+      "schedule": "Every Thursday",
+      "time": "20:00",
+      "mode": "FM Simplex",
+      "via": "repeater",
+      "repeater": "MB7IBW",
+      "frequency": null,
+      "notes": "Weekly net via the MB7IBW AllStarLink gateway (145.2625 MHz, CTCSS 94.8 Hz). Part of M0AWS's Matrix group — all licensed operators welcome, no membership required."
+    },
+    {
       "id": "fdars-4m",
       "name": "East Suffolk 4m Net",
       "group": "FDARS",
