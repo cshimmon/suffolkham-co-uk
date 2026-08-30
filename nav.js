@@ -211,6 +211,14 @@
       }
 
       injectBreadcrumbs();
+
+      function updateNavH() {
+        document.documentElement.style.setProperty('--nav-h', nav.offsetHeight + 'px');
+      }
+      updateNavH();
+      if (window.ResizeObserver) {
+        new ResizeObserver(updateNavH).observe(nav);
+      }
     })
     .catch(function () {});
 }());
