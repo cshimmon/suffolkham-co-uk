@@ -1,12 +1,12 @@
 {
-  "updated": "2026-11-02 11:55 UTC",
-  "sfi": "94",
-  "sunspots": "41",
+  "updated": "2026-11-02 21:16 UTC",
+  "sfi": "95",
+  "sunspots": "37",
   "bands": [
     {
       "name": "80m-40m",
-      "day": "Poor",
-      "night": "Fair"
+      "day": "Fair",
+      "night": "Good"
     },
     {
       "name": "30m-20m",
