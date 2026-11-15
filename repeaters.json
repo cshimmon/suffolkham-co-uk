@@ -67,8 +67,8 @@
     },
     {
       "callsign": "GB7MK",
-      "status": "live",
-      "statusLabel": "On Air",
+      "status": "warn",
+      "statusLabel": "Connection Issue",
       "mode": "70cm · DMR",
       "band": "70cm",
       "type": "DMR",
@@ -84,8 +84,8 @@
         { "label": "CC",      "value": "13" },
         { "label": "Network", "value": "DV Scotland Phoenix" }
       ],
-      "note": null,
-      "noteType": null
+      "note": "Connection issue — awaiting update. TG 2 and TG 9 currently active.",
+      "noteType": "warn"
     },
     {
       "callsign": "GB7DI",
