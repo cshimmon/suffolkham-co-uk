@@ -24,8 +24,8 @@
     },
     {
       "callsign": "GB3IH",
-      "status": "live",
-      "statusLabel": "On Air",
+      "status": "warn",
+      "statusLabel": "Updated",
       "mode": "70cm · FM",
       "band": "70cm",
       "type": "FM",
@@ -36,23 +36,12 @@
       "group": "South Anglia Repeater Group (SARG)",
       "groupUrl": "https://sargroup.co.uk",
       "frequencies": [
-        { "label": "Input",  "value": "430.725 MHz" },
-        { "label": "Output", "value": "439.725 MHz" },
+        { "label": "Input",  "value": "434.700 MHz" },
+        { "label": "Output", "value": "433.100 MHz" },
         { "label": "CTCSS",  "value": "110.9 Hz" }
       ],
-      "note": "Frequencies updated 1 June 2026 — now on 430.725 MHz input / 439.725 MHz output. Please update your radio channel data.",
-      "noteType": "info",
-      "guide": {
-        "author": "James M0ZAH",
-        "date": "01-06-2026",
-        "body": [
-          "The repeater controller is based on an Atmel328P.",
-          "A morse ident is sent every 10 minutes when in use, or up to 10 minutes after last access. When the repeater is idle the morse speed is set to 18 WPM, otherwise 25 WPM.",
-          "From cold the repeater requires more than 2 seconds of valid carrier to latch. If the repeater is not latched the transmitter will terminate after 1 second. Once latched the repeater will send 5 re-access pips spaced 2 seconds apart. If the last valid carrier was more than 3 seconds, the letter K precedes the re-access pips. The K is replaced with the morse ident (at 25 WPM) if the ident timer has expired.",
-          "The timeout is set to 10 minutes. The timer resets on either the K or the first access pip (whichever comes first). Stations that don't allow the timer to reset will inherit the previous station's timer.",
-          "When a station exceeds the timeout the repeater will send TO in morse and close down. Once the offending signal has cleared the repeater will send OK in morse and return to normal operation."
-        ]
-      }
+      "note": "New hardware install attempted April 2026. Interference investigation ongoing near hospital site.",
+      "noteType": "info"
     },
     {
       "callsign": "GB7AL",
@@ -78,8 +67,8 @@
     },
     {
       "callsign": "GB7MK",
-      "status": "live",
-      "statusLabel": "On Air",
+      "status": "warn",
+      "statusLabel": "Connection Issue",
       "mode": "70cm · DMR",
       "band": "70cm",
       "type": "DMR",
@@ -95,8 +84,8 @@
         { "label": "CC",      "value": "13" },
         { "label": "Network", "value": "DV Scotland Phoenix" }
       ],
-      "note": null,
-      "noteType": null
+      "note": "Connection issue — awaiting update. TG 2 and TG 9 currently active.",
+      "noteType": "warn"
     },
     {
       "callsign": "GB7DI",
@@ -150,7 +139,7 @@
       "location": "Bury St Edmunds",
       "lat": 52.2462,
       "lng": 0.7167,
-      "keeper": "G1YFF",
+      "keeper": null,
       "group": "Independent",
       "groupUrl": null,
       "frequencies": [
@@ -243,27 +232,6 @@
         { "label": "Gateway", "value": "Auto-link 08:00–22:00" }
       ],
       "note": "Automatically links to pre-set D-STAR reflectors daily 08:00–22:00.",
-      "noteType": "info"
-    },
-    {
-      "callsign": "MB7IBW",
-      "status": "live",
-      "statusLabel": "On Air",
-      "mode": "2m · FM",
-      "band": "2m",
-      "type": "FM",
-      "location": "Suffolk",
-      "lat": 52.112437,
-      "lng": 1.388853,
-      "keeper": "M0AWS",
-      "group": "Independent",
-      "groupUrl": null,
-      "frequencies": [
-        { "label": "Frequency", "value": "145.2625 MHz" },
-        { "label": "CTCSS",     "value": "94.8 Hz" },
-        { "label": "Network",   "value": "AllStarLink" }
-      ],
-      "note": "Simplex AllStarLink gateway — transmit and receive on 145.2625 MHz with CTCSS 94.8 Hz.",
       "noteType": "info"
     },
     {
