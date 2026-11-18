@@ -156,6 +156,20 @@
       "notes": "Vertical polarisation. Chaired by G8LBS."
     },
     {
+      "id": "cra-wednesday",
+      "name": "CRA Wednesday Club Net",
+      "group": "Colchester Radio Amateurs",
+      "groupUrl": null,
+      "day": "Wednesday",
+      "schedule": "Every Wednesday",
+      "time": "19:00",
+      "mode": "FM Simplex",
+      "via": "simplex",
+      "repeater": null,
+      "frequency": "145.350 MHz",
+      "notes": null
+    },
+    {
       "id": "g3yrz-60m",
       "name": "60m Wednesday Sked",
       "group": "G3YRZ",
